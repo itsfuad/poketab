@@ -1,5 +1,5 @@
 {
-  "name": "node-chat-app",
+  "name": "chatMate",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,7 +11,7 @@
   "engines": {
     "node": "6.2.2"
   },
-  "author": "",
+  "author": "Fuad Hasan",
   "license": "ISC",
   "dependencies": {
     "express": "^4.14.0",

@@ -190,6 +190,7 @@ a.after:hover:after {
 
 h3 {
   margin: 0px 90px 0px 0px;
+  color: var(--blue);
 }
 
 
@@ -197,7 +198,8 @@ button,
 button:hover {
   border: none;
   color: #fff;
-  padding: 10px;
+  padding: 15px;
+  font-size: 0.8rem;
 }
 
 .chat__messages,
@@ -223,6 +225,7 @@ h3 {
   font-weight: 600;
   text-align: center;
   font-size: 1.3rem;
+  color: var(--blue);
 }
 
 button {
@@ -273,8 +276,11 @@ button:disabled {
 
 .form-field input,
 .form-field select {
-  border: 1px solid #e1e1e1;
+  border: 2px solid var(--blue);
   padding: 10px;
+  background: var( --background-light);
+  border-radius: 10px;
+  color: white;
 }
 
 .chat {
@@ -300,6 +306,7 @@ button:disabled {
   color: white;
   margin: 10px 20px;
   text-align: left;
+  color: var(--blue);
 }
 
 .chat__sidebar li {
