@@ -13,7 +13,7 @@
   --hoverblue: #0575e6;
   --background: #111d2a;
   --foreground: #ffffff;
-  --background-light: #293746;
+  --background-light: #ffffff17;
 }
 
 body {
@@ -293,7 +293,7 @@ button:disabled {
 .form-field select {
   border: 2px solid var(--blue);
   padding: 10px;
-  background: var(--background-light);
+  background: transparent;
   border-radius: 10px;
   color: white;
 }
@@ -382,7 +382,7 @@ textarea:focus, input:focus {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
-  background: #22354a;
+  background: var(--background-light);
   border-radius: 10px;
   color: white;
 }
@@ -405,6 +405,7 @@ textarea:focus, input:focus {
 
 .message__title span {
   color: #999;
+  font-size: 0.7rem;
 }
 
 @media (max-width: 600px) {
