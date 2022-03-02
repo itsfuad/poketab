@@ -119,11 +119,12 @@ button:disabled {
 }
 
 .centered-form__form {
-  background: var(--background-light);
+  background: #26313d;
   border-radius: 5px;
   padding: 0 20px;
   margin: 20px;
   width: 230px;
+  z-index: 10;
 }
 
 .form-field {
