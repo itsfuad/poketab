@@ -78,11 +78,11 @@ jQuery('#message-form').on('submit', function (e) {
     text = text.substring(0, 255);
   }
   //replace all newline with socket.io newline
-  text = text.replaceAll(/\n/g, '\\n');
+  text = text.replaceAll(/\n/g, '\n');
   socket.emit('createMessage', {
     text: text
   }, function () {
-    console.log(messageTextbox.val());
+    console.log(text);
     messageTextbox.val('')
     //document.getElementById('textbox').style.background = '#f0f';
     document.getElementById('textbox').style.height = '52px';
