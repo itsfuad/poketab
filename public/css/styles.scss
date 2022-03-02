@@ -145,6 +145,7 @@ button:disabled {
   display: flex;
   width: 100%;
   height: 100%;
+  padding-top: 50px;
 }
 
 .chat__sidebar {
@@ -289,10 +290,11 @@ footer{
 .topbar{
   display: flex;
   align-items: center;
+  position: absolute;
   justify-content: space-between;
   height: var(--topbarsize);
   width: 100%;
-  background: var(--background-light);
+  background: #26313d;
   color: #2fff80;
   z-index: 10;
   padding: 10px;
