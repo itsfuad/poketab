@@ -74,11 +74,11 @@ jQuery('#message-form').on('submit', function (e) {
   let messageTextbox = jQuery('[name=message]');
   let text = messageTextbox.val();
   //trim text to 255 charecters
-  if (text.length > 255) {
-    text = text.substring(0, 255);
+  if (text.length > 1000) {
+    text = text.substring(0, 1000);
   }
   //replace all newline with socket.io newline
-  text = text.replaceAll(/\n/g, '\n');
+  //text = text.replaceAll(/\n/g, '');
   socket.emit('createMessage', {
     text: text
   }, function () {
