@@ -32,8 +32,7 @@ body {
           flex-direction: column;
   background: var(--background);
   color: var(--foreground);
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
+  height: var(--app-height);
 }
 
 h1:before {
@@ -121,8 +120,7 @@ button:disabled {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
+  height: var(--app-height);
   width: 100vw;
   -webkit-box-pack: center;
       -ms-flex-pack: center;

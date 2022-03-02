@@ -28,8 +28,7 @@ body {
   flex-direction: column;
   background: var(--background);
   color: var(--foreground);
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
+  height: var(--app-height);
 }
 
 
@@ -113,8 +112,7 @@ button:disabled {
 .centered-form {
   display: flex;
   align-items: center;
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
+  height: var(--app-height);
   width: 100vw;
   justify-content: center;
   background: var(--background);
