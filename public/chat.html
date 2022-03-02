@@ -11,62 +11,67 @@
 
 </head>
 
-<body class="chat">
-
-  <div class="chat__sidebar">
-    <h3>People</h3>
-    <div id="users"></div>
+<body>
+  <div class="topbar">
+    <div class="menu">Menu</div>
+    <div class="text">Room</div>
+    <div class="location" id="send-location"><img width="40px" height="40px" src="./icons8-location-64.png" alt="" srcset=""></div>
   </div>
-
-  <div class="chat__main">
-    <ol id="messages" class="chat__messages"></ol>
-
-    <div class="chat__footer">
-      <form id="message-form">
-        <input name="message" type="text" placeholder="Message" autofocus autocomplete="off" />
-        <button>Send</button>
-      </form>
-      <button id="send-location">Send location</button>
+  <div class="menuwrapper">
+    <div class="close">X</div>
+    <div class="chat__sidebar">
+      <h3>People</h3>
+      <div class="users"></div>
     </div>
   </div>
+  <div class="chat">
+    <div class="menuwrapper2">
+      <div class="close">X</div>
+      <div class="chat__sidebar">
+        <h3>People</h3>
+        <div class="users"></div>
+      </div>
+    </div>
+    <div class="chat__main">
+      <ol id="messages" class="chat__messages"></ol>
+      <div class="chat__footer">
+        <form id="message-form">
+          <input name="message" type="text" placeholder="Message" autofocus autocomplete="off" />
+          <button class="send"><img src="./icons8-send-32.png" alt="" srcset=""></button>
+        </form>
+      </div>
+    </div>
+  
+  
+    <script id="message-template" type="text/template">
+      <li class="message">
+        <div class="message__title">
+          <h3>{{from}}</h3>
+          <span>{{createdAt}}</span>
+        </div>
+        <div class="message__body">
+          <p>{{text}}</p>
+        </div>
+      </li>
+    </script>
+  
+    <script id="location-message-template" type="text/template">
+      <li class="message">
+        <div class="message__title">
+          <a class='tenth before after' href="{{url}}" target="_blank"><img src="./icons8-location-80.png" alt="location" height='40px' width='40px' srcset="">{{from}}'s location</a>
+          <h3></h3>
+          <span>{{createdAt}}</span>
+        </div>
+      </li>
+    </script>
+  </div>
 
-  <script id="message-template" type="text/template">
-    <li class="message">
-      <div class="message__title">
-        <h3>{{from}}</h3>
-        <span>{{createdAt}}</span>
-      </div>
-      <div class="message__body">
-        <p>{{text}}</p>
-      </div>
-    </li>
-  </script>
-
-  <script id="location-message-template" type="text/template">
-    <li class="message">
-      <div class="message__title">
-        <h3>{{from}}</h3>
-        <span>{{createdAt}}</span>
-      </div>
-      <div class="message__body">
-        <p>
-            <div class="wrapper">
-                <span class="square">
-                  <!-- <a class="tenth before after" href="#">Cool Square Simultaneous</a> -->
-                  <a class='tenth before after' href="{{url}}" target="_blank">My current location</a>
-                </span>
-              </div>
-        </p>
-      </div>
-    </li>
-  </script>
-
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/js/libs/jquery-3.1.0.min.js"></script>
-  <script src="/js/libs/moment.js"></script>
-  <script src="/js/libs/mustache.js"></script>
-  <script src="/js/libs/deparam.js"></script>
-  <script src="/js/chat.js"></script>
+  <script defer src="/socket.io/socket.io.js"></script>
+  <script defer src="/js/libs/jquery-3.1.0.min.js"></script>
+  <script defer src="/js/libs/moment.js"></script>
+  <script defer src="/js/libs/mustache.js"></script>
+  <script defer src="/js/libs/deparam.js"></script>
+  <script defer src="/js/chat.js"></script>
 </body>
 
 </html>

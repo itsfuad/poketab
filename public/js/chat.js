@@ -40,7 +40,7 @@ socket.on('updateUserList', function (users) {
     ol.append(jQuery('<li></li>').text(user));
   });
 
-  jQuery('#users').html(ol);
+  jQuery('.users').html(ol);
 });
 
 socket.on('newMessage', function (message) {
@@ -87,16 +87,25 @@ locationButton.on('click', function () {
     return alert('Geolocation not supported by your browser.');
   }
 
-  locationButton.attr('disabled', 'disabled').text('Sending location...');
+  locationButton.attr('disabled', 'disabled').html(`<img width="40px" height="40px" src="./icons8-location-64.png" alt="" srcset="">`);
 
   navigator.geolocation.getCurrentPosition(function (position) {
-    locationButton.removeAttr('disabled').text('Send location');
+    locationButton.removeAttr('disabled').html(`<img width="40px" height="40px" src="./icons8-location-64.png" alt="" srcset="">`);
     socket.emit('createLocationMessage', {
       latitude: position.coords.latitude,
       longitude: position.coords.longitude
     });
   }, function () {
-    locationButton.removeAttr('disabled').text('Send location');
+    locationButton.removeAttr('disabled').html(`<img width="40px" height="40px" src="./icons8-location-64.png" alt="" srcset="">`);
     alert('Unable to fetch location.');
   });
+});
+
+
+jQuery('.menu').on('click', function () {
+  jQuery('.menuwrapper').addClass('active');
+});
+
+jQuery('.close').on('click', function () {
+  jQuery('.menuwrapper').removeClass('active');
 });
