@@ -161,8 +161,7 @@ button:disabled {
 .chat__sidebar {
   overflow-y: scroll;
   width: 260px;
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
+  height: var(--app-height);
   //background:  linear-gradient( -212deg, rgb(189, 218, 230), rgb(0, 102, 255));
   outline: 2px solid var(--background-light);
 

@@ -173,8 +173,7 @@ button:disabled {
 .chat__sidebar {
   overflow-y: scroll;
   width: 260px;
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
+  height: var(--app-height);
   outline: 2px solid var(--background-light);
 }
 
