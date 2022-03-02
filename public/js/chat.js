@@ -109,3 +109,10 @@ jQuery('.menu').on('click', function () {
 jQuery('.chat').on('click', function () {
   jQuery('.menuwrapper').removeClass('active');
 });
+
+const appHeight = () => {
+  const doc = document.documentElement
+  doc.style.setProperty('--app-height', `${window.innerHeight}px`)
+}
+window.addEventListener('resize', appHeight)
+appHeight()

@@ -15,15 +15,23 @@
   --foreground: #ffffff;
   --background-light: #ffffff17;
   --topbarsize: 50px;
+  --app-height: 100vh;
 }
 
 
-
+html{
+  height: -webkit-fill-available;
+}
 
 body {
+  display: flex;
+  flex-direction: column;
   background: var(--background);
   color: var(--foreground);
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
 }
+
 
 h1:before {
   content: "// ";
@@ -105,7 +113,8 @@ button:disabled {
 .centered-form {
   display: flex;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
   width: 100vw;
   justify-content: center;
   background: var(--background);
@@ -145,13 +154,15 @@ button:disabled {
   display: flex;
   width: 100%;
   height: 100%;
+  height: var(--app-height);
   padding-top: 50px;
 }
 
 .chat__sidebar {
   overflow-y: scroll;
   width: 260px;
-  height: 100vh;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
   //background:  linear-gradient( -212deg, rgb(189, 218, 230), rgb(0, 102, 255));
   outline: 2px solid var(--background-light);
 
@@ -305,11 +316,7 @@ footer{
   font-weight: 900;
 }
 
-body{
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
+
 
 .menuwrapper2{
   display: none;
