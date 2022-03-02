@@ -35,6 +35,7 @@ socket.on('connect', function () {
 });
 
 socket.on('disconnect', function () {
+  juntos.play();
   console.log('Disconnected from server');
 });
 
