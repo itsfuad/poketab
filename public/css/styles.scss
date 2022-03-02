@@ -277,16 +277,7 @@ footer{
   width: 60%;
   transition: 300ms;
   z-index: 11;
-  .close{
-    display: flex;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    &:hover{
-      cursor: pointer;
-      color: red;
-    }
-  }
+
   .chat__sidebar{
     width: 100%;
     outline: none;
@@ -302,7 +293,8 @@ footer{
   justify-content: space-between;
   height: var(--topbarsize);
   width: 100%;
-  background: #000000;
+  background: var(--background-light);
+  color: #2fff80;
   z-index: 10;
   padding: 10px;
 }
@@ -319,6 +311,13 @@ body{
 
 .text{
   display: none;
+}
+
+.location{
+  img{
+    height: 40px;
+    width: 40px;
+  }
 }
 
 
@@ -338,9 +337,6 @@ body{
     left: 0;
     background: var(--background);
     width: 30vw;
-    .close{
-      display: none;
-    }
     .chat__sidebar{
       width: 100%;
       outline: 2px solid var(--background-light);
@@ -356,5 +352,9 @@ body{
     position: fixed;
     top: 10px;
     right: 10px;
+    img{
+      height: 50px;
+      width: 50px;
+    }
   }
 }

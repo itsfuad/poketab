@@ -39,7 +39,7 @@ socket.on('updateUserList', function (users) {
   users.forEach(function (user) {
     ol.append(jQuery('<li></li>').text(user));
   });
-
+  jQuery('.menu').text(`Online: ${users.length}`);
   jQuery('.users').html(ol);
 });
 
@@ -106,6 +106,6 @@ jQuery('.menu').on('click', function () {
   jQuery('.menuwrapper').addClass('active');
 });
 
-jQuery('.close').on('click', function () {
+jQuery('.chat').on('click', function () {
   jQuery('.menuwrapper').removeClass('active');
 });
