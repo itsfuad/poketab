@@ -126,6 +126,12 @@ $("textarea").each(function () {
   this.style.height = (this.scrollHeight) + "px";
 });
 
+$("textarea").on("keypress", function(e) {
+  if (e.keyCode === 13) {
+    $(".send").click();
+  }
+});
+
 const appHeight = () => {
   const doc = document.documentElement
   doc.style.setProperty('--app-height', `${window.innerHeight}px`)
