@@ -1,5 +1,9 @@
 let socket = io();
 
+let pop = new Audio('./../sounds/pop.wav');
+let juntos = new Audio('./../sounds/juntos.wav');
+let elegant = new Audio('./../sounds/elegant.wav');
+
 function scrollToBottom () {
   // Selectors
   let messages = jQuery('#messages');
@@ -18,7 +22,8 @@ function scrollToBottom () {
 
 socket.on('connect', function () {
   let params = jQuery.deparam(window.location.search);
-
+  console.log("Connected to server");
+  elegant.play();
   socket.emit('join', params, function (err) {
     if (err) {
       alert(err);
@@ -51,7 +56,7 @@ socket.on('newMessage', function (message) {
     from: message.from,
     createdAt: formattedTime
   });
-
+  pop.play();
   jQuery('#messages').append(html);
   scrollToBottom();
 });
@@ -138,3 +143,7 @@ const appHeight = () => {
 }
 window.addEventListener('resize', appHeight)
 appHeight()
+
+
+
+
