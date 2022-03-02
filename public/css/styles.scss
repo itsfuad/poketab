@@ -72,7 +72,6 @@ button:hover {
   padding: 0;
   font-family: Now;
   font-weight: 300;
-  font-size: .95rem;
 }
 
 li,
@@ -235,13 +234,6 @@ textarea:focus, input:focus{
   margin-right: 10px;
 }
 
-.message__title span {
-  color: #999;
-  font-size: 0.7rem;
-}
-
-
-
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 *::-webkit-scrollbar {
@@ -287,6 +279,13 @@ footer{
   }
 }
 
+.time{
+  width: 100%;
+  font-size: 0.6rem;
+  text-align: center;
+  color: gray;
+}
+
 .topbar{
   display: flex;
   align-items: center;
@@ -327,10 +326,6 @@ body{
 
 
 @media (orientation: landscape) and (min-device-aspect-ratio: 1/1) {
-  * {
-    font-size: 1rem;
-  }
-
   .menu{
     display: none;
   }

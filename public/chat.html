@@ -42,9 +42,11 @@
   
     <script id="message-template" type="text/template">
       <li class="message">
+        <div class="time">
+          <span>{{createdAt}}</span>
+        </div>
         <div class="message__title">
           <h3>{{from}}</h3>
-          <span>{{createdAt}}</span>
         </div>
         <div class="message__body">
           <p>{{text}}</p>
@@ -54,10 +56,11 @@
   
     <script id="location-message-template" type="text/template">
       <li class="message">
+        <div class="time">
+          <span>{{createdAt}}</span>
+        </div>
         <div class="message__title">
           <a class='tenth before after' href="{{url}}" target="_blank"><img src="./icons8-location-80.png" alt="location" height='40px' width='40px' srcset="">{{from}}'s location</a>
-          <h3></h3>
-          <span>{{createdAt}}</span>
         </div>
       </li>
     </script>
