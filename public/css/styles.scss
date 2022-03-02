@@ -211,9 +211,10 @@ textarea:focus, input:focus{
   border-top: 2px solid var(--background-light);
   flex-grow: 1;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   padding-top: 5px;
 }
+
 
 .chat__footer textarea {
   border: none;
