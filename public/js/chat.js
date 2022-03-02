@@ -87,16 +87,16 @@ locationButton.on('click', function () {
     return alert('Geolocation not supported by your browser.');
   }
 
-  locationButton.attr('disabled', 'disabled').html(`<img width="40px" height="40px" src="./icons8-location-64.png" alt="" srcset="">`);
+  locationButton.attr('disabled', 'disabled').text('Share location');
 
   navigator.geolocation.getCurrentPosition(function (position) {
-    locationButton.removeAttr('disabled').html(`<img width="40px" height="40px" src="./icons8-location-64.png" alt="" srcset="">`);
+    locationButton.removeAttr('disabled').text('Share location');
     socket.emit('createLocationMessage', {
       latitude: position.coords.latitude,
       longitude: position.coords.longitude
     });
   }, function () {
-    locationButton.removeAttr('disabled').html(`<img width="40px" height="40px" src="./icons8-location-64.png" alt="" srcset="">`);
+    locationButton.removeAttr('disabled').text('Share location');
     alert('Unable to fetch location.');
   });
 });

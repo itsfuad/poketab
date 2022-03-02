@@ -327,6 +327,11 @@ footer {
   padding: 10px;
 }
 
+.location {
+  color: var(--blue);
+  font-weight: 900;
+}
+
 body {
   display: -webkit-box;
   display: -ms-flexbox;
