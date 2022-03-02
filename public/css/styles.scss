@@ -208,17 +208,25 @@ textarea:focus, input:focus{
 }
 
 .chat__footer form {
+  border-top: 2px solid var(--background-light);
   flex-grow: 1;
   display: flex;
+  align-items: flex-end;
+  padding-top: 5px;
 }
 
-.chat__footer input {
+.chat__footer textarea {
   border: none;
-  padding: 10px;
+  padding: 10px 40px 10px 40px;
   flex-grow: 1;
   background: var(--background-light);
-  border-radius: 10px;
+  border-radius: 24px;
   color: white;
+  resize: none;
+  max-height: 20vh;
+  &[placeholder]{
+   // text-align: center;
+  }
 }
 
 
@@ -237,6 +245,9 @@ textarea:focus, input:focus{
   display: flex;
   margin-bottom: 5px;
   align-items: baseline;
+  h3{
+    font-size: 0.8rem;
+  }
 }
 
 .message__title h4 {
@@ -244,6 +255,14 @@ textarea:focus, input:focus{
   margin-right: 10px;
 }
 
+.message__body{
+  p{
+    background: var(--background-light);
+    border-radius: 50px;
+    padding: 12px;
+    font-size: 0.8rem;
+  }
+}
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 *::-webkit-scrollbar {
@@ -312,6 +331,10 @@ footer{
 .location{
   color: var(--blue);
   font-weight: 900;
+  position: absolute;
+  bottom: 10px;
+  right: 65px;
+  padding: 10px;
 }
 
 
@@ -324,13 +347,22 @@ footer{
   display: none;
 }
 
-.location{
-  img{
-    height: 40px;
-    width: 40px;
-  }
+
+#sendlocation{
+  filter: invert(1);
 }
 
+#retlocation{
+  filter: invert(1);
+  mix-blend-mode: screen;
+  height: 40px;
+  width: 40px;
+}
+
+#retlocflex{
+  display: flex;
+  align-items: center;
+}
 
 @media (orientation: landscape) and (min-device-aspect-ratio: 1/1) {
   .chat{
@@ -357,14 +389,5 @@ footer{
     height: 0;
     margin: 0;
     padding: 0;
-  }
-  .location{
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    img{
-      height: 50px;
-      width: 50px;
-    }
   }
 }

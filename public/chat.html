@@ -14,7 +14,6 @@
 <body>
   <div class="topbar">
     <div class="menu"></div>
-    <div class="location" id="send-location">Share location</div>
   </div>
   <div class="menuwrapper">
     <div class="chat__sidebar">
@@ -33,8 +32,10 @@
       <ol id="messages" class="chat__messages"></ol>
       <div class="chat__footer">
         <form id="message-form">
-          <input name="message" type="text" placeholder="Message" autofocus autocomplete="off" />
+          <!--input name="message" type="text" placeholder="Message" autofocus autocomplete="off" /-->
+          <textarea name="message" id="textbox" placeholder="Message"></textarea>
           <button class="send"><img src="./icons8-send-32.png" alt="" srcset=""></button>
+          <div class="location" id="send-location"><img id="sendlocation" height='25px' width="25px" src="./icons8-gps-48.png" alt="" srcset=""></div>
         </form>
       </div>
     </div>
@@ -60,7 +61,7 @@
           <span>{{createdAt}}</span>
         </div>
         <div class="message__title">
-          <a class='tenth before after' href="{{url}}" target="_blank"><img src="./icons8-location-80.png" alt="location" height='40px' width='40px' srcset="">{{from}}'s location</a>
+          <a id="retlocflex" class='tenth before after' href="{{url}}" target="_blank"><img id="retlocation" src="./icons8-place-marker.gif" alt="" srcset="">{{from}}'s location</a>
         </div>
       </li>
     </script>
