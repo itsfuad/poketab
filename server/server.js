@@ -56,7 +56,6 @@ io.on('connection', (socket) => {
       text = text.replace(/Pussy/g, 'P**s');
       text = text.replace(/Cock/g, 'C**k');
       text = text.replace(/Baal/g, 'B**l');
-
       //io.to(user.room).emit('newMessage', generateMessage(user.name, text));
       socket.emit('my__message', generateMessage(user.name, text));
       socket.broadcast.to(user.room).emit('newMessage', generateMessage(user.name, text));

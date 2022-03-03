@@ -47,7 +47,7 @@ h1:before {
 a {
   color: var(--blue);
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.7rem;
 }
 
 h3 {
@@ -255,6 +255,7 @@ textarea:focus, input:focus {
   color: white;
   resize: none;
   max-height: 20vh;
+  text-align: justify;
 }
 
 #send-location:hover {
@@ -305,22 +306,12 @@ textarea:focus, input:focus {
 }
 
 .message__title {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  margin-bottom: 5px;
-  -webkit-box-align: baseline;
-      -ms-flex-align: baseline;
-          align-items: baseline;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  padding-left: 10px;
 }
 
 .message__title h3 {
   font-size: 0.7rem;
   width: 100%;
-  text-align: left;
 }
 
 .message__title h4 {
@@ -332,6 +323,21 @@ textarea:focus, input:focus {
   width: 100%;
   font-size: 0.7rem;
   text-align: right;
+  padding-right: 10px;
+}
+
+.location__message__title {
+  padding-left: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 5px;
+  -webkit-box-align: baseline;
+  -ms-flex-align: baseline;
+  align-items: baseline;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
 }
 
 .message__body, .my__message__body {
@@ -348,9 +354,9 @@ textarea:focus, input:focus {
           justify-content: center;
   -ms-flex-line-pack: center;
       align-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
 }
 
 .message__body p, .my__message__body p {
@@ -363,6 +369,7 @@ textarea:focus, input:focus {
   max-width: -moz-max-content;
   max-width: max-content;
   overflow-wrap: break-word;
+  text-align: justify;
 }
 
 .my__message__body p {

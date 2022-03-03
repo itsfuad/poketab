@@ -66,7 +66,7 @@ socket.on('newMessage', function (message) {
     firstletter: message.from.charAt(0).toUpperCase()
   });
   //pop.play();
-  html = html.replaceAll('¶', '<br>');
+  html = html.replace(/¶/g ,'<br>');
   jQuery('#messages').append(html);
   scrollToBottom();
 });
@@ -81,7 +81,9 @@ socket.on('my__message', function (message) {
     createdAt: formattedTime
   });
   //pop.play();
-  html = html.replaceAll('¶', '<br>');
+  html = html.replace(/¶/g ,'<br>');
+  html = linkify(html);
+  //console.log(html);
   jQuery('#messages').append(html);
   scrollToBottom();
 });
@@ -100,8 +102,9 @@ socket.on('server_message', function(message){
   html = html.replace(/<p>Welcome/g, `<p style='color: var(--blue);'>Welcome to the chat room!`);
   html = html.replace(/<p>[a-z]+ joined/i, `<p style='color: limegreen;'>${message.from} joined`);
   html = html.replace(/<p>[a-z]+ left/i, `<p style='color: orangered;'>${message.from} left`);
+  
   jQuery('#messages').append(html);
-  console.log(html);
+  //console.log(html);
   scrollToBottom();
 });
 
@@ -123,8 +126,8 @@ jQuery('#message-form').on('submit', function (e) {
   let messageTextbox = jQuery('[name=message]');
   let text = messageTextbox.val();
   //trim text to 255 charecters
-  if (text.length > 1000) {
-    text = text.substring(0, 1000);
+  if (text.length > 10000) {
+    text = text.substring(0, 10000);
   }
   //replace all newline with socket.io newline
   text = text.replace(/\n/g, '¶');
@@ -175,6 +178,24 @@ $("textarea").each(function () {
   this.style.height = "auto";
   this.style.height = (this.scrollHeight) + "px";
 });
+
+function linkify(inputText) {
+  var replacedText, replacePattern1, replacePattern2, replacePattern3;
+
+  //URLs starting with http://, https://, or ftp://
+  replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+  replacedText = inputText.replace(replacePattern1, '<a href="$1" target="_blank">$1</a>');
+
+  //URLs starting with "www." (without // before it, or it'd re-link the ones done above).
+  replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+  replacedText = replacedText.replace(replacePattern2, '$1<a href="http://$2" target="_blank">$2</a>');
+
+  //Change email addresses to mailto:: links.
+  replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
+  replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
+  console.log(replacedText);
+  return replacedText;
+}
 
 /*
 $("textarea").on("keypress", function(e) {

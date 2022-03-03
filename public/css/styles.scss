@@ -44,7 +44,7 @@ h1:before {
 a{
   color: var(--blue);
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.7rem;
 }
 
 
@@ -228,9 +228,7 @@ textarea:focus, input:focus{
   color: white;
   resize: none;
   max-height: 20vh;
-  &[placeholder]{
-   // text-align: center;
-  }
+  text-align: justify;
 }
 
 
@@ -266,14 +264,10 @@ textarea:focus, input:focus{
 }
 
 .message__title{
-  display: flex;
-  margin-bottom: 5px;
-  align-items: baseline;
-  justify-content: center;
+  padding-left: 10px;
   h3{
     font-size: 0.7rem;
     width: 100%;
-    text-align: left;
   }
 }
 
@@ -290,9 +284,21 @@ textarea:focus, input:focus{
     width: 100%;
     font-size: 0.7rem;
     text-align: right;
+    padding-right: 10px;
   }
 }
 
+.location__message__title{
+  padding-left: 10px;
+  display: flex;
+  margin-bottom: 5px;
+  -webkit-box-align: baseline;
+  -ms-flex-align: baseline;
+  align-items: baseline;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
 
 .message__body, .my__message__body{
   display: flex;
@@ -300,7 +306,7 @@ textarea:focus, input:focus{
   gap: 0;
   justify-content: center;
   align-content: center;
-  align-items: center;
+  align-items: flex-end;
   p{
     background: var(--background-light);
     border-radius: 24px;
@@ -309,6 +315,7 @@ textarea:focus, input:focus{
     width: 60vw;
     max-width: max-content;
     overflow-wrap: break-word;
+    text-align: justify;
   }
 }
 
