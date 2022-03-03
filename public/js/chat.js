@@ -62,7 +62,7 @@ socket.on('updateUserList', function (users) {
 });
 
 socket.on('newMessage', function (message) {
-  pop.play();
+  elegant.play();
   let formattedTime = moment(message.createdAt).format('h:mm a');
   let template = jQuery('#message-template').html();
   let html = Mustache.render(template, {
@@ -122,7 +122,7 @@ socket.on('newLocationMessage', function (message) {
     url: message.url,
     createdAt: formattedTime
   });
-
+  pop.play();
   jQuery('#messages').append(html);
   updateScroll();
 });
