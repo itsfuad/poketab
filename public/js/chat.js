@@ -131,6 +131,7 @@ jQuery('#message-form').on('submit', function (e) {
   e.preventDefault();
   let messageTextbox = jQuery('[name=message]');
   let text = messageTextbox.val();
+  messageTextbox.val('');
   //trim text to 255 charecters
   if (text.length > 10000) {
     text = text.substring(0, 10000);
@@ -145,7 +146,6 @@ jQuery('#message-form').on('submit', function (e) {
     text: text
   }, function () {
     //console.log(text);
-    messageTextbox.val('')
     //document.getElementById('textbox').style.background = '#f0f';
     document.getElementById('textbox').style.height = '52px';
   });
