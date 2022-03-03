@@ -171,6 +171,28 @@ jQuery('.chat').on('click', function () {
   jQuery('.menuwrapper').removeClass('active');
 });
 
+jQuery('#textbox').on('focus', function () {
+  document.getElementById('textbox').style.background = '#f0f';
+  socket.emit('typing', {isTtyping: true});
+});
+
+jQuery('#textbox').on('blur', function () {
+  document.getElementById('textbox').style.background = '#fff';
+  socket.emit('typing', {isTyping: false});
+});
+
+socket.on('typingStatus', function(message){
+  let template = jQuery('#is-typing-template').html();
+  console.log(message);
+  let html = Mustache.render(template, {
+    from: message.from
+  });
+  jQuery('#messages').append(html);
+  //console.log(html);
+  scrollToBottom();
+});
+
+
 
 $("textarea").each(function () {
   this.setAttribute("style", "height:" + (this.scrollHeight) + "px;overflow-y:hidden;");

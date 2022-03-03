@@ -71,7 +71,10 @@ io.on('connection', (socket) => {
       io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, coords.latitude, coords.longitude));  
     }
   });
-
+  socket.on('typing', function(typing) {
+    var user = users.getUser(socket.id);
+    socket.broadcast.emit('typingStatus', generateMessage(user.name, typing.isTyping));
+  });
   socket.on('disconnect', () => {
     var user = users.removeUser(socket.id);
 
