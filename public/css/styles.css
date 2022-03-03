@@ -217,6 +217,14 @@ textarea:focus, input:focus {
   -webkit-overflow-scrolling: touch;
   padding: 10px;
   background: transparent;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-rows: 1fr;
+      grid-template-rows: 1fr;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: end;
+  scroll-behavior: smooth;
 }
 
 .chat__footer {

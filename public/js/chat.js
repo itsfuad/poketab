@@ -11,6 +11,12 @@ const appHeight = () => {
 window.addEventListener('resize', appHeight);
 appHeight();
 
+
+function updateScroll(){
+  var element = document.getElementById("messages");
+  element.scrollTop = element.scrollHeight;
+}
+
 function scrollToBottom () {
   // Selectors
   let messages = jQuery('#messages');
@@ -68,7 +74,7 @@ socket.on('newMessage', function (message) {
   //pop.play();
   html = html.replace(/¶/g ,'<br>');
   jQuery('#messages').append(html);
-  scrollToBottom();
+  updateScroll();
 });
 
 socket.on('my__message', function (message) {
@@ -85,7 +91,7 @@ socket.on('my__message', function (message) {
   //html = linkify(html);
   //console.log(html);
   jQuery('#messages').append(html);
-  scrollToBottom();
+  updateScroll();
 });
 
 
@@ -105,7 +111,7 @@ socket.on('server_message', function(message){
   
   jQuery('#messages').append(html);
   //console.log(html);
-  scrollToBottom();
+  updateScroll();
 });
 
 socket.on('newLocationMessage', function (message) {
@@ -118,7 +124,7 @@ socket.on('newLocationMessage', function (message) {
   });
 
   jQuery('#messages').append(html);
-  scrollToBottom();
+  updateScroll();
 });
 
 jQuery('#message-form').on('submit', function (e) {
@@ -130,6 +136,9 @@ jQuery('#message-form').on('submit', function (e) {
     text = text.substring(0, 10000);
   }
   //replace all newline with socket.io newline
+  if (text.replace(/\n/g,'').length < 1){
+    return;
+  }
   text = text.replace(/\n/g, '¶');
 
   socket.emit('createMessage', {
@@ -172,24 +181,15 @@ jQuery('.chat').on('click', function () {
 });
 
 jQuery('#textbox').on('focus', function () {
-  document.getElementById('textbox').style.background = '#f0f';
-  socket.emit('typing', {isTtyping: true});
+  //document.getElementById('textbox').style.background = '#f0f';
+  //console.log('text box selected..\nScrolling to bottom');
+  updateScroll();
 });
 
-jQuery('#textbox').on('blur', function () {
-  document.getElementById('textbox').style.background = '#fff';
-  socket.emit('typing', {isTyping: false});
-});
 
-socket.on('typingStatus', function(message){
-  let template = jQuery('#is-typing-template').html();
-  console.log(message);
-  let html = Mustache.render(template, {
-    from: message.from
-  });
-  jQuery('#messages').append(html);
-  //console.log(html);
-  scrollToBottom();
+jQuery('.send').on('focus', function(){
+  //console.log('focused');
+  jQuery('#textbox').focus();
 });
 
 

@@ -200,6 +200,10 @@ textarea:focus, input:focus{
   -webkit-overflow-scrolling: touch;
   padding: 10px;
   background: transparent;
+  display: grid;
+  grid-template-rows: 1fr;
+  align-items: end;
+  scroll-behavior: smooth;
 }
 
 .chat__footer {
