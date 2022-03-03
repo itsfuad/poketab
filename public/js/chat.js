@@ -82,7 +82,7 @@ socket.on('my__message', function (message) {
   });
   //pop.play();
   html = html.replace(/¶/g ,'<br>');
-  html = linkify(html);
+  //html = linkify(html);
   //console.log(html);
   jQuery('#messages').append(html);
   scrollToBottom();
@@ -135,7 +135,7 @@ jQuery('#message-form').on('submit', function (e) {
   socket.emit('createMessage', {
     text: text
   }, function () {
-    console.log(text);
+    //console.log(text);
     messageTextbox.val('')
     //document.getElementById('textbox').style.background = '#f0f';
     document.getElementById('textbox').style.height = '52px';
@@ -193,7 +193,6 @@ function linkify(inputText) {
   //Change email addresses to mailto:: links.
   replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
   replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
-  console.log(replacedText);
   return replacedText;
 }
 
