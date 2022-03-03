@@ -4,6 +4,13 @@ let pop = new Audio('./../sounds/pop.wav');
 let juntos = new Audio('./../sounds/juntos.wav');
 let elegant = new Audio('./../sounds/elegant.wav');
 
+const appHeight = () => {
+  const doc = document.documentElement
+  doc.style.setProperty('--app-height', `${window.innerHeight}px`)
+}
+window.addEventListener('resize', appHeight);
+appHeight();
+
 function scrollToBottom () {
   // Selectors
   let messages = jQuery('#messages');
@@ -89,7 +96,11 @@ socket.on('server_message', function(message){
     from: message.from,
     createdAt: formattedTime
   });
+  html = html.replace(/<p>Welcome/g, `<p style='color: var(--blue);'>Welcome to the chat room!`);
+  html = html.replace(/<p>[a-z]+ joined/i, `<p style='color: limegreen;'>${message.from} joined`);
+  html = html.replace(/<p>[a-z]+ left/i, `<p style='color: orangered;'>${message.from} left`);
   jQuery('#messages').append(html);
+  console.log(html);
   scrollToBottom();
 });
 
@@ -171,10 +182,3 @@ $("textarea").on("keypress", function(e) {
   }
 });
 */
-
-const appHeight = () => {
-  const doc = document.documentElement
-  doc.style.setProperty('--app-height', `${window.innerHeight}px`)
-}
-window.addEventListener('resize', appHeight);
-appHeight();

@@ -325,6 +325,10 @@ textarea:focus, input:focus {
   overflow-wrap: break-word;
 }
 
+.server__message {
+  text-align: center;
+}
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 *::-webkit-scrollbar {
   display: none;
