@@ -439,6 +439,7 @@ footer {
   font-size: 0.6rem;
   text-align: center;
   color: gray;
+  padding-top: 10px;
 }
 
 .topbar {
