@@ -87,16 +87,6 @@ jQuery('#message-form').on('submit', function (e) {
   //replace all newline with socket.io newline
   text = text.replaceAll(/\n/g, '¶');
 
-  text = text.replaceAll('fuck', 'f**k');
-  text = text.replaceAll('shit', 's**t');
-  text = text.replaceAll('bitch', 'b***h');
-  text = text.replaceAll('sex', 's*x');
-
-  text = text.replaceAll('Fuck', 'F**k');
-  text = text.replaceAll('Shit', 'S**t');
-  text = text.replaceAll('Bitch', 'B***h');
-  text = text.replaceAll('Sex', 'S*x');
-
   socket.emit('createMessage', {
     text: text
   }, function () {

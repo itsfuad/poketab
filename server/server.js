@@ -38,7 +38,18 @@ io.on('connection', (socket) => {
     var user = users.getUser(socket.id);
 
     if (user && isRealString(message.text)) {
-      io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
+      text = message.text;
+      text = text.replaceAll('fuck', 'f**k');
+      text = text.replaceAll('shit', 's**t');
+      text = text.replaceAll('bitch', 'b***h');
+      text = text.replaceAll('sex', 's*x');
+    
+      text = text.replaceAll('Fuck', 'F**k');
+      text = text.replaceAll('Shit', 'S**t');
+      text = text.replaceAll('Bitch', 'B***h');
+      text = text.replaceAll('Sex', 'S*x');
+      console.log('abused word');
+      io.to(user.room).emit('newMessage', generateMessage(user.name, text));
     }
 
     callback();
