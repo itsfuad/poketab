@@ -62,7 +62,8 @@ socket.on('newMessage', function (message) {
   let html = Mustache.render(template, {
     text: message.text,
     from: message.from,
-    createdAt: formattedTime
+    createdAt: formattedTime,
+    firstletter: message.from.charAt(0).toUpperCase()
   });
   //pop.play();
   html = html.replaceAll('¶', '<br>');
