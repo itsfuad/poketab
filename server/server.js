@@ -29,8 +29,8 @@ io.on('connection', (socket) => {
     users.addUser(socket.id, params.name, params.room);
 
     io.to(params.room).emit('updateUserList', users.getUserList(params.room));
-    socket.emit('newMessage', generateMessage('', `Welcome ${params.name}😃!`));
-    socket.broadcast.to(params.room).emit('newMessage', generateMessage('', `${params.name} has joined.🔥`));
+    socket.emit('server_message', generateMessage('', `Welcome ${params.name}😃!`));
+    socket.broadcast.to(params.room).emit('server_message', generateMessage('', `${params.name} joined the chat.🔥`));
     callback();
   });
 
@@ -48,8 +48,10 @@ io.on('connection', (socket) => {
       text = text.replaceAll('Shit', 'S**t');
       text = text.replaceAll('Bitch', 'B***h');
       text = text.replaceAll('Sex', 'S*x');
-      console.log('abused word');
-      io.to(user.room).emit('newMessage', generateMessage(user.name, text));
+
+      //io.to(user.room).emit('newMessage', generateMessage(user.name, text));
+      socket.emit('my__message', generateMessage(user.name, text));
+      socket.broadcast.to(user.room).emit('newMessage', generateMessage(user.name, text));
     }
 
     callback();
@@ -68,7 +70,7 @@ io.on('connection', (socket) => {
 
     if (user) {
       io.to(user.room).emit('updateUserList', users.getUserList(user.room));
-      io.to(user.room).emit('newMessage', generateMessage('', `${user.name} left the chat.🙃`));
+      io.to(user.room).emit('server_message', generateMessage('', `${user.name} left the chat.🙃`));
     }
   });
 });

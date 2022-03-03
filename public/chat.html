@@ -64,6 +64,31 @@
         </div>
       </li>
     </script>
+
+    <script id="my-message-template" type="text/template">
+      <li class="my__message">
+        <div class="time">
+          <span>{{createdAt}}</span>
+        </div>
+        <div class="my__message__title">
+          <h3>(You)</h3>
+        </div>
+        <div class="my__message__body">
+          <p>{{text}}</p>
+        </div>
+      </li>
+    </script>
+
+    <script id="server-message-template" type="text/template">
+      <li class="server__message">
+        <div class="time">
+          <span>{{createdAt}}</span>
+        </div>
+        <div class="server__message__body">
+          <p>Server: {{text}}</p>
+        </div>
+      </li>
+    </script>
   
     <script id="location-message-template" type="text/template">
       <li class="message">

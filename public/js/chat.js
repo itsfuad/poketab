@@ -49,21 +49,52 @@ socket.on('updateUserList', function (users) {
 });
 
 socket.on('newMessage', function (message) {
-  let formattedTime = moment(message.createdAt).format('h:mm:ss a');
+  pop.play();
+  let formattedTime = moment(message.createdAt).format('h:mm a');
   let template = jQuery('#message-template').html();
   let html = Mustache.render(template, {
     text: message.text,
     from: message.from,
     createdAt: formattedTime
   });
-  pop.play();
+  //pop.play();
   html = html.replaceAll('¶', '<br>');
   jQuery('#messages').append(html);
   scrollToBottom();
 });
 
+socket.on('my__message', function (message) {
+  pop.play();
+  let formattedTime = moment(message.createdAt).format('h:mm a');
+  let template = jQuery('#my-message-template').html();
+  let html = Mustache.render(template, {
+    text: message.text,
+    from: message.from,
+    createdAt: formattedTime
+  });
+  //pop.play();
+  html = html.replaceAll('¶', '<br>');
+  jQuery('#messages').append(html);
+  scrollToBottom();
+});
+
+
+
+socket.on('server_message', function(message){
+  juntos.play();
+  let formattedTime = moment(message.createdAt).format('h:mm a');
+  let template = jQuery('#server-message-template').html();
+  let html = Mustache.render(template, {
+    text: message.text,
+    from: message.from,
+    createdAt: formattedTime
+  });
+  jQuery('#messages').append(html);
+  scrollToBottom();
+});
+
 socket.on('newLocationMessage', function (message) {
-  let formattedTime = moment(message.createdAt).format('h:mm:ss a');
+  let formattedTime = moment(message.createdAt).format('h:mm a');
   let template = jQuery('#location-message-template').html();
   let html = Mustache.render(template, {
     from: message.from,

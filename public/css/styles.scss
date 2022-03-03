@@ -27,6 +27,7 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--background);
+  background-size: contain;
   color: var(--foreground);
   height: var(--app-height);
 }
@@ -199,12 +200,14 @@ textarea:focus, input:focus{
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
   padding: 10px;
+  background: transparent;
 }
 
 .chat__footer {
   display: flex;
   flex-shrink: 0;
-  margin: 10px;
+  padding: 10px;
+  background: #111d2a;
 }
 
 .chat__footer form {
@@ -238,25 +241,48 @@ textarea:focus, input:focus{
 }
 
 
-.message {
-  padding: 10px;
+.message, .my__message{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.message__title {
+.message{
+  align-items: flex-start;
+}
+.my__message{
+  align-items: flex-end;
+}
+
+.message__title{
   display: flex;
   margin-bottom: 5px;
   align-items: baseline;
   h3{
     font-size: 0.8rem;
+    width: 100%;
+    text-align: left;
   }
 }
 
-.message__title h4 {
-  font-weight: 600;
-  margin-right: 10px;
+
+.message__title{
+  h4 {
+    font-weight: 600;
+    margin-right: 10px;
+  }
+} 
+
+.my__message__title{
+  h3{
+    width: 100%;
+    font-size: 0.8rem;
+    text-align: right;
+  }
 }
 
-.message__body{
+
+.message__body, .my__message__body{
   p{
     background: var(--background-light);
     border-radius: 24px;
@@ -390,7 +416,7 @@ footer{
     }
   }
 
-  .message__body{
+  .message__body, .my__message__body{
     p{
       width: 40vw;
     }
