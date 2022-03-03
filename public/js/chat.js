@@ -115,7 +115,7 @@ jQuery('#message-form').on('submit', function (e) {
     text = text.substring(0, 1000);
   }
   //replace all newline with socket.io newline
-  text = text.replaceAll(/\n/g, '¶');
+  text = text.replace(/\n/g, '¶');
 
   socket.emit('createMessage', {
     text: text

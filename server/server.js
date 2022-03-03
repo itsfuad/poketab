@@ -39,15 +39,23 @@ io.on('connection', (socket) => {
 
     if (user && isRealString(message.text)) {
       text = message.text;
-      text = text.replaceAll('fuck', 'f**k');
-      text = text.replaceAll('shit', 's**t');
-      text = text.replaceAll('bitch', 'b***h');
-      text = text.replaceAll('sex', 's*x');
-    
-      text = text.replaceAll('Fuck', 'F**k');
-      text = text.replaceAll('Shit', 'S**t');
-      text = text.replaceAll('Bitch', 'B***h');
-      text = text.replaceAll('Sex', 'S*x');
+      text = text.replace(/fuck/g, 'f**k');
+      text = text.replace(/shit/g, 's**t');
+      text = text.replace(/bitch/g, 'b**t');
+      text = text.replace(/asshole/g, 'a**hole');
+      text = text.replace(/dick/g, 'd**k');
+      text = text.replace(/pussy/g, 'p**s');
+      text = text.replace(/cock/g, 'c**k');
+      text = text.replace(/baal/g, 'b**l');
+
+      text = text.replace(/Fuck/g, 'F**k');
+      text = text.replace(/Shit/g, 'S**t');
+      text = text.replace(/Bitch/g, 'B**t');
+      text = text.replace(/Asshole/g, 'A**hole');
+      text = text.replace(/Dick/g, 'D**k');
+      text = text.replace(/Pussy/g, 'P**s');
+      text = text.replace(/Cock/g, 'C**k');
+      text = text.replace(/Baal/g, 'B**l');
 
       //io.to(user.room).emit('newMessage', generateMessage(user.name, text));
       socket.emit('my__message', generateMessage(user.name, text));
