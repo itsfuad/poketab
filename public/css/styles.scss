@@ -262,7 +262,7 @@ textarea:focus, input:focus{
     border-radius: 24px;
     padding: 12px;
     font-size: 0.8rem;
-    width: 100%;
+    width: 60vw;
     max-width: max-content;
     overflow-wrap: break-word;
   }
@@ -385,8 +385,14 @@ footer{
     background: var(--background);
     width: 30vw;
     .chat__sidebar{
-      width: 100%;
+      width: 25vw;
       outline: 2px solid var(--background-light);
+    }
+  }
+
+  .message__body{
+    p{
+      width: 40vw;
     }
   }
   .topbar{
