@@ -299,6 +299,10 @@ textarea:focus, input:focus{
   text-align: center;
 }
 
+.server__message__body{
+  padding-bottom: 10px;
+}
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 *::-webkit-scrollbar {
   display: none;
