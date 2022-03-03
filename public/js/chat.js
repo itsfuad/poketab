@@ -58,6 +58,7 @@ socket.on('newMessage', function (message) {
     createdAt: formattedTime
   });
   pop.play();
+  html = html.replaceAll('¶', '<br>');
   jQuery('#messages').append(html);
   scrollToBottom();
 });
@@ -84,7 +85,7 @@ jQuery('#message-form').on('submit', function (e) {
     text = text.substring(0, 1000);
   }
   //replace all newline with socket.io newline
-  //text = text.replaceAll(/\n/g, '');
+  text = text.replaceAll(/\n/g, '¶');
   socket.emit('createMessage', {
     text: text
   }, function () {
@@ -132,19 +133,17 @@ $("textarea").each(function () {
   this.style.height = (this.scrollHeight) + "px";
 });
 
+/*
 $("textarea").on("keypress", function(e) {
   if (e.keyCode === 13) {
     $(".send").click();
   }
 });
+*/
 
 const appHeight = () => {
   const doc = document.documentElement
   doc.style.setProperty('--app-height', `${window.innerHeight}px`)
 }
-window.addEventListener('resize', appHeight)
-appHeight()
-
-
-
-
+window.addEventListener('resize', appHeight);
+appHeight();
