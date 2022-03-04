@@ -34,6 +34,10 @@ body {
   background-size: contain;
   color: var(--foreground);
   height: var(--app-height);
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 h1:before {
@@ -173,7 +177,7 @@ button:disabled {
   overflow-y: scroll;
   width: 260px;
   height: var(--app-height);
-  outline: 2px solid var(--background-light);
+  border-right: 2px solid var(--background-light);
 }
 
 .chat__sidebar li {
@@ -238,7 +242,6 @@ textarea:focus, input:focus {
 }
 
 .chat__footer form {
-  border-top: 2px solid var(--background-light);
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
@@ -329,7 +332,7 @@ textarea:focus, input:focus {
   width: 100%;
   font-size: 0.7rem;
   text-align: right;
-  padding-right: 10px;
+  padding-right: 5px;
 }
 
 .location__message__title {
@@ -433,7 +436,7 @@ footer {
 
 .menuwrapper .chat__sidebar {
   width: 100%;
-  outline: none;
+  border: none;
 }
 
 .menuwrapper.active {
@@ -526,7 +529,7 @@ footer {
   }
   .menuwrapper2 .chat__sidebar {
     width: 25vw;
-    outline: 2px solid var(--background-light);
+    border-right: 2px solid var(--background-light);
   }
   .message__body p, .my__message__body p {
     width: 40vw;

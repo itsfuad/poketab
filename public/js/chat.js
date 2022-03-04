@@ -45,6 +45,8 @@ socket.on('connect', function () {
       console.log('No error');
     }
   });
+  document.getElementById('main-screen').style.visibility = 'visible';
+  document.getElementById('preloader').style.visibility = 'hidden';
 });
 
 socket.on('disconnect', function () {
@@ -136,7 +138,9 @@ jQuery('#message-form').on('submit', function (e) {
   if (text.length > 10000) {
     text = text.substring(0, 10000);
   }
-  //replace all newline with socket.io newline
+  
+  
+
   if (text.replace(/\n/g,'').length < 1){
     return;
   }
@@ -157,16 +161,16 @@ locationButton.on('click', function () {
     return alert('Geolocation not supported by your browser.');
   }
 
-  locationButton.attr('disabled', 'disabled').html(`<img id="sendlocation" height='25px' width="25px" src="./icons8-gps-48.png" alt="" srcset="">`);
+  locationButton.attr('disabled', 'disabled').html(`<img id="sendlocation" height='25px' width="25px" src="./images/icons8-gps-48.png" alt="" srcset="">`);
 
   navigator.geolocation.getCurrentPosition(function (position) {
-    locationButton.removeAttr('disabled').html(`<img id="sendlocation" height='25px' width="25px" src="./icons8-gps-48.png" alt="" srcset="">`);
+    locationButton.removeAttr('disabled').html(`<img id="sendlocation" height='25px' width="25px" src="./images/icons8-gps-48.png" alt="" srcset="">`);
     socket.emit('createLocationMessage', {
       latitude: position.coords.latitude,
       longitude: position.coords.longitude
     });
   }, function () {
-    locationButton.removeAttr('disabled').html(`<img id="sendlocation" height='25px' width="25px" src="./icons8-gps-48.png" alt="" srcset="">`);
+    locationButton.removeAttr('disabled').html(`<img id="sendlocation" height='25px' width="25px" src="./images/icons8-gps-48.png" alt="" srcset="">`);
     alert('Unable to fetch location.');
   });
 });

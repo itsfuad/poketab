@@ -30,6 +30,7 @@ body {
   background-size: contain;
   color: var(--foreground);
   height: var(--app-height);
+  user-select: none;
 }
 
 
@@ -162,7 +163,7 @@ button:disabled {
   width: 260px;
   height: var(--app-height);
   //background:  linear-gradient( -212deg, rgb(189, 218, 230), rgb(0, 102, 255));
-  outline: 2px solid var(--background-light);
+  border-right: 2px solid var(--background-light);
 
 }
 
@@ -214,7 +215,7 @@ textarea:focus, input:focus{
 }
 
 .chat__footer form {
-  border-top: 2px solid var(--background-light);
+  //border-top: 2px solid var(--background-light);
   flex-grow: 1;
   display: flex;
   align-items: center;
@@ -286,7 +287,7 @@ textarea:focus, input:focus{
     width: 100%;
     font-size: 0.7rem;
     text-align: right;
-    padding-right: 10px;
+    padding-right: 5px;
   }
 }
 
@@ -374,7 +375,7 @@ footer{
 
   .chat__sidebar{
     width: 100%;
-    outline: none;
+    border: none;
   }
   &.active{
     left: 0;
@@ -456,7 +457,7 @@ footer{
     width: 30vw;
     .chat__sidebar{
       width: 25vw;
-      outline: 2px solid var(--background-light);
+      border-right: 2px solid var(--background-light);
     }
   }
 
