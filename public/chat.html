@@ -33,19 +33,21 @@
     </div>
     <div class="menuwrapper">
       <div class="chat__sidebar">
-        <h3>People</h3>
+        <h3>People on <span class="roomname1"></span></h3>
         <div class="users"></div>
       </div>
     </div>
     <div class="chat">
       <div class="menuwrapper2">
         <div class="chat__sidebar">
-          <h3>People</h3>
+          <h3>People on <span class="roomname2"></span></h3>
           <div class="users"></div>
         </div>
       </div>
+      
       <div class="chat__main">
         <ol id="messages" class="chat__messages"></ol>
+        <div id="typingindicator"></div>
         <div class="chat__footer">
           <form id="message-form">
             <!--input name="message" type="text" placeholder="Message" autofocus autocomplete="off" /-->
@@ -108,11 +110,7 @@
       </script>
   
       <script id="is-typing-template" type="text/template">
-        <li class="is-typing">
-          <div class="is-typing__body">
-            <p>{{from}} is typing...</p>
-          </div>
-        </li>
+            {{users}} is typing...
       </script>
   
     </div>

@@ -164,13 +164,18 @@ button:disabled {
   height: var(--app-height);
   //background:  linear-gradient( -212deg, rgb(189, 218, 230), rgb(0, 102, 255));
   border-right: 2px solid var(--background-light);
-
+  ol{
+    list-style-type: none;
+  }
 }
 
 .chat__sidebar li {
   background: var(--background-light);
-  padding: 10px;
+  padding: 7px 0 5px 16px;
   color: white;
+  font-size: 0.7rem;
+  border-radius: 5px;
+  margin: 5px;
 }
 
 .chat__sidebar h3 {
@@ -178,11 +183,8 @@ button:disabled {
   margin: 10px 20px;
   text-align: left;
   color: var(--blue);
-}
-
-.chat__sidebar li {
-  border-radius: 5px;
-  margin: 10px;
+  font-size: 0.9rem;
+  text-align: center;
 }
 
 .chat__main {
@@ -252,6 +254,11 @@ textarea:focus, input:focus{
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+#typingindicator{
+  padding: 0 0 0 15px;
+  font-size: 0.7rem;
 }
 
 .message, .my__message{
@@ -358,6 +365,8 @@ footer{
 
 .menu{
   display: block;
+  color: limegreen;
+  font-size: 0.9rem;
   &:hover{
     cursor: pointer;
   }
@@ -399,7 +408,6 @@ footer{
   height: var(--topbarsize);
   width: 100%;
   background: #26313d;
-  color: #2fff80;
   z-index: 10;
   padding: 10px;
 }
@@ -445,6 +453,9 @@ footer{
     padding-top: 0;
   }
   .menu{
+    display: none;
+  }
+  .roomname{
     display: none;
   }
   .menuwrapper{

@@ -53,13 +53,14 @@ socket.on('disconnect', function () {
   console.log('Disconnected from server');
 });
 
-socket.on('updateUserList', function (users) {
+socket.on('updateUserList', function (user, room) {
   let ol = jQuery('<ol></ol>');
-
-  users.forEach(function (user) {
+  user.forEach(function (user) {
     ol.append(jQuery('<li></li>').text(user));
   });
-  jQuery('.menu').text(`Online: ${users.length}`);
+  jQuery('.menu').text(`Online: ${user.length}`);
+  jQuery('.roomname1').text(`${room}`);
+  jQuery('.roomname2').text(`${room}`);
   jQuery('.users').html(ol);
 });
 
