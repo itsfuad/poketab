@@ -344,6 +344,22 @@ textarea:focus, input:focus {
   padding-right: 5px;
 }
 
+.location__message {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
 .location__message__title {
   padding-left: 10px;
   display: -webkit-box;
@@ -455,11 +471,13 @@ footer {
 }
 
 .time {
-  width: 100%;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
   font-size: 0.6rem;
   text-align: center;
   color: gray;
-  padding-top: 10px;
+  padding: 0px 10px 0px 10px;
 }
 
 .topbar {

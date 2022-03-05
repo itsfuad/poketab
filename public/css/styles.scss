@@ -298,6 +298,13 @@ textarea:focus, input:focus{
   }
 }
 
+.location__message{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .location__message__title{
   padding-left: 10px;
   display: flex;
@@ -392,12 +399,11 @@ footer{
 }
 
 .time{
-  width: 100%;
+  width: max-content;
   font-size: 0.6rem;
   text-align: center;
   color: gray;
-  padding-top: 10px;
-
+  padding: 0px 10px 0px 10px;
 }
 
 .topbar{
