@@ -294,11 +294,6 @@ textarea:focus, input:focus {
           justify-content: center;
 }
 
-#typingindicator {
-  padding: 0 0 0 15px;
-  font-size: 0.7rem;
-}
-
 .message, .my__message {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -522,6 +517,8 @@ footer {
 #typingindicator {
   list-style-type: none;
   color: var(--blue);
+  margin: 5px;
+  font-size: 0.7rem;
 }
 
 #sendlocation {
