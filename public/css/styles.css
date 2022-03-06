@@ -516,9 +516,9 @@ footer {
 
 #typingindicator {
   list-style-type: none;
-  color: var(--blue);
-  margin: 5px;
+  color: grey;
   font-size: 0.7rem;
+  padding: 0 0 0 15px;
 }
 
 #sendlocation {

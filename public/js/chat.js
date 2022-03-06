@@ -144,10 +144,12 @@ socket.on('newLocationMessage', function (message) {
 socket.on('typing', (user) => {
   let li = jQuery('<li></li>').text(user + ' is typing...');
   jQuery('#typingindicator').append(li);
+  updateScroll();
 });
 
 socket.on('stoptyping', () => {
   jQuery('#typingindicator').html('');
+  updateScroll();
 });
 
 jQuery('#message-form').on('submit', function (e) {
