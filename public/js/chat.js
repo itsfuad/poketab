@@ -141,6 +141,15 @@ socket.on('newLocationMessage', function (message) {
   updateScroll();
 });
 
+socket.on('typing', (user) => {
+  let li = jQuery('<li></li>').text(user + ' is typing...');
+  jQuery('#typingindicator').append(li);
+});
+
+socket.on('stoptyping', () => {
+  jQuery('#typingindicator').html('');
+});
+
 jQuery('#message-form').on('submit', function (e) {
   e.preventDefault();
   let messageTextbox = jQuery('[name=message]');
@@ -186,6 +195,27 @@ locationButton.on('click', function () {
     alert('Unable to fetch location.');
   });
 });
+
+
+//typing indicator
+let typing = false;
+let timeout = undefined;
+$('#textbox').on('keydown', function () {
+  if (timeout) {
+    clearTimeout(timeout);
+    timeout = undefined;
+  }
+  if (!typing) {
+    typing = true;
+    socket.emit('typing');
+  }
+  timeout = setTimeout(function () {
+    typing = false;
+    socket.emit('stoptyping');
+  }, 1000);
+});
+
+
 
 
 jQuery('.menu').on('click', function () {

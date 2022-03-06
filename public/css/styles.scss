@@ -441,6 +441,10 @@ footer{
   display: none;
 }
 
+#typingindicator{
+  list-style-type: none;
+  color: var(--blue);
+}
 
 #sendlocation{
   filter: invert(1);

@@ -519,6 +519,11 @@ footer {
   display: none;
 }
 
+#typingindicator {
+  list-style-type: none;
+  color: var(--blue);
+}
+
 #sendlocation {
   -webkit-filter: invert(1);
           filter: invert(1);

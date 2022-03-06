@@ -9,10 +9,10 @@ const {Users} = require('./utils/users');
 
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
-var app = express();
-var server = http.createServer(app);
-var io = socketIO(server);
-var users = new Users();
+let app = express();
+let server = http.createServer(app);
+let io = socketIO(server);
+let users = new Users();
 
 app.use(express.static(publicPath));
 
@@ -47,8 +47,8 @@ io.on('connection', (socket) => {
       return callback('Name and room name are required.');
     }
     //check if username already exists in room
-    var userList = users.getUserList(params.room);
-    var user = userList.includes(params.name);
+    let userList = users.getUserList(params.room);
+    let user = userList.includes(params.name);
     //console.log(users.getUserList(params.room));
     //console.log(userList.includes(params.name));
     if (user) {
@@ -68,7 +68,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('createMessage', (message, callback) => {
-    var user = users.getUser(socket.id);
+    let user = users.getUser(socket.id);
 
     if (user && isRealString(message.text)) {
       text = censorBadWords(message.text);
@@ -80,7 +80,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('createLocationMessage', (coords) => {
-    var user = users.getUser(socket.id);
+    let user = users.getUser(socket.id);
 
     if (user) {
       io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, coords.latitude, coords.longitude));  
@@ -88,7 +88,7 @@ io.on('connection', (socket) => {
   });
   
   socket.on('disconnect', () => {
-    var user = users.removeUser(socket.id);
+    let user = users.removeUser(socket.id);
 
     if (user) {
       io.to(user.room).emit('updateUserList', users.getUserList(user.room));
@@ -96,7 +96,22 @@ io.on('connection', (socket) => {
       //console.log(getActiveRooms(io));
     }
   });
+
+  socket.on('typing', () => {
+    let user = users.getUser(socket.id);
+    if (user) {
+      socket.broadcast.emit('typing', user.name);
+    }
+  });
+  socket.on('stoptyping', () => {
+    let user = users.getUser(socket.id);
+    if (user) {
+      socket.broadcast.emit('stoptyping', user.name);
+    }
+  });
 });
+
+
 
 server.listen(port, () => {
   console.log(`Server is up on ${port}`);
