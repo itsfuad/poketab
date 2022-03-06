@@ -333,6 +333,10 @@ textarea:focus, input:focus {
   width: 100%;
 }
 
+.title {
+  margin-top: 5px !important;
+}
+
 .message__title h4 {
   margin-right: 10px;
 }
