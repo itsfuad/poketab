@@ -3,6 +3,7 @@ let socket = io();
 let pop = new Audio('./../sounds/pop.wav');
 let juntos = new Audio('./../sounds/juntos.wav');
 let elegant = new Audio('./../sounds/elegant.wav');
+let typing_sound = new Audio('./../sounds/typing.wav');
 
 const appHeight = () => {
   const doc = document.documentElement
@@ -145,6 +146,7 @@ socket.on('typing', (user) => {
   let li = jQuery('<li></li>').text(user + ' is typing...');
   jQuery('#typingindicator').append(li);
   updateScroll();
+  typing_sound.play();
 });
 
 socket.on('stoptyping', () => {
