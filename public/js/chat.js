@@ -77,7 +77,7 @@ socket.on('newMessage', function (message) {
   //pop.play();
   html = html.replace(/¶/g ,'<br>');
   jQuery('#messages').append(html);
-  console.log(emo_test(message.text));
+  //console.log(emo_test(message.text));
   if (emo_test(message.text))
   {
     $( "#messages li:last div p" ).css({"background": "none", "font-size": "30px", "padding": "0px"});
@@ -99,14 +99,13 @@ socket.on('my__message', function (message) {
   //html = linkify(html);
   //console.log(html);
   jQuery('#messages').append(html);
-  console.log(emo_test(message.text));
+  //console.log(emo_test(message.text));
   if (emo_test(message.text))
   {
     $( "#messages li:last div p" ).css({"background": "none", "font-size": "30px", "padding": "0px"});
   }
   updateScroll();
 });
-
 
 
 socket.on('server_message', function(message){
