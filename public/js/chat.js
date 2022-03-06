@@ -45,8 +45,10 @@ socket.on('connect', function () {
       console.log('No error');
     }
   });
-  document.getElementById('main-screen').style.visibility = 'visible';
-  document.getElementById('preloader').style.visibility = 'hidden';
+  //document.getElementById('main-screen').style.visibility = 'visible';
+  //document.getElementById('preloader').style.visibility = 'hidden';
+  $('#main-screen').css('visibility', 'visible');
+  $('#preloader').css('visibility', 'hidden');
 });
 
 socket.on('disconnect', function () {
@@ -80,7 +82,7 @@ socket.on('newMessage', function (message) {
   //console.log(emo_test(message.text));
   if (emo_test(message.text))
   {
-    $( "#messages li:last div p" ).css({"background": "none", "font-size": "30px", "padding": "0px"});
+    $("#messages li:last div p").css({"background": "none", "font-size": "30px", "padding": "0px"});
   }
   updateScroll();
 });
@@ -102,7 +104,7 @@ socket.on('my__message', function (message) {
   //console.log(emo_test(message.text));
   if (emo_test(message.text))
   {
-    $( "#messages li:last div p" ).css({"background": "none", "font-size": "30px", "padding": "0px"});
+    $("#messages li:last div p").css({"background": "none", "font-size": "30px", "padding": "0px"});
   }
   updateScroll();
 });
@@ -148,10 +150,9 @@ jQuery('#message-form').on('submit', function (e) {
   if (text.length > 10000) {
     text = text.substring(0, 10000);
   }
-  
-  
-
-  if (text.replace(/\n/g,'').length < 1){
+  console.log(`Length: ${text.replace(/\n/g,'').replace(/ /g,'').length}`);
+  if (text.replace(/\n/g,'').replace(/ /g,'').length == 0){
+    $('#textbox').css('height', 'auto');
     return;
   }
   text = text.replace(/\n/g, '¶');
@@ -161,7 +162,8 @@ jQuery('#message-form').on('submit', function (e) {
   }, function () {
     //console.log(text);
     //document.getElementById('textbox').style.background = '#f0f';
-    document.getElementById('textbox').style.height = '52px';
+    //document.getElementById('textbox').style.height = '52px';
+    $('#textbox').css('height', 'auto');
   });
 });
 
