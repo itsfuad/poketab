@@ -91,7 +91,7 @@ io.on('connection', (socket) => {
     let user = users.removeUser(socket.id);
     if (user) {
       io.to(user.room).emit('updateUserList', users.getUserList(user.room), user.room);
-      io.to(user.room).emit('server_message', generateMessage(user.name, `${user.name} left the chat.🙃`));
+      io.to(user.room).emit('server_message', generateMessage(user.name, `${user.name} left the chat.🐸`));
       //console.log(getActiveRooms(io));
     }
   });

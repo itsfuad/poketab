@@ -126,9 +126,20 @@ socket.on('server_message', function(message){
     from: message.from,
     createdAt: formattedTime
   });
-  html = html.replace(/<p>Welcome/g, `<p style='color: var(--blue);'>Welcome to the chat room!`);
-  html = html.replace(/<p>[a-z]+ joined/i, `<p style='color: limegreen;'>${message.from} joined`);
-  html = html.replace(/<p>[a-z]+ left/i, `<p style='color: orangered;'>${message.from} left`);
+ // html = html.replace(/<p>Welcome/g, `<p style='color: var(--blue);'>Welcome to the chat room!`);
+ // html = html.replace(/<p>[a-z]+ joined/i, `<p style='color: limegreen;'>${message.from} joined`);
+ // html = html.replace(/<p>[a-z]+ left/i, `<p style='color: orangered;'>${message.from} left`);
+  
+  //change html color if html contains 'joined'
+  if (message.text.includes('joined')){
+    html = html.replace(/<p>/g, `<p style='color: limegreen;'>`);
+  }
+  if (message.text.includes('left')){
+    html = html.replace(/<p>/g, `<p style='color: orangered;'>`);
+  }
+  else{
+    html = html.replace(/<p>/g, `<p style='color: var(--blue);'>`);
+  }
   
   jQuery('#messages').append(html);
   //console.log(html);
