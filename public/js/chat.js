@@ -180,7 +180,7 @@ jQuery('#message-form').on('submit', function (e) {
   if (text.length > 10000) {
     text = text.substring(0, 10000);
   }
-  console.log(`Length: ${text.replace(/\n/g,'').replace(/ /g,'').length}`);
+  //console.log(`Length: ${text.replace(/\n/g,'').replace(/ /g,'').length}`);
   if (text.replace(/\n/g,'').replace(/ /g,'').length == 0){
     $('#textbox').css('height', 'auto');
     return;
