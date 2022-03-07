@@ -48,7 +48,13 @@ a{
   font-size: 0.7rem;
 }
 
-
+#error-callback{
+  font-size: 0.7rem;
+  color: orangered;
+  width: 100%;
+  word-wrap: break-word;
+  padding-top: 10px;
+}
 
 h3 {
   margin: 0px 90px 0px 0px;
@@ -365,6 +371,7 @@ footer{
   position: absolute;
   bottom: 10px;
   text-align: justify;
+  font-size: 0.7rem;
 }
 
 

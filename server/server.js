@@ -44,7 +44,7 @@ io.on('connection', (socket) => {
   
   socket.on('join', (params, callback) => {
     if (!isRealString(params.name) || !isRealString(params.room)) {
-      return callback('Name and room name are required.');
+      return callback('empty');
     }
     //check if username already exists in room
     let userList = users.getUserList(params.room);
@@ -52,7 +52,7 @@ io.on('connection', (socket) => {
     //console.log(users.getUserList(params.room));
     //console.log(userList.includes(params.name));
     if (user) {
-      return callback('Name already exists in room.');
+      return callback('exists');
     }
 
     console.log('New user connected');

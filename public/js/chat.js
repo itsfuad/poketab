@@ -40,8 +40,14 @@ socket.on('connect', function () {
   elegant.play();
   socket.emit('join', params, function (err) {
     if (err) {
-      alert(err);
-      window.location.href = '/';
+      //alert(err);
+      if (err == 'empty') {
+        window.location.href = '/?NR_0';
+      }
+      else if (err = 'exists'){
+        window.location.href = '/?UE_1';
+      }
+
     } else {
       console.log('No error');
     }
