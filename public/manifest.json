@@ -1,6 +1,6 @@
 {
-    "name": "ChatMate",
-    "short_name": "ChatMate",
+    "name": "PokeTab Messenger",
+    "short_name": "PokeTab",
     "start_url": "./",
     "display": "standalone",
     "background_color": "#111d2a",
