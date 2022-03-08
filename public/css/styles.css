@@ -555,7 +555,7 @@ textarea:focus, input:focus {
 }
 
 .info:hover::after {
-  content: 'PokeDesk \A Version: 3.0.2 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: https:flaticon.com';
+  content: 'PokeTab Messanger \A Version: 3.0.2 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: https:flaticon.com';
   position: absolute;
   bottom: 0;
   right: 0;
