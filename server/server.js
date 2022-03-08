@@ -56,7 +56,7 @@ io.on('connection', (socket) => {
     let avatar = params.avatar;
     //console.log(users.getUserList(params.room));
     //console.log(userList.includes(params.name));
-    console.log(params);
+   // console.log(params);
     if (user) {
       return callback('exists');
     }
@@ -67,7 +67,7 @@ io.on('connection', (socket) => {
     socket.join(params.room);
     users.removeUser(socket.id);
     users.addUser(socket.id, params.name, params.room, avatar);
-    io.to(params.room).emit('updateUserList', users.getUserList(params.room), params.room);
+    io.to(params.room).emit('updateUserList', users.getUserList(params.room), params.room, users.getAvatarList(params.room));
     socket.emit('server_message', generateMessage('', `You joined the chat.🔥`));
     socket.broadcast.to(params.room).emit('server_message', generateMessage(params.name, `${params.name} joined the chat.🔥`));
     callback();
@@ -77,9 +77,9 @@ io.on('connection', (socket) => {
     let user = users.getUser(socket.id);
     if (user && isRealString(message.text)) {
       text = censorBadWords(message.text);
-      console.log(user);
+      //console.log(user);
       //io.to(user.room).emit('newMessage', generateMessage(user.name, text));
-      console.log(user.avatar);
+      //console.log(user.avatar);
       socket.emit('my__message', generateMessage(user.name, text), user.avatar);
       socket.broadcast.to(user.room).emit('newMessage', generateMessage(user.name, text), user.avatar);
     }
@@ -97,7 +97,7 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     let user = users.removeUser(socket.id);
     if (user) {
-      io.to(user.room).emit('updateUserList', users.getUserList(user.room), user.room);
+      io.to(user.room).emit('updateUserList', users.getUserList(user.room), user.room, users.getAvatarList(user.room));
       io.to(user.room).emit('server_message', generateMessage(user.name, `${user.name} left the chat.🐸`));
       //console.log(getActiveRooms(io));
     }

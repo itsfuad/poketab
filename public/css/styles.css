@@ -89,6 +89,25 @@ button:hover {
   list-style-type: none;
 }
 
+.chat__messages li,
+.chat__sidebar ul li {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  font-size: 1rem;
+  font-weight: 900;
+}
+
 * {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -283,12 +302,14 @@ input[type="radio"]:checked + label img {
   list-style-type: none;
 }
 
+.users {
+  overflow: scroll;
+}
+
 .chat__sidebar li {
-  background: var(--background-light);
-  padding: 7px 0 5px 16px;
+  padding: 7px 0 5px 0;
   color: white;
   font-size: 0.7rem;
-  border-radius: 5px;
   margin: 5px;
 }
 

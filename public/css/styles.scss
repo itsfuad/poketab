@@ -80,6 +80,14 @@ button:hover {
 .chat__messages,
 .chat__sidebar ul {
   list-style-type: none;
+  li{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-end;
+    font-size: 1rem;
+    font-weight: 900;
+  }
 }
 
 * {
@@ -231,12 +239,16 @@ input[type="radio"] {
   }
 }
 
+.users{
+  overflow: scroll;
+}
+
 .chat__sidebar li {
-  background: var(--background-light);
-  padding: 7px 0 5px 16px;
+  //background: var(--background-light);
+  padding: 7px 0 5px 0;
   color: white;
   font-size: 0.7rem;
-  border-radius: 5px;
+  //border-radius: 5px;
   margin: 5px;
 }
 
