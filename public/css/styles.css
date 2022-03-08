@@ -564,6 +564,8 @@ textarea:focus, input:focus {
   -webkit-transform: translate(-5%, 120%);
           transform: translate(-5%, 120%);
   background: var(--background-light);
+  -webkit-backdrop-filter: blur(3px);
+          backdrop-filter: blur(3px);
   padding: 15px;
   border-radius: 5px;
   color: white;

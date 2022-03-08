@@ -463,6 +463,7 @@ transition: 300ms;
     right: 0;
     transform: translate(-5%, 120%);
     background: var(--background-light);
+    backdrop-filter: blur(3px);
     padding: 15px;
     border-radius: 5px;
     color: white;
