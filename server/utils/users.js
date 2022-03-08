@@ -33,8 +33,12 @@ class Users {
   getUserList (room) {
     var users = this.users.filter((user) => user.room === room);
     var namesArray = users.map((user) => user.name);
-
     return namesArray;
+  }
+  getAvatarList(room){
+    var users = this.users.filter((user) => user.room === room);
+    var avatarArray = users.map((user) => user.avatar);
+    return avatarArray;
   }
 }
 

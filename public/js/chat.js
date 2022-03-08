@@ -65,11 +65,13 @@ socket.on('disconnect', function () {
   console.log('Disconnected from server');
 });
 
-socket.on('updateUserList', function (user, room) {
-  let ol = jQuery('<ol></ol>');
-  user.forEach(function (user) {
-    ol.append(jQuery('<li></li>').text(user));
-  });
+socket.on('updateUserList', function (user, room, avatars) {
+  let ol = jQuery('<ul></ul>');
+
+  for (let i = 0; i < user.length; i++){
+    ol.append(jQuery('<li></li>').html(`<img height='30px' width='30px' src='images/avatars/${avatars[i]}.png'> ${user[i]}`));
+  }
+
   jQuery('.menu').text(`Online: ${user.length}`);
   jQuery('.roomname1').text(`${room}`);
   jQuery('.roomname2').text(`${room}`);
@@ -78,7 +80,7 @@ socket.on('updateUserList', function (user, room) {
 
 socket.on('newMessage', function (message, avatar) {
   elegant.play();
-  console.log(`Avatar: ${avatar}`);
+  //console.log(`Avatar: ${avatar}`);
   let formattedTime = moment(message.createdAt).format('h:mm a');
   let template = jQuery('#message-template').html();
   let html = Mustache.render(template, {
