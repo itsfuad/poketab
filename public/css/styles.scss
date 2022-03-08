@@ -81,6 +81,7 @@ button:hover {
   list-style-type: none;
   li{
     display: flex;
+<<<<<<< HEAD
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -91,12 +92,17 @@ button:hover {
   list-style-type: none;
   li{
     display: flex;
+=======
+>>>>>>> 0285e089152a73106530ba7d9abd85fbedaa25fa
     flex-direction: row;
     justify-content: flex-start;
     align-items: flex-end;
     font-size: 1rem;
     font-weight: 900;
+<<<<<<< HEAD
     gap: 5px;
+=======
+>>>>>>> 0285e089152a73106530ba7d9abd85fbedaa25fa
   }
 }
 
