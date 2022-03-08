@@ -84,12 +84,30 @@ button:hover {
   font-size: 0.8rem;
 }
 
-.chat__messages,
+.chat__messages ul {
+  list-style-type: none;
+}
+
+.chat__messages ul li {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
 .chat__sidebar ul {
   list-style-type: none;
 }
 
-.chat__messages li,
 .chat__sidebar ul li {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -106,6 +124,7 @@ button:hover {
           align-items: flex-end;
   font-size: 1rem;
   font-weight: 900;
+  gap: 5px;
 }
 
 * {
@@ -354,6 +373,7 @@ textarea:focus, input:focus {
       -ms-flex-align: end;
           align-items: end;
   scroll-behavior: smooth;
+  list-style-type: none;
 }
 
 .chat__footer {

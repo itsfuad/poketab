@@ -77,8 +77,17 @@ button:hover {
   font-size: 0.8rem;
 }
 
-.chat__messages,
-.chat__sidebar ul {
+.chat__messages ul {
+  list-style-type: none;
+  li{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.chat__sidebar ul{
   list-style-type: none;
   li{
     display: flex;
@@ -87,6 +96,7 @@ button:hover {
     align-items: flex-end;
     font-size: 1rem;
     font-weight: 900;
+    gap: 5px;
   }
 }
 
@@ -282,6 +292,7 @@ textarea:focus, input:focus{
   grid-template-rows: 1fr;
   align-items: end;
   scroll-behavior: smooth;
+  list-style-type: none;
 }
 
 .chat__footer {
