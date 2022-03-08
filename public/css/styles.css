@@ -108,10 +108,6 @@ button:hover {
   list-style-type: none;
 }
 
-<<<<<<< HEAD
-=======
-.chat__messages li,
->>>>>>> 0285e089152a73106530ba7d9abd85fbedaa25fa
 .chat__sidebar ul li {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -128,10 +124,7 @@ button:hover {
           align-items: flex-end;
   font-size: 1rem;
   font-weight: 900;
-<<<<<<< HEAD
   gap: 5px;
-=======
->>>>>>> 0285e089152a73106530ba7d9abd85fbedaa25fa
 }
 
 * {
