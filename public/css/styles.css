@@ -426,8 +426,6 @@ textarea:focus, input:focus {
   /* IE and Edge */
   scrollbar-width: none;
   /* Firefox */
-  -webkit-transition: 300ms;
-  transition: 300ms;
 }
 
 .menu {
