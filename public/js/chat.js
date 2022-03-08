@@ -44,10 +44,10 @@ socket.on('connect', function () {
       if (err == 'empty') {
         window.location.href = '/?NR_0';
       }
-      else if (err = 'exists'){
+      else if (err == 'exists'){
         window.location.href = '/?UE_1';
       }
-      else if (err = 'avatar'){
+      else if (err == 'avatar'){
         window.location.href = '/?NA_0';
       }
 
@@ -69,7 +69,7 @@ socket.on('updateUserList', function (user, room, avatars) {
   let ol = jQuery('<ul></ul>');
 
   for (let i = 0; i < user.length; i++){
-    ol.append(jQuery('<li></li>').html(`<img height='30px' width='30px' src='images/avatars/${avatars[i]}.png'> ${user[i]}`));
+    ol.append(jQuery('<li></li>').html(`<img height='30px' width='30px' src='images/avatars/${avatars[i]} (custom).png'> ${user[i]}`));
   }
 
   jQuery('.menu').text(`Online: ${user.length}`);
@@ -88,7 +88,7 @@ socket.on('newMessage', function (message, avatar) {
     from: message.from,
     createdAt: formattedTime,
     attr: "src",
-    attrVal: `images/avatars/${avatar}.png`
+    attrVal: `images/avatars/${avatar} (custom).png`
   });
   //pop.play();
   //$("#messages li:last div p")

@@ -47,7 +47,7 @@ io.on('connection', (socket) => {
     if (!isRealString(params.name) || !isRealString(params.room)) {
       return callback('empty');
     }
-    if(!params.avatar){
+    if(params.avatar === undefined){
       return callback('avatar');
     }
     //check if username already exists in room

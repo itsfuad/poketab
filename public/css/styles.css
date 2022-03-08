@@ -55,14 +55,6 @@ a {
   font-size: 0.7rem;
 }
 
-#error-callback {
-  font-size: 0.7rem;
-  color: orangered;
-  width: 100%;
-  word-wrap: break-word;
-  padding-top: 10px;
-}
-
 h3 {
   margin: 0px 90px 0px 0px;
   color: var(--blue);
@@ -162,142 +154,6 @@ button:hover {
 button:disabled {
   cursor: default;
   background: #698ea5;
-}
-
-#login-form {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  padding: 10px;
-  border-radius: 10px;
-  background: var(--background-light);
-  gap: 10px;
-}
-
-.centered-form {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  height: var(--app-height);
-  width: 100vw;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  background: var(--background);
-}
-
-.form-field {
-  margin: 20px 0;
-}
-
-.form-field > * {
-  width: 100%;
-}
-
-.form-field label {
-  display: block;
-  margin-bottom: 7px;
-}
-
-.form-field input,
-.form-field select {
-  border: 2px solid var(--blue);
-  padding: 10px;
-  background: transparent;
-  border-radius: 10px;
-  color: white;
-}
-
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-textarea:-webkit-autofill,
-textarea:-webkit-autofill:hover,
-textarea:-webkit-autofill:focus,
-select:-webkit-autofill,
-select:-webkit-autofill:hover,
-select:-webkit-autofill:focus {
-  border: 1px solid green;
-  -webkit-text-fill-color: green;
-  -webkit-box-shadow: 0 0 0px 1000px #000 inset;
-  -webkit-transition: background-color 5000s ease-in-out 0s;
-  transition: background-color 5000s ease-in-out 0s;
-}
-
-#join-title {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-align: end;
-      -ms-flex-align: end;
-          align-items: flex-end;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  gap: 5px;
-}
-
-.form2 {
-  border-bottom: 2px solid var(--background-light);
-  border-top: 2px solid var(--background-light);
-  padding: 5px 0 5px 0;
-}
-
-.avatars {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  height: 200px;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
-  overflow-y: scroll;
-}
-
-.avatars img {
-  width: 40px;
-  height: 40px;
-  -webkit-filter: saturate(0);
-          filter: saturate(0);
-}
-
-.avatars img:hover {
-  cursor: pointer;
-  -webkit-filter: saturate(100%);
-          filter: saturate(100%);
-}
-
-input[type="radio"] {
-  display: none;
-}
-
-input[type="radio"]:checked + label img {
-  -webkit-filter: saturate(100%);
-          filter: saturate(100%);
 }
 
 .chat {
@@ -574,13 +430,6 @@ textarea:focus, input:focus {
   transition: 300ms;
 }
 
-footer {
-  position: absolute;
-  bottom: 10px;
-  text-align: justify;
-  font-size: 0.7rem;
-}
-
 .menu {
   display: block;
   color: limegreen;
@@ -687,6 +536,48 @@ footer {
           align-items: center;
 }
 
+.info {
+  margin: 0;
+  padding: 5px;
+  height: 30px;
+  width: 30px;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 900;
+  color: grey;
+  border: 2px solid;
+  border-radius: 50%;
+  -webkit-transition: 300ms;
+  transition: 300ms;
+}
+
+.info:hover {
+  cursor: pointer;
+  color: white;
+}
+
+.info:hover::after {
+  content: 'PokeDesk \A Version: 3.0.2 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: https:flaticon.com';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  -webkit-transform: translate(-5%, 120%);
+          transform: translate(-5%, 120%);
+  background: var(--background-light);
+  padding: 15px;
+  border-radius: 5px;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 900;
+  z-index: 10;
+  opacity: 1;
+  text-align: left;
+  width: 150px;
+  -webkit-transition: 300ms;
+  transition: 300ms;
+  white-space: pre;
+}
+
 @media (orientation: landscape) and (min-device-aspect-ratio: 1 / 1) {
   .chat {
     padding-top: 0;
@@ -699,6 +590,12 @@ footer {
   }
   .menuwrapper {
     display: none;
+  }
+  .info {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px;
   }
   .menuwrapper2 {
     display: -webkit-box;

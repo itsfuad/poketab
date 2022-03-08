@@ -3,7 +3,7 @@ const error = document.getElementById('error-callback');
 const url = window.location.href;
 const error_code = url.substring(url.indexOf('?') + 1);
 
-console.log(error_code);
+//console.log(error_code);
 
 
 if (error_code == 'UE_1'){
@@ -31,4 +31,21 @@ if ('serviceWorker' in navigator){
         .then(reg => console.log("Service Worker Registered"))
         .catch(err => console.log(`Service Worker: Error ${err}`));
     });
+}
+
+function check(){
+    //alert("Sen?");
+    //check if any radio button is checked
+    var radios = document.getElementsByName('avatar');
+    var checked = false;
+    for (var i = 0; i < radios.length; i++) {
+        if (radios[i].checked) {
+            checked = true;
+            break;
+        }
+    }
+    if (!checked){
+        document.getElementById('error-callback').innerText = '*Select an avatar*';
+    }
+    return checked;    
 }
