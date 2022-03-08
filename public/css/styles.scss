@@ -117,6 +117,17 @@ button:disabled {
   background: #698ea5;
 }
 
+#login-form{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 10px;
+  background: var(--background-light);
+  gap: 10px;
+}
+
 .centered-form {
   display: flex;
   align-items: center;
@@ -124,15 +135,6 @@ button:disabled {
   width: 100vw;
   justify-content: center;
   background: var(--background);
-}
-
-.centered-form__form {
-  background: #26313d;
-  border-radius: 5px;
-  padding: 0 20px;
-  margin: 20px;
-  width: 230px;
-  z-index: 10;
 }
 
 .form-field {
@@ -155,6 +157,59 @@ button:disabled {
   background: transparent;
   border-radius: 10px;
   color: white;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  border: 1px solid green;
+  -webkit-text-fill-color: green;
+  -webkit-box-shadow: 0 0 0px 1000px #000 inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+#join-title{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 5px;
+}
+
+.form2{
+  border-bottom: 2px solid var(--background-light);
+  border-top: 2px solid var(--background-light);
+  padding: 5px 0 5px 0;
+}
+
+.avatars{
+  display: flex;
+  height: 200px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-y:scroll;
+  img{
+    width: 40px;
+    height: 40px;
+    filter: saturate(0);
+    &:hover{
+      cursor: pointer;
+      filter: saturate(100%);
+    }
+  }
+}
+input[type="radio"] {
+  display: none;
+  &:checked + label img{
+    filter: saturate(100%);
+  }
 }
 
 .chat {
@@ -201,7 +256,8 @@ button:disabled {
 }
 
 textarea:focus, input:focus{
-  outline: 2px solid var(--blue);
+  border: 2px solid var(--hoverblue);
+  outline: none;
 }
 
 .chat__messages {
@@ -256,7 +312,7 @@ textarea:focus, input:focus{
   height: 35px;
   border-radius: 50%;
   margin-right: 10px;
-  background: #698ea5;
+  //background: #698ea5;
   text-align: center;
   display: flex;
   align-items: center;
@@ -344,6 +400,7 @@ textarea:focus, input:focus{
 .my__message__body{
   p{
     background: var(--blue);
+    margin-bottom: 2px;
   }
 }
 
@@ -366,6 +423,7 @@ textarea:focus, input:focus{
 * {
 -ms-overflow-style: none;  /* IE and Edge */
 scrollbar-width: none;  /* Firefox */
+transition: 300ms;
 }
 
 footer{

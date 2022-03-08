@@ -43,14 +43,20 @@ function censorBadWords(text)
 io.on('connection', (socket) => {
   
   socket.on('join', (params, callback) => {
+    //console.log(params);
     if (!isRealString(params.name) || !isRealString(params.room)) {
       return callback('empty');
+    }
+    if(!params.avatar){
+      return callback('avatar');
     }
     //check if username already exists in room
     let userList = users.getUserList(params.room);
     let user = userList.includes(params.name);
+    let avatar = params.avatar;
     //console.log(users.getUserList(params.room));
     //console.log(userList.includes(params.name));
+    console.log(params);
     if (user) {
       return callback('exists');
     }
@@ -60,7 +66,7 @@ io.on('connection', (socket) => {
 
     socket.join(params.room);
     users.removeUser(socket.id);
-    users.addUser(socket.id, params.name, params.room);
+    users.addUser(socket.id, params.name, params.room, avatar);
     io.to(params.room).emit('updateUserList', users.getUserList(params.room), params.room);
     socket.emit('server_message', generateMessage('', `You joined the chat.🔥`));
     socket.broadcast.to(params.room).emit('server_message', generateMessage(params.name, `${params.name} joined the chat.🔥`));
@@ -69,12 +75,13 @@ io.on('connection', (socket) => {
 
   socket.on('createMessage', (message, callback) => {
     let user = users.getUser(socket.id);
-
     if (user && isRealString(message.text)) {
       text = censorBadWords(message.text);
+      console.log(user);
       //io.to(user.room).emit('newMessage', generateMessage(user.name, text));
-      socket.emit('my__message', generateMessage(user.name, text));
-      socket.broadcast.to(user.room).emit('newMessage', generateMessage(user.name, text));
+      console.log(user.avatar);
+      socket.emit('my__message', generateMessage(user.name, text), user.avatar);
+      socket.broadcast.to(user.room).emit('newMessage', generateMessage(user.name, text), user.avatar);
     }
     callback();
   });

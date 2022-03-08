@@ -44,26 +44,67 @@
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="icon" href="./images/chatmate-pikachu-512.png">
     <link rel="manifest" href="manifest.json" crossorigin="use-credentials">
-    <script src="./error.js" defer></script>
+    <script defer src="/js/libs/jquery-3.1.0.min.js"></script>
+    <script defer src="./index.js" defer></script>
 </head>
 
 <body class="centered-form">
     <div class="centered-form__form">
-        <form action="/chat.html">
-            <div class="form-field">
-                <h3>Join a Chat<h3>
-                <div id="error-callback"></div>
+        <form action="/chat.html" autocomplete="off" id="login-form">
+            <div class="form1">
+                <div class="form-field">
+                    
+                    <h3 id="join-title">Join a Chat<img src="./images/avatars/gaming.png" height="40px" width="40px" alt="" srcset=""><h3>
+                    <div id="error-callback"></div>
+                </div>
+                <div class="form-field">
+                    <label for="name">Display name</label>
+                    <input type="text" name="name" autofocus required />
+                </div>
+                <div class="form-field">
+                    <label for="room">Room name</label>
+                    <input type="text" name="room" required />
+                </div>
+                <div class="form-field">
+                    <button type="submit">Join</button>
+                </div>
             </div>
-            <div class="form-field">
-                <label for="name">Display name</label>
-                <input type="text" name="name" autofocus required />
-            </div>
-            <div class="form-field">
-                <label for="room">Room name</label>
-                <input type="text" name="room" required />
-            </div>
-            <div class="form-field">
-                <button>Join</button>
+            <div class="form2">
+                <div class="avatars">
+                    <!--load avatar images-->
+                    <input type="radio" required name="avatar" value="bellsprout" id="av1">
+                    <label for="av1"><img src="./images/avatars/bellsprout.png" alt="" srcset=""></label>
+                    <input type="radio" required name="avatar" value="bullbasaur" id="av2">
+                    <label for="av2"><img src="./images/avatars/bullbasaur.png" alt="" srcset=""></label>
+                    <input type="radio" required name="avatar" value="caterpie" id="av3">
+                    <label for="av3"><img src="./images/avatars/caterpie.png" alt="" srcset=""></label>
+                    <input type="radio" required name="avatar" value="charmander" id="av4">
+                    <label for="av4"><img src="./images/avatars/charmander.png" alt="" srcset=""></label>
+                    <input type="radio" required name="avatar" value="eevee" id="av5">
+                    <label for="av5"><img src="./images/avatars/eevee.png" alt="" srcset=""></label>
+                    <input type="radio" required name="avatar" value="jigglypuff" id="av6">
+                    <label for="av6"><img src="./images/avatars/jigglypuff.png" alt="" srcset=""></label>
+                    <input type="radio" required name="avatar" value="mankey" id="av7">
+                    <label for="av7"><img src="./images/avatars/mankey.png" alt="" srcset=""></label>
+                    <input type="radio" required name="avatar" value="meowth" id="av8">
+                    <label for="av8"><img src="./images/avatars/meowth.png" alt="" srcset=""></label>
+                    <input type="radio" required name="avatar" value="mew" id="av9">
+                    <label for="av9"><img src="./images/avatars/mew.png" alt="" srcset=""></label>
+                    <input type="radio" required name="avatar" value="pidgey" id="av10">
+                    <label for="av10"><img src="./images/avatars/pidgey.png" alt="" srcset=""></label>
+                    <input type="radio" required name="avatar" value="pikachu" id="av11">
+                    <label for="av11"><img src="./images/avatars/pikachu.png" alt="" srcset=""></label>
+                    <input type="radio" required name="avatar" value="psyduck" id="av12">
+                    <label for="av12"><img src="./images/avatars/psyduck.png" alt="" srcset=""></label>
+                    <input type="radio" required name="avatar" value="rattata" id="av13">
+                    <label for="av13"><img src="./images/avatars/rattata.png" alt="" srcset=""></label>
+                    <input type="radio" required name="avatar" value="snorlax" id="av14">
+                    <label for="av14"><img src="./images/avatars/snorlax.png" alt="" srcset=""></label>
+                    <input type="radio" required name="avatar" value="squirtle" id="av15">
+                    <label for="av15"><img src="./images/avatars/squirtle.png" alt="" srcset=""></label>
+                    <input type="radio" required required name="avatar" value="zubat" id="av16">
+                    <label for="av16"><img src="./images/avatars/zubat.png" alt="" srcset=""></label>
+                </div>
             </div>
         </form>
     </div>

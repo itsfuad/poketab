@@ -47,6 +47,9 @@ socket.on('connect', function () {
       else if (err = 'exists'){
         window.location.href = '/?UE_1';
       }
+      else if (err = 'avatar'){
+        window.location.href = '/?NA_0';
+      }
 
     } else {
       console.log('No error');
@@ -73,17 +76,20 @@ socket.on('updateUserList', function (user, room) {
   jQuery('.users').html(ol);
 });
 
-socket.on('newMessage', function (message) {
+socket.on('newMessage', function (message, avatar) {
   elegant.play();
+  console.log(`Avatar: ${avatar}`);
   let formattedTime = moment(message.createdAt).format('h:mm a');
   let template = jQuery('#message-template').html();
   let html = Mustache.render(template, {
     text: message.text,
     from: message.from,
     createdAt: formattedTime,
-    firstletter: message.from.charAt(0).toUpperCase()
+    attr: "src",
+    attrVal: `images/avatars/${avatar}.png`
   });
   //pop.play();
+  //$("#messages li:last div p")
   html = html.replace(/¶/g ,'<br>');
   jQuery('#messages').append(html);
   //console.log(emo_test(message.text));
@@ -91,6 +97,7 @@ socket.on('newMessage', function (message) {
   {
     $("#messages li:last div p").css({"background": "none", "font-size": "30px", "padding": "0px"});
   }
+
   updateScroll();
 });
 
