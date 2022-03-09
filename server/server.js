@@ -61,7 +61,7 @@ io.on('connection', (socket) => {
       return callback('exists');
     }
 
-    console.log('New user connected');
+    console.log(`New user ${params.name} connected on room ${params.room}`);
     //console.log(getActiveRooms(io));
 
     socket.join(params.room);
@@ -99,7 +99,7 @@ io.on('connection', (socket) => {
     if (user) {
       io.to(user.room).emit('updateUserList', users.getUserList(user.room), user.room, users.getAvatarList(user.room));
       io.to(user.room).emit('server_message', generateMessage(user.name, `${user.name} left the chat.🐸`));
-      //console.log(getActiveRooms(io));
+      console.log(`User ${user.name} disconnected from room ${user.room}`);
     }
   });
 

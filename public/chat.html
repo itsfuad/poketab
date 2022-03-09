@@ -137,6 +137,13 @@
   <script defer src="/js/libs/mustache.js"></script>
   <script defer src="/js/libs/deparam.js"></script>
   <script defer src="/js/chat.js"></script>
+  <script defer>
+    $(function(){
+      $('window').on('beforeunload', function(){
+        return '';
+      })
+    });
+  </script>
 </body>
 
 </html>
