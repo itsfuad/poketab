@@ -265,6 +265,10 @@ jQuery('#textbox').on('focus', function () {
   updateScroll();
 });
 
+window.addEventListener('resize', () => {
+  updateScroll();
+});
+
 
 jQuery('.send').on('focus', function(){
   //console.log('focused');
