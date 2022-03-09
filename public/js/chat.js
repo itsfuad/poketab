@@ -197,6 +197,8 @@ jQuery('#message-form').on('submit', function (e) {
     $('#textbox').css('height', 'auto');
     return;
   }
+  
+  text = text.trim();
   text = text.replace(/\n/g, '¶');
 
   socket.emit('createMessage', {

@@ -228,6 +228,7 @@ button:disabled {
           align-items: end;
   scroll-behavior: smooth;
   list-style-type: none;
+  gap: 2px;
 }
 
 #send-location:hover {
@@ -366,7 +367,6 @@ button:disabled {
 
 .my__message__body p {
   background: var(--blue);
-  margin-bottom: 2px;
 }
 
 .server__message {

@@ -193,6 +193,7 @@ button:disabled {
   align-items: end;
   scroll-behavior: smooth;
   list-style-type: none;
+  gap: 2px;
   //backdrop-filter: blur(2px);
 }
 
@@ -213,6 +214,8 @@ button:disabled {
   align-items: center;
   justify-content: center;
 }
+
+
 
 .message, .my__message{
   display: flex;
@@ -296,7 +299,6 @@ button:disabled {
 .my__message__body{
   p{
     background: var(--blue);
-    margin-bottom: 2px;
   }
 }
 
