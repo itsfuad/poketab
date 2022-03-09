@@ -35,7 +35,6 @@
   * {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
-  transition: 300ms;
   }
   
 html{
@@ -90,6 +89,7 @@ html{
     border-radius: 10px;
     background: var(--background-light);
     gap: 10px;
+    transition: 100ms;
   }
   
   .centered-form {
@@ -135,6 +135,7 @@ html{
     border: 2px solid var(--blue);
     -webkit-text-fill-color: white;
     -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+    box-shadow: 0 0 0px 1000px transparent inset;
     transition: background-color 5000s ease-in-out 0s;
   }
   
@@ -197,4 +198,13 @@ button:hover {
   textarea:focus, input:focus{
     border: 2px solid var(--hoverblue);
     outline: none;
+  }
+
+  img{
+    user-drag: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
   }

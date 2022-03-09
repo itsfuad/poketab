@@ -16,6 +16,7 @@
   --background-light: #ffffff17;
   --topbarsize: 50px;
   --app-height: 100vh;
+  --pattern-image: url("./../images/avatars/ball\(custom\).png");
 }
 
 html {
@@ -142,8 +143,8 @@ h3 {
 button {
   background: var(--blue);
   cursor: pointer;
-  -webkit-transition: background .3s ease;
-  transition: background .3s ease;
+  -webkit-transition: background 200ms ease;
+  transition: background 200ms ease;
   border-radius: 10px;
 }
 
@@ -163,7 +164,6 @@ button:disabled {
   width: 100%;
   height: 100%;
   height: var(--app-height);
-  padding-top: 50px;
 }
 
 .chat__sidebar {
@@ -206,11 +206,9 @@ button:disabled {
       -ms-flex-direction: column;
           flex-direction: column;
   width: 100%;
-}
-
-textarea:focus, input:focus {
-  border: 2px solid var(--hoverblue);
-  outline: none;
+  padding: 0 5%;
+  background: var(--background) var(--pattern-image) center;
+  background-attachment: fixed;
 }
 
 .chat__messages {
@@ -230,43 +228,6 @@ textarea:focus, input:focus {
           align-items: end;
   scroll-behavior: smooth;
   list-style-type: none;
-}
-
-.chat__footer {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-negative: 0;
-      flex-shrink: 0;
-  padding: 10px;
-  background: #111d2a;
-}
-
-.chat__footer form {
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  padding-top: 5px;
-}
-
-.chat__footer textarea {
-  border: none;
-  padding: 10px 40px 10px 40px;
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
-  background: var(--background-light);
-  border-radius: 24px;
-  color: white;
-  resize: none;
-  max-height: 20vh;
-  text-align: justify;
 }
 
 #send-location:hover {
@@ -399,6 +360,8 @@ textarea:focus, input:focus {
   max-width: max-content;
   overflow-wrap: break-word;
   text-align: justify;
+  -webkit-backdrop-filter: blur(2px);
+          backdrop-filter: blur(2px);
 }
 
 .my__message__body p {
@@ -446,8 +409,8 @@ textarea:focus, input:focus {
   -webkit-backdrop-filter: blur(10px);
           backdrop-filter: blur(10px);
   width: 60%;
-  -webkit-transition: 300ms;
-  transition: 300ms;
+  -webkit-transition: 200ms;
+  transition: 200ms;
   z-index: 11;
 }
 
@@ -478,23 +441,36 @@ textarea:focus, input:focus {
       -ms-flex-align: center;
           align-items: center;
   position: absolute;
+  height: var(--topbarsize);
+  width: 100%;
+  /* background: var(--background-light); */
+  z-index: 10;
+  margin: 10px 0;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.topbar .topbar-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
-  height: var(--topbarsize);
-  width: 100%;
-  background: #26313d;
-  z-index: 10;
   padding: 10px;
-}
-
-.location {
-  color: var(--blue);
-  font-weight: 900;
-  position: absolute;
-  bottom: 10px;
-  right: 65px;
-  padding: 10px;
+  border-radius: 50px;
+  background: var(--background-light);
+  width: 90%;
+  -webkit-backdrop-filter: blur(2px);
+          backdrop-filter: blur(2px);
 }
 
 .menuwrapper2 {
@@ -509,7 +485,7 @@ textarea:focus, input:focus {
   list-style-type: none;
   color: grey;
   font-size: 0.7rem;
-  padding: 0 0 0 15px;
+  padding: 0 0 5px 15px;
 }
 
 #sendlocation {
@@ -534,6 +510,58 @@ textarea:focus, input:focus {
           align-items: center;
 }
 
+.chat__footer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+}
+
+.chat__footer #message-form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+}
+
+.chat__footer #message-form #textbox {
+  max-height: 100px;
+  max-height: 100px;
+  border-radius: 25px;
+  padding: 5px 35px;
+  outline: 2px solid transparent;
+  resize: none;
+  background: var(--background-light);
+  border: none;
+  margin: 10px;
+  -webkit-transition: 200ms;
+  transition: 200ms;
+  color: white;
+  width: 100%;
+  -webkit-backdrop-filter: blur(2px);
+          backdrop-filter: blur(2px);
+}
+
+.chat__footer #message-form #textbox:focus {
+  outline: 2px solid var(--blue);
+}
+
 .info {
   margin: 0;
   padding: 5px;
@@ -545,8 +573,8 @@ textarea:focus, input:focus {
   color: grey;
   border: 2px solid;
   border-radius: 50%;
-  -webkit-transition: 300ms;
-  transition: 300ms;
+  -webkit-transition: 200ms;
+  transition: 200ms;
 }
 
 .info:hover {
@@ -573,9 +601,18 @@ textarea:focus, input:focus {
   opacity: 1;
   text-align: left;
   width: 150px;
-  -webkit-transition: 300ms;
-  transition: 300ms;
+  -webkit-transition: 200ms;
+  transition: 200ms;
   white-space: pre;
+}
+
+img {
+  user-drag: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 }
 
 @media (orientation: landscape) and (min-device-aspect-ratio: 1 / 1) {
@@ -585,7 +622,7 @@ textarea:focus, input:focus {
   .menu {
     display: none;
   }
-  .roomname {
+  .keyname {
     display: none;
   }
   .menuwrapper {
@@ -619,6 +656,9 @@ textarea:focus, input:focus {
     height: 0;
     margin: 0;
     padding: 0;
+  }
+  .chat__main {
+    padding: 0 10%;
   }
 }
 /*# sourceMappingURL=styles.css.map */

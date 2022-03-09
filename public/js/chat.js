@@ -65,16 +65,19 @@ socket.on('disconnect', function () {
   console.log('Disconnected from server');
 });
 
-socket.on('updateUserList', function (user, room, avatars) {
+socket.on('updateUserList', function (user, key, avatars) {
   let ol = jQuery('<ul></ul>');
 
   for (let i = 0; i < user.length; i++){
     ol.append(jQuery('<li></li>').html(`<img height='30px' width='30px' src='images/avatars/${avatars[i]}(custom).png'> ${user[i]}`));
   }
 
+  //$("body").get(0).style.setProperty('--pattern-image', `url("./../images/avatars/${avatars}\(custom\).png")`)
+  
+
   jQuery('.menu').text(`Online: ${user.length}`);
-  jQuery('.roomname1').text(`${room}`);
-  jQuery('.roomname2').text(`${room}`);
+  jQuery('.keyname1').text(`${key}`);
+  jQuery('.keyname2').text(`${key}`);
   jQuery('.users').html(ol);
 });
 
@@ -135,7 +138,7 @@ socket.on('server_message', function(message){
     from: message.from,
     createdAt: formattedTime
   });
- // html = html.replace(/<p>Welcome/g, `<p style='color: var(--blue);'>Welcome to the chat room!`);
+ // html = html.replace(/<p>Welcome/g, `<p style='color: var(--blue);'>Welcome to the chat key!`);
  // html = html.replace(/<p>[a-z]+ joined/i, `<p style='color: limegreen;'>${message.from} joined`);
  // html = html.replace(/<p>[a-z]+ left/i, `<p style='color: orangered;'>${message.from} left`);
   

@@ -10,7 +10,7 @@ if (error_code == 'UE_1'){
     error.innerText = '*Name Exists*';
 }
 else if (error_code == 'NR_0'){
-    error.innerText = '*Name and Room Name required*';
+    error.innerText = '*Name and Key required*';
 }
 else if (error_code == 'NA_0'){
     error.innerText = '*Select an avatar*';

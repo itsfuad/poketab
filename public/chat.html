@@ -61,19 +61,21 @@
   </div>
   <div id="main-screen" style="visibility: hidden;">
     <div class="topbar">
-      <div class="menu"></div>
-      <div class="info">?</div>
+      <div class="topbar-wrapper">
+        <div class="menu"></div>
+        <div class="info">?</div>
+      </div>
     </div>
     <div class="menuwrapper">
       <div class="chat__sidebar">
-        <h3>People on <span class="roomname1"></span></h3>
+        <h3>#<span class="keyname1"></span></h3>
         <div class="users"></div>
       </div>
     </div>
     <div class="chat">
       <div class="menuwrapper2">
         <div class="chat__sidebar">
-          <h3>People on <span class="roomname2"></span></h3>
+          <h3>#<span class="keyname2"></span></h3>
           <div class="users"></div>
         </div>
       </div>
@@ -84,9 +86,9 @@
         <div class="chat__footer">
           <form id="message-form">
             <!--input name="message" type="text" placeholder="Message" autofocus autocomplete="off" /-->
-            <textarea name="message" id="textbox" placeholder="Message"></textarea>
-            <button class="send"><img src="./images/icons8-send-32.png" alt="" srcset=""></button>
             <div class="location" id="send-location"><img id="sendlocation" height='25px' width="25px" src="./images/icons8-gps-48.png" alt="" srcset=""></div>
+            <textarea name="message" id="textbox" placeholder="Type..."></textarea>
+            <button class="send"><img src="./images/icons8-send-32.png" alt="" srcset=""></button>
           </form>
         </div>
       </div>

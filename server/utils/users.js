@@ -1,20 +1,20 @@
 [{
   id: '/#12poiajdspfoif',
   name: 'Uzair_Capazyte',
-  room: 'The Office Fans'
+  key: 'The Office Fans'
 }]
 
-// addUser(id, name, room)
+// addUser(id, name, key)
 // removeUser(id)
 // getUser(id)
-// getUserList(room)
+// getUserList(key)
 
 class Users {
   constructor () {
     this.users = [];
   }
-  addUser (id, name, room, avatar) {
-    var user = {id, name, room, avatar};
+  addUser (id, name, key, avatar) {
+    var user = {id, name, key, avatar};
     this.users.push(user);
     return user;
   }
@@ -30,13 +30,13 @@ class Users {
   getUser (id) {
     return this.users.filter((user) => user.id === id)[0]
   }
-  getUserList (room) {
-    var users = this.users.filter((user) => user.room === room);
+  getUserList (key) {
+    var users = this.users.filter((user) => user.key === key);
     var namesArray = users.map((user) => user.name);
     return namesArray;
   }
-  getAvatarList(room){
-    var users = this.users.filter((user) => user.room === room);
+  getAvatarList(key){
+    var users = this.users.filter((user) => user.key === key);
     var avatarArray = users.map((user) => user.avatar);
     return avatarArray;
   }

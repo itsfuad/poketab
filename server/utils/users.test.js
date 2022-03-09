@@ -10,15 +10,15 @@ describe('Users', () => {
     users.users = [{
       id: '1',
       name: 'Uzair',
-      room: 'Node'
+      key: 'Node'
     }, {
       id: '2',
       name: 'Django app',
-      room: 'Python Django'
+      key: 'Python Django'
     }, {
       id: '3',
       name: 'Some Name',
-      room: 'Node Chat App'
+      key: 'Node Chat App'
     }];
   });
 
@@ -27,9 +27,9 @@ describe('Users', () => {
     var user = {
       id: '123',
       name: 'Uzair',
-      room: 'Node App'
+      key: 'Node App'
     };
-    var resUser = users.addUser(user.id, user.name, user.room);
+    var resUser = users.addUser(user.id, user.name, user.key);
 
     expect(users.users).toEqual([user]);
   });

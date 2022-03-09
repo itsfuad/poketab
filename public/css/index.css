@@ -38,8 +38,6 @@
   /* IE and Edge */
   scrollbar-width: none;
   /* Firefox */
-  -webkit-transition: 300ms;
-  transition: 300ms;
 }
 
 html {
@@ -112,6 +110,8 @@ button:disabled {
   border-radius: 10px;
   background: var(--background-light);
   gap: 10px;
+  -webkit-transition: 100ms;
+  transition: 100ms;
 }
 
 .centered-form {
@@ -163,6 +163,7 @@ select:-webkit-autofill:focus {
   border: 2px solid var(--blue);
   -webkit-text-fill-color: white;
   -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+  box-shadow: 0 0 0px 1000px transparent inset;
   -webkit-transition: background-color 5000s ease-in-out 0s;
   transition: background-color 5000s ease-in-out 0s;
 }
@@ -249,5 +250,14 @@ a {
 textarea:focus, input:focus {
   border: 2px solid var(--hoverblue);
   outline: none;
+}
+
+img {
+  user-drag: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 }
 /*# sourceMappingURL=index.css.map */

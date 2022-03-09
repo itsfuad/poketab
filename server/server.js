@@ -44,32 +44,32 @@ io.on('connection', (socket) => {
   
   socket.on('join', (params, callback) => {
     //console.log(params);
-    if (!isRealString(params.name) || !isRealString(params.room)) {
+    if (!isRealString(params.name) || !isRealString(params.key)) {
       return callback('empty');
     }
     if(params.avatar === undefined){
       return callback('avatar');
     }
-    //check if username already exists in room
-    let userList = users.getUserList(params.room);
+    //check if username already exists in key
+    let userList = users.getUserList(params.key);
     let user = userList.includes(params.name);
     let avatar = params.avatar;
-    //console.log(users.getUserList(params.room));
+    //console.log(users.getUserList(params.key));
     //console.log(userList.includes(params.name));
    // console.log(params);
     if (user) {
       return callback('exists');
     }
 
-    console.log(`New user ${params.name} connected on room ${params.room}`);
-    //console.log(getActiveRooms(io));
+    console.log(`New user ${params.name} connected on key ${params.key}`);
+    //console.log(getActivekeys(io));
 
-    socket.join(params.room);
+    socket.join(params.key);
     users.removeUser(socket.id);
-    users.addUser(socket.id, params.name, params.room, avatar);
-    io.to(params.room).emit('updateUserList', users.getUserList(params.room), params.room, users.getAvatarList(params.room));
+    users.addUser(socket.id, params.name, params.key, avatar);
+    io.to(params.key).emit('updateUserList', users.getUserList(params.key), params.key, users.getAvatarList(params.key));
     socket.emit('server_message', generateMessage('', `You joined the chat.🔥`));
-    socket.broadcast.to(params.room).emit('server_message', generateMessage(params.name, `${params.name} joined the chat.🔥`));
+    socket.broadcast.to(params.key).emit('server_message', generateMessage(params.name, `${params.name} joined the chat.🔥`));
     callback();
   });
 
@@ -78,10 +78,10 @@ io.on('connection', (socket) => {
     if (user && isRealString(message.text)) {
       text = censorBadWords(message.text);
       //console.log(user);
-      //io.to(user.room).emit('newMessage', generateMessage(user.name, text));
+      //io.to(user.key).emit('newMessage', generateMessage(user.name, text));
       //console.log(user.avatar);
       socket.emit('my__message', generateMessage(user.name, text), user.avatar);
-      socket.broadcast.to(user.room).emit('newMessage', generateMessage(user.name, text), user.avatar);
+      socket.broadcast.to(user.key).emit('newMessage', generateMessage(user.name, text), user.avatar);
     }
     callback();
   });
@@ -90,16 +90,16 @@ io.on('connection', (socket) => {
     let user = users.getUser(socket.id);
 
     if (user) {
-      io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, coords.latitude, coords.longitude));  
+      io.to(user.key).emit('newLocationMessage', generateLocationMessage(user.name, coords.latitude, coords.longitude));  
     }
   });
   
   socket.on('disconnect', () => {
     let user = users.removeUser(socket.id);
     if (user) {
-      io.to(user.room).emit('updateUserList', users.getUserList(user.room), user.room, users.getAvatarList(user.room));
-      io.to(user.room).emit('server_message', generateMessage(user.name, `${user.name} left the chat.🐸`));
-      console.log(`User ${user.name} disconnected from room ${user.room}`);
+      io.to(user.key).emit('updateUserList', users.getUserList(user.key), user.key, users.getAvatarList(user.key));
+      io.to(user.key).emit('server_message', generateMessage(user.name, `${user.name} left the chat.🐸`));
+      console.log(`User ${user.name} disconnected from key ${user.key}`);
     }
   });
 
