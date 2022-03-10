@@ -56,6 +56,7 @@ function check(){
         $('#name-label').text('Name is required');
         $('#name-label').css('color','red');
         allow = false;
+        return allow;
     }
     else{
         allow = true;
