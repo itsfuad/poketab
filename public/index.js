@@ -34,7 +34,7 @@ $('#next').on('click',()=>{
 socket.on('newUserResponse', (users, avatars) => {
     e_users = users;
     e_avatars = avatars;
-    if(e_users.length >= 2){
+    if(e_users.length >= 16){
         $('.form-2').html("<img src='images/sad-cry.gif' height='80px' width='80px'>Maximum user reached on the Room<br>Try a different Room Key");
         $('.form-2').css({'text-align':'center','color': 'red', 'display': 'flex','flex-direction': 'column', 'justify-content': 'center', 'align-items': 'center'});
         $('.form-2 img').css('border-radius','50%');
