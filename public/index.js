@@ -8,10 +8,10 @@ const error = document.getElementById('error-callback');
 const url = window.location.href;
 const error_code = url.substring(url.indexOf('?') + 1);
 
-//console.log(error_code);
+console.log(error_code);
 
 
-if (error_code){
+if (error_code !== url){
     error.innerText = '*Please fill up all requirements*';
 }
 
@@ -34,6 +34,11 @@ $('#next').on('click',()=>{
 socket.on('newUserResponse', (users, avatars) => {
     e_users = users;
     e_avatars = avatars;
+    if(e_users.length >= 2){
+        $('.form-2').html("<img src='images/sad-cry.gif' height='80px' width='80px'>Maximum user reached on the Room<br>Try a different Room Key");
+        $('.form-2').css({'text-align':'center','color': 'red', 'display': 'flex','flex-direction': 'column', 'justify-content': 'center', 'align-items': 'center'});
+        $('.form-2 img').css('border-radius','50%');
+    }
     $('.form-1').hide(100);
     $('.form-2').show(100);
 
