@@ -58,26 +58,16 @@ html{
     padding: 5px 0 5px 0;
   }
 
-  h3 {
+  .h3 {
     text-align: center;
-    font-size: 1.3rem;
-    color: var(--blue);
-  }
-  
-  button {
-    background: var(--blue);
-    cursor: pointer;
-    transition: background .3s ease;
-    border-radius: 10px;
-  }
-  
-  button:hover {
-    background: var(--blue);
-  }
-  
-  button:disabled {
-    cursor: default;
-    background: #698ea5;
+    font-size: 1rem;
+    //color: var(--blue);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 5px;
   }
   
   #login-form{
@@ -92,7 +82,7 @@ html{
     transition: 100ms;
   }
   
-  .centered-form {
+  .container{
     display: flex;
     align-items: center;
     height: var(--app-height);
@@ -100,11 +90,17 @@ html{
     justify-content: center;
     background: var(--background);
   }
+
+  #form{
+    background: var(--background-light);
+    padding: 10px;
+    border-radius: 10px;
+  }
   
 .form-field {
     margin: 20px 0;
-  }
-  
+}
+
   .form-field>* {
     width: 100%;
   }
@@ -138,33 +134,17 @@ html{
     box-shadow: 0 0 0px 1000px transparent inset;
     transition: background-color 5000s ease-in-out 0s;
   }
-  
-  
-button,
-button:hover {
-  border: none;
-  color: white;
-  padding: 10px;
-  font-size: 0.8rem;
-}
 
-
-  #join-title{
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: center;
-    gap: 5px;
-  }
-  
   
   .avatars{
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     height: 200px;
-    flex-direction: column;
+    width: 200px;
     align-items: center;
-    justify-content: flex-start;
-    overflow-y:scroll;
+    justify-content: center;
+    align-content: center;
     img{
       width: 40px;
       height: 40px;
@@ -175,6 +155,7 @@ button:hover {
       }
     }
   }
+
   input[type="radio"] {
     display: none;
     &:checked + label img{
@@ -182,12 +163,7 @@ button:hover {
     }
   }
 
-  a{
-    color: var(--blue);
-    text-decoration: none;
-    font-size: 0.7rem;
-  }
-  
+
   #error-callback{
     font-size: 0.7rem;
     color: orangered;
@@ -208,3 +184,14 @@ button:hover {
     -webkit-user-select: none;
     -ms-user-select: none;
   }
+  input[type='button'], input[type='submit']{
+      transition: 200ms;
+      background: var(--blue);
+      &:hover{
+          cursor: pointer;
+      }
+      &:focus{
+            outline: none;
+            border: 2px solid var(--blue);
+      }
+}
