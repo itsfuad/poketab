@@ -115,6 +115,12 @@ io.on('connection', (socket) => {
       socket.broadcast.emit('stoptyping', user.name);
     }
   });
+  socket.on('newUserRequest', key => {
+    console.log('New User Attempt');
+    let userlist = users.getUserList(key);
+    let avatarList = users.getAvatarList(key);
+    socket.emit('newUserResponse', userlist, avatarList);
+  });
 });
 
 

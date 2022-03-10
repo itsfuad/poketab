@@ -309,10 +309,6 @@ function emo_test(str){
   return emoji_regex.test(str);
 }
 
-//prompt on page exit
-$(window).bind('beforeunload', function(){
-  return 'Are you sure you want to leave?';
-});
 /*
 $("textarea").on("keypress", function(e) {
   if (e.keyCode === 13) {
