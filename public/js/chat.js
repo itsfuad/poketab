@@ -5,10 +5,25 @@ let juntos = new Audio('./../sounds/juntos.wav');
 let elegant = new Audio('./../sounds/elegant.wav');
 let typing_sound = new Audio('./../sounds/typing.wav');
 
+const videoGrid = $('#my-video');
+const myVideo = document.createElement('video');
+myVideo.muted = true;
+
+
+
+function addVideoStream(video, stream) {
+  video.srcObject = stream;
+  video.addEventListener('loadedmetadata', () => {
+    video.play();
+  });
+  videoGrid.append(video);
+}
+
 const appHeight = () => {
   const doc = document.documentElement
   doc.style.setProperty('--app-height', `${window.innerHeight}px`)
 }
+
 window.addEventListener('resize', appHeight);
 appHeight();
 
@@ -57,8 +72,15 @@ socket.on('connect', function () {
   });
   //document.getElementById('main-screen').style.visibility = 'visible';
   //document.getElementById('preloader').style.visibility = 'hidden';
-  $('#main-screen').css('visibility', 'visible');
+  //$('#main-screen').css('visibility', 'visible');
   $('#preloader').css('visibility', 'hidden');
+  let videolog = navigator.mediaDevices.getUserMedia({
+    video: true,
+    audio: true
+  }).then(stream => {
+    addVideoStream(myVideo, stream);
+  });
+  console.log(videolog);
 });
 
 socket.on('disconnect', function () {

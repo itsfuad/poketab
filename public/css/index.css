@@ -69,27 +69,24 @@ body {
   padding: 5px 0 5px 0;
 }
 
-h3 {
+.h3 {
   text-align: center;
-  font-size: 1.3rem;
-  color: var(--blue);
-}
-
-button {
-  background: var(--blue);
-  cursor: pointer;
-  -webkit-transition: background .3s ease;
-  transition: background .3s ease;
-  border-radius: 10px;
-}
-
-button:hover {
-  background: var(--blue);
-}
-
-button:disabled {
-  cursor: default;
-  background: #698ea5;
+  font-size: 1rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 10px;
+  padding: 5px;
 }
 
 #login-form {
@@ -114,7 +111,7 @@ button:disabled {
   transition: 100ms;
 }
 
-.centered-form {
+.container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -127,6 +124,12 @@ button:disabled {
       -ms-flex-pack: center;
           justify-content: center;
   background: var(--background);
+}
+
+#form {
+  background: var(--background-light);
+  padding: 10px;
+  border-radius: 10px;
 }
 
 .form-field {
@@ -168,15 +171,7 @@ select:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s;
 }
 
-button,
-button:hover {
-  border: none;
-  color: white;
-  padding: 10px;
-  font-size: 0.8rem;
-}
-
-#join-title {
+.avatars {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -184,31 +179,18 @@ button:hover {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  -webkit-box-align: end;
-      -ms-flex-align: end;
-          align-items: flex-end;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  gap: 5px;
-}
-
-.avatars {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   height: 200px;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  width: 200px;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
-  overflow-y: scroll;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
 }
 
 .avatars img {
@@ -233,12 +215,6 @@ input[type="radio"]:checked + label img {
           filter: saturate(100%);
 }
 
-a {
-  color: var(--blue);
-  text-decoration: none;
-  font-size: 0.7rem;
-}
-
 #error-callback {
   font-size: 0.7rem;
   color: orangered;
@@ -259,5 +235,20 @@ img {
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
+}
+
+input[type='button'], input[type='submit'] {
+  -webkit-transition: 200ms;
+  transition: 200ms;
+  background: var(--blue);
+}
+
+input[type='button']:hover, input[type='submit']:hover {
+  cursor: pointer;
+}
+
+input[type='button']:focus, input[type='submit']:focus {
+  outline: none;
+  border: 2px solid var(--blue);
 }
 /*# sourceMappingURL=index.css.map */
