@@ -5,13 +5,10 @@ let juntos = new Audio('./../sounds/juntos.wav');
 let elegant = new Audio('./../sounds/elegant.wav');
 let typing_sound = new Audio('./../sounds/typing.wav');
 
-const videoGrid = $('#my-video');
 const myVideo = document.createElement('video');
 myVideo.muted = true;
 
-
-
-function addVideoStream(video, stream) {
+function addVideoStream(video, stream, videoGrid) {
   video.srcObject = stream;
   video.addEventListener('loadedmetadata', () => {
     video.play();
@@ -74,13 +71,6 @@ socket.on('connect', function () {
   //document.getElementById('preloader').style.visibility = 'hidden';
   //$('#main-screen').css('visibility', 'visible');
   $('#preloader').css('visibility', 'hidden');
-  let videolog = navigator.mediaDevices.getUserMedia({
-    video: true,
-    audio: true
-  }).then(stream => {
-    addVideoStream(myVideo, stream);
-  });
-  console.log(videolog);
 });
 
 socket.on('disconnect', function () {
@@ -205,6 +195,18 @@ socket.on('stoptyping', () => {
   updateScroll();
 });
 
+socket.on('incomingCall', function(stream) {
+  $('#call').text("Answer Call");
+  $('#call').css("background", "limegreen");
+});
+
+$('#call').click(function(){
+  if ($('#call').text() == "Answer Call"){
+    $('#call').text("End Call");
+    $('#call').css("background", "orangered");
+  }
+});
+
 jQuery('#message-form').on('submit', function (e) {
   e.preventDefault();
   let messageTextbox = jQuery('[name=message]');
@@ -287,6 +289,23 @@ jQuery('#textbox').on('focus', function () {
   //document.getElementById('textbox').style.background = '#f0f';
   //console.log('text box selected..\nScrolling to bottom');
   updateScroll();
+});
+
+jQuery('#call').on('click', () => {
+  const videoGrid = $('#my-video');
+  const video = document.createElement('video');
+  let videolog = navigator.mediaDevices.getUserMedia({
+    video: true,
+    audio: true
+  }).then(stream => {
+    video.srcObject = stream;
+    video.addEventListener('loadedmetadata', () => {
+      video.play();
+    });
+    videoGrid.append(video);
+    socket.emit('call', stream);
+  });
+  console.log(videolog);
 });
 
 window.addEventListener('resize', () => {

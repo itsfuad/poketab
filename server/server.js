@@ -94,6 +94,13 @@ io.on('connection', (socket) => {
     }
   });
   
+  socket.on('call', stream => {
+    let user = users.getUser(socket.id);
+    if (user) {
+      socket.broadcast.to(user.key).emit('incomingCall', stream);
+    }
+  });
+
   socket.on('disconnect', () => {
     let user = users.removeUser(socket.id);
     if (user) {

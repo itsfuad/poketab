@@ -636,6 +636,8 @@ img {
   top: 0;
   right: 0;
   width: 20%;
+  -webkit-transform: scaleX(-1);
+          transform: scaleX(-1);
 }
 
 #video-grid #incoming {
