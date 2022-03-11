@@ -20,7 +20,7 @@ function updateScroll(){
 
 function scrollToBottom () {
   // Selectors
-  let messages = jQuery('#messages');
+  let messages = $('#messages');
   let newMessage = messages.children('li:last-child')
   // Heights
   let clientHeight = messages.prop('clientHeight');
@@ -35,7 +35,7 @@ function scrollToBottom () {
 }
 
 socket.on('connect', function () {
-  let params = jQuery.deparam(window.location.search);
+  let params = $.deparam(window.location.search);
   console.log("Connected to server");
   elegant.play();
   socket.emit('join', params, function (err) {
@@ -66,26 +66,26 @@ socket.on('disconnect', function () {
 });
 
 socket.on('updateUserList', function (user, key, avatars) {
-  let ol = jQuery('<ul></ul>');
+  let ol = $('<ul></ul>');
 
   for (let i = 0; i < user.length; i++){
-    ol.append(jQuery('<li></li>').html(`<img height='30px' width='30px' src='images/avatars/${avatars[i]}(custom).png'> ${user[i]}`));
+    ol.append($('<li></li>').html(`<img height='30px' width='30px' src='images/avatars/${avatars[i]}(custom).png'> ${user[i]}`));
   }
 
   //$("body").get(0).style.setProperty('--pattern-image', `url("./../images/avatars/${avatars}\(custom\).png")`)
   
 
-  jQuery('.menu').text(`Online: ${user.length}`);
-  jQuery('.keyname1').text(`${key}`);
-  jQuery('.keyname2').text(`${key}`);
-  jQuery('.users').html(ol);
+  $('.menu').text(`Online: ${user.length}`);
+  $('.keyname1').text(`${key}`);
+  $('.keyname2').text(`${key}`);
+  $('.users').html(ol);
 });
 
 socket.on('newMessage', function (message, avatar) {
   elegant.play();
   //console.log(`Avatar: ${avatar}`);
   let formattedTime = moment(message.createdAt).format('h:mm a');
-  let template = jQuery('#message-template').html();
+  let template = $('#message-template').html();
   let html = Mustache.render(template, {
     text: message.text,
     from: message.from,
@@ -96,20 +96,19 @@ socket.on('newMessage', function (message, avatar) {
   //pop.play();
   //$("#messages li:last div p")
   html = html.replace(/¶/g ,'<br>');
-  jQuery('#messages').append(html);
+  $('#messages').append(html);
   //console.log(emo_test(message.text));
   if (emo_test(message.text))
   {
     $("#messages li:last div p").css({"background": "none", "font-size": "30px", "padding": "0px"});
   }
-
   updateScroll();
 });
 
 socket.on('my__message', function (message) {
   pop.play();
   let formattedTime = moment(message.createdAt).format('h:mm a');
-  let template = jQuery('#my-message-template').html();
+  let template = $('#my-message-template').html();
   let html = Mustache.render(template, {
     text: message.text,
     from: message.from,
@@ -119,7 +118,7 @@ socket.on('my__message', function (message) {
   html = html.replace(/¶/g ,'<br>');
   //html = linkify(html);
   //console.log(html);
-  jQuery('#messages').append(html);
+  $('#messages').append(html);
   //console.log(emo_test(message.text));
   if (emo_test(message.text))
   {
@@ -132,7 +131,7 @@ socket.on('my__message', function (message) {
 socket.on('server_message', function(message){
   juntos.play();
   let formattedTime = moment(message.createdAt).format('h:mm a');
-  let template = jQuery('#server-message-template').html();
+  let template = $('#server-message-template').html();
   let html = Mustache.render(template, {
     text: message.text,
     from: message.from,
@@ -153,41 +152,42 @@ socket.on('server_message', function(message){
     html = html.replace(/<p>/g, `<p style='color: var(--blue);'>`);
   }
   
-  jQuery('#messages').append(html);
+  $('#messages').append(html);
   //console.log(html);
   updateScroll();
 });
 
 socket.on('newLocationMessage', function (message) {
   let formattedTime = moment(message.createdAt).format('h:mm a');
-  let template = jQuery('#location-message-template').html();
+  let template = $('#location-message-template').html();
   let html = Mustache.render(template, {
     from: message.from,
     url: message.url,
     createdAt: formattedTime
   });
   pop.play();
-  jQuery('#messages').append(html);
+  $('#messages').append(html);
   updateScroll();
 });
 
 socket.on('typing', (user) => {
-  let li = jQuery('<li></li>').text(user + ' is typing...');
-  jQuery('#typingindicator').append(li);
+  let li = $('<li></li>').text(user + ' is typing...');
+  $('#typingindicator').append(li);
   updateScroll();
   typing_sound.play();
 });
 
 socket.on('stoptyping', () => {
-  jQuery('#typingindicator').html('');
+  $('#typingindicator').html('');
   updateScroll();
 });
 
-jQuery('#message-form').on('submit', function (e) {
+$('#message-form').on('submit', function (e) {
   e.preventDefault();
-  let messageTextbox = jQuery('[name=message]');
+  let messageTextbox = $('[name=message]');
   let text = messageTextbox.val();
   messageTextbox.val('');
+
   //trim text to 255 charecters
   if (text.length > 10000) {
     text = text.substring(0, 10000);
@@ -211,7 +211,7 @@ jQuery('#message-form').on('submit', function (e) {
   });
 });
 
-let locationButton = jQuery('#send-location');
+let locationButton = $('#send-location');
 locationButton.on('click', function () {
   if (!navigator.geolocation) {
     return alert('Geolocation not supported by your browser.');
@@ -253,15 +253,15 @@ $('#textbox').on('keydown', function () {
 
 
 
-jQuery('.menu').on('click', function () {
-  jQuery('.menuwrapper').addClass('active');
+$('.menu').on('click', function () {
+  $('.menuwrapper').addClass('active');
 });
 
-jQuery('.chat').on('click', function () {
-  jQuery('.menuwrapper').removeClass('active');
+$('.chat').on('click', function () {
+  $('.menuwrapper').removeClass('active');
 });
 
-jQuery('#textbox').on('focus', function () {
+$('#textbox').on('focus', function () {
   //document.getElementById('textbox').style.background = '#f0f';
   //console.log('text box selected..\nScrolling to bottom');
   updateScroll();
@@ -272,9 +272,9 @@ window.addEventListener('resize', () => {
 });
 
 
-jQuery('.send').on('focus', function(){
+$('.send').on('focus', function(){
   //console.log('focused');
-  jQuery('#textbox').focus();
+  $('#textbox').focus();
 });
 
 
