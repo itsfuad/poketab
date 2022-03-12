@@ -16,7 +16,6 @@ if (error_code !== url){
 }
 
 
-
 $('#next').on('click',()=>{
     //alert('sadasd');
     let key = $('#key').val();

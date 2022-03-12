@@ -183,20 +183,6 @@ button:disabled {
   background-attachment: fixed;
 }
 
-.chat__messages {
-  flex-grow: 1;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
-  padding: 10px;
-  background: transparent;
-  display: grid;
-  grid-template-rows: 1fr;
-  align-items: end;
-  scroll-behavior: smooth;
-  list-style-type: none;
-  gap: 2px;
-  //backdrop-filter: blur(2px);
-}
 
 #send-location{
   &:hover{
@@ -208,7 +194,6 @@ button:disabled {
   width: 35px;
   height: 35px;
   border-radius: 50%;
-  margin-right: 10px;
   //background: #698ea5;
   text-align: center;
   display: flex;
@@ -216,47 +201,6 @@ button:disabled {
   justify-content: center;
 }
 
-
-
-.message, .my__message{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.message{
-  align-items: flex-start;
-}
-.my__message{
-  align-items: flex-end;
-}
-
-.message__title{
-  padding-left: 10px;
-  h3{
-    font-size: 0.7rem;
-    width: 100%;
-  }
-}
-
-.title{
-  margin-top: 5px !important;
-}
-
-.message__title{
-  h4 {
-    margin-right: 10px;
-  }
-} 
-
-.my__message__title{
-  h3{
-    width: 100%;
-    font-size: 0.7rem;
-    text-align: right;
-    padding-right: 5px;
-  }
-}
 
 .location__message{
   display: flex;
@@ -276,33 +220,6 @@ button:disabled {
   -ms-flex-pack: center;
   justify-content: center;
 }
-
-.message__body, .my__message__body{
-  display: flex;
-  flex-direction: row;
-  gap: 0;
-  justify-content: center;
-  align-content: center;
-  align-items: flex-end;
-  p{
-    background: var(--background-light);
-    border-radius: 24px;
-    padding: 12px;
-    font-size: 0.7rem;
-    width: 60vw;
-    max-width: max-content;
-    overflow-wrap: break-word;
-    text-align: justify;
-    backdrop-filter: blur(2px);
-  }
-}
-
-.my__message__body{
-  p{
-    background: var(--blue);
-  }
-}
-
 
 .server__message{
   text-align: center;
@@ -390,10 +307,6 @@ scrollbar-width: none;  /* Firefox */
   display: none;
 }
 
-.text{
-  display: none;
-}
-
 #typingindicator{
   list-style-type: none;
   color: grey;
@@ -415,6 +328,101 @@ scrollbar-width: none;  /* Firefox */
 #retlocflex{
   display: flex;
   align-items: center;
+}
+
+#messages{
+    flex-grow: 1;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    padding: 10px;
+    background: transparent;
+    display: grid;
+    grid-template-rows: 1fr;
+    align-items: end;
+    scroll-behavior: smooth;
+    list-style-type: none;
+    gap: 2px;
+    .message, .my__message{
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: flex-start;
+      width: 100%;
+      gap: 5px;
+      
+      .message__body{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-end;
+      }
+    }
+    .message .textMessage{
+      background: #26313d;
+      padding: 10px 15px;
+      border-radius: 25px;
+      font-size: 0.7rem;
+    }
+    .my__message .textMessage{
+      background: var(--blue);
+      padding: 10px 15px;
+      border-radius: 25px;
+      font-size: 0.7rem;
+    }
+    .main-message{
+      display: flex;
+      flex-direction: row;
+      z-index: 2;
+      align-items: flex-end;
+    }
+    .replyMessage{
+      padding: 10px 15px 25px 10px;
+      font-size: 0.7rem;
+      background: #3f5266;
+      border-radius: 15px 15px 15px 0px;
+      z-index: 1;
+    }
+    .replyMessage, .title{
+      transform: translateY(20px);
+      &.active{
+        transform: translateY(20px);
+      }
+    }
+    .my-reply-message{
+      border-radius: 15px 15px 0px 15px;
+    }
+    .my__message{
+      flex-direction: row-reverse;
+    }
+    .my__message__body{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: flex-end;
+      .title{
+        h3{
+          width: 100%;
+          text-align: right;
+        }
+      }
+    }
+
+    .title h3{
+      font-size: 0.7rem;
+    }
+    .message__title h3{
+      width: 100%;
+      text-align: left;
+    }
+    .my__message__title h3{
+      width: 100%;
+      text-align: right;
+    }
+    .textMessage, .replyMessage{
+      max-width: 50vw;
+      text-align: justify;
+      word-wrap: break-word;
+    }
 }
 
 
@@ -501,6 +509,35 @@ img{
   -ms-user-select: none;
 }
 
+.toast-popup{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 10px;
+  background: var(--background-light);
+  border-radius: 10px;
+  .toast-popup-replying-to{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    .toast-popup-name{
+      color: var(--blue);
+    }
+    .toast-popup-message{
+      font-size: 0.7rem;
+    }
+  }
+  .toast-popup-close{
+    color: orangered;
+    font-weight: 100;
+    &:hover{
+      cursor: pointer;
+    }
+  }
+}
+
 @media (orientation: landscape) and (min-device-aspect-ratio: 1/1) {
   .chat{
     padding-top: 0;
@@ -531,11 +568,6 @@ img{
     }
   }
 
-  .message__body, .my__message__body{
-    p{
-      width: 40vw;
-    }
-  }
   .topbar{
     display: flex;
     height: 0;
@@ -547,5 +579,10 @@ img{
   }
   .chat__main{
     padding: 0 10%;
+  }
+  #messages{
+    .textMessage, .replyMessage{
+      max-width: 30vw;
+    }
   }
 }

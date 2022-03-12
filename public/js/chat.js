@@ -5,6 +5,8 @@ let juntos = new Audio('./../sounds/juntos.wav');
 let elegant = new Audio('./../sounds/elegant.wav');
 let typing_sound = new Audio('./../sounds/typing.wav');
 
+let myname;
+
 const appHeight = () => {
   const doc = document.documentElement
   doc.style.setProperty('--app-height', `${window.innerHeight}px`)
@@ -81,18 +83,39 @@ socket.on('updateUserList', function (user, key, avatars) {
   $('.users').html(ol);
 });
 
-socket.on('newMessage', function (message, avatar) {
+socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText) {
   elegant.play();
   //console.log(`Avatar: ${avatar}`);
   let formattedTime = moment(message.createdAt).format('h:mm a');
-  let template = $('#message-template').html();
-  let html = Mustache.render(template, {
-    text: message.text,
-    from: message.from,
-    createdAt: formattedTime,
-    attr: "src",
-    attrVal: `images/avatars/${avatar}(custom).png`
-  });
+  let template, html;
+  if (isReply){
+    if (replyTo == myname) replyTo = 'You';
+    template = $('#message-template').html();
+    html = Mustache.render(template, {
+      text: message.text,
+      from: `${message.from} replied to ${replyTo}`,
+      reply: replyText,
+      createdAt: formattedTime,
+      display: "block",
+      transformTitle: "translateY(20px)",
+      transformReply: "translateY(20px)",
+      attr: "src",
+      attrVal: `images/avatars/${avatar}(custom).png`
+    });
+  }
+  else{
+    template = $('#message-template').html();
+    html = Mustache.render(template, {
+      text: message.text,
+      from: message.from,
+      display: "none",
+      transformTitle: "translateY(0px)",
+      transformReply: "translateY(0px)",
+      createdAt: formattedTime,
+      attr: "src",
+      attrVal: `images/avatars/${avatar}(custom).png`
+    });
+  }
   //pop.play();
   //$("#messages li:last div p")
   html = html.replace(/¶/g ,'<br>');
@@ -102,18 +125,42 @@ socket.on('newMessage', function (message, avatar) {
   {
     $("#messages li:last div p").css({"background": "none", "font-size": "30px", "padding": "0px"});
   }
+  closePopup();
   updateScroll();
 });
 
-socket.on('my__message', function (message) {
+socket.on('my__message', function (message, avatar, isReply, replyTo, replyText) {
   pop.play();
   let formattedTime = moment(message.createdAt).format('h:mm a');
-  let template = $('#my-message-template').html();
-  let html = Mustache.render(template, {
-    text: message.text,
-    from: message.from,
-    createdAt: formattedTime
-  });
+  let template, html;
+  if (isReply){
+    if (replyTo == myname) replyTo = 'You';
+    template = $('#my-message-template').html();
+    html = Mustache.render(template, {
+      text: message.text,
+      from: `You replied to ${replyTo}`,
+      reply: replyText,
+      createdAt: formattedTime,
+      display: "block",
+      transformTitle: "translateY(20px)",
+      transformReply: "translateY(20px)",
+      attr: "src",
+      attrVal: `images/avatars/${avatar}(custom).png`
+    });
+  }
+  else{
+    template = $('#my-message-template').html();
+    html = Mustache.render(template, {
+      text: message.text,
+      from: message.from,
+      display: "none",
+      transformTitle: "translateY(0px)",
+      transformReply: "translateY(0px)",
+      createdAt: formattedTime,
+      attr: "src",
+      attrVal: `images/avatars/${avatar}(custom).png`
+    });
+  }
   //pop.play();
   html = html.replace(/¶/g ,'<br>');
   //html = linkify(html);
@@ -124,11 +171,13 @@ socket.on('my__message', function (message) {
   {
     $("#messages li:last div p").css({"background": "none", "font-size": "30px", "padding": "0px"});
   }
+  closePopup();
   updateScroll();
 });
 
 
-socket.on('server_message', function(message){
+socket.on('server_message', function(message, name = null){
+  myname = name || myname;
   juntos.play();
   let formattedTime = moment(message.createdAt).format('h:mm a');
   let template = $('#server-message-template').html();
@@ -187,7 +236,7 @@ $('#message-form').on('submit', function (e) {
   let messageTextbox = $('[name=message]');
   let text = messageTextbox.val();
   messageTextbox.val('');
-
+  
   //trim text to 255 charecters
   if (text.length > 10000) {
     text = text.substring(0, 10000);
@@ -203,12 +252,11 @@ $('#message-form').on('submit', function (e) {
 
   socket.emit('createMessage', {
     text: text
-  }, function () {
-    //console.log(text);
-    //document.getElementById('textbox').style.background = '#f0f';
-    //document.getElementById('textbox').style.height = '52px';
+  }, isReply, replyTo, replyText , function () {
     $('#textbox').css('height', 'auto');
   });
+  $('#textbox').css('height', 'auto');
+  closePopup();
 });
 
 let locationButton = $('#send-location');
@@ -265,6 +313,43 @@ $('#textbox').on('focus', function () {
   //document.getElementById('textbox').style.background = '#f0f';
   //console.log('text box selected..\nScrolling to bottom');
   updateScroll();
+});
+
+function closePopup()
+{
+  isReply = false;
+  $('.toast-popup').hide();
+  $('.toast-popup-name').text('');
+  $('.toast-popup-message').text('');
+}
+
+$('.toast-popup-close').on('click', ()=>{
+  closePopup();
+});
+
+let isReply = false;
+let replyTo, replyText;
+
+$('#messages').on('click', function (evt) {
+  evt.preventDefault();
+  //console.log('clicked on messages');
+  let target = evt.target;
+  //console.log(evt);
+  if (target.className === 'textMessage'){
+    //console.log(target.innerText);
+    //trim target text to 10 charecters
+    replyText =  `${target.innerText.substring(0, 200)}...`;
+    replyTo = evt.target.parentElement.previousElementSibling.previousElementSibling.innerText;
+    replyTo = replyTo.replace(/ replied to [a-zA-Z]+/g, '');
+    let replyToPop = replyTo;
+    if (replyToPop == myname) replyToPop = 'You';
+    if (replyTo == 'You') replyTo = myname;
+    isReply = true;
+    $('.toast-popup').show();
+    $('.toast-popup-name').text(`Replying to ${replyToPop}`);
+    $('.toast-popup-message').text(`${target.innerText.substring(0, 20)}...`);
+    $('#textbox').focus();
+  }
 });
 
 window.addEventListener('resize', () => {

@@ -82,6 +82,13 @@
       
       <div class="chat__main">
         <ol id="messages" class="chat__messages"></ol>
+        <div class="toast-popup" style="display: none;">
+          <div class="toast-popup-replying-to">
+            <div class="toast-popup-name"></div>
+            <div class="toast-popup-message"></div>
+          </div>
+          <div class="toast-popup-close">×</div>
+        </div>
         <ul id="typingindicator"></ul>
         <div class="chat__footer">
           <form id="message-form">
@@ -96,20 +103,31 @@
     
       <template id="message-template" type="text/template">
         <li class="message">
-          <div class="message__title title">
-            <h3>{{from}}</h3>
-          </div>
+          <div class="avatar"><img id="avatar" {{attr}}="{{attrVal}}" height="40px" width="40px" alt="" srcset=""></div>
           <div class="message__body">
-            <div class="avatar"><img id="avatar" {{attr}}="{{attrVal}}" height="40px" width="40px" alt="" srcset=""></div><p>{{text}}</p><span class='time'>{{createdAt}}</span>
+            <div class="message__title title" style="transform: {{transformTitle}};"><h3>{{from}}</h3></div>
+            <div class="reply-message replyMessage" style="display: {{display}}; transform: {{transformReply}}">{{reply}}</div>
+            <div class="main-message">
+              <p class="textMessage">{{text}}</p>
+              <span class='time'>{{createdAt}}</span>
+            </div>
           </div>
+          
         </li>
       </template>
   
       <template id="my-message-template" type="text/template">
         <li class="my__message">
+          <!--div class="avatar"><img id="avatar" {{attr}}="{{attrVal}}" height="40px" width="40px" alt="" srcset=""></-div-->
           <div class="my__message__body">
-            <span class='time'>{{createdAt}}</span><p>{{text}}</p>
+            <div class="my__message__title title" style="display: {{display}}; transform: {{transformTitle}}"><h3>{{from}}</h3></div>
+            <div class="my-reply-message replyMessage" style="display: {{display}}; transform: {{transformReply}}">{{reply}}</div>
+            <div class="main-message">
+              <span class='time'>{{createdAt}}</span>
+              <p class="textMessage">{{text}}</p>
+            </div>
           </div>
+          
         </li>
       </template>
   
