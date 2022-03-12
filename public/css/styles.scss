@@ -514,9 +514,11 @@ img{
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-between;
+  align-items: center;
   padding: 10px;
   background: var(--background-light);
   border-radius: 10px;
+  backdrop-filter: blur(2px);
   .toast-popup-replying-to{
     display: flex;
     flex-direction: column;

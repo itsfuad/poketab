@@ -338,7 +338,7 @@ $('#messages').on('click', function (evt) {
   if (target.className === 'textMessage'){
     //console.log(target.innerText);
     //trim target text to 10 charecters
-    replyText =  `${target.innerText.substring(0, 200)}...`;
+    replyText =  `${target.innerText.substring(0, 300)}...`;
     replyTo = evt.target.parentElement.previousElementSibling.previousElementSibling.innerText;
     replyTo = replyTo.replace(/ replied to [a-zA-Z]+/g, '');
     let replyToPop = replyTo;
@@ -347,7 +347,7 @@ $('#messages').on('click', function (evt) {
     isReply = true;
     $('.toast-popup').show();
     $('.toast-popup-name').text(`Replying to ${replyToPop}`);
-    $('.toast-popup-message').text(`${target.innerText.substring(0, 20)}...`);
+    $('.toast-popup-message').text(`${target.innerText.substring(0, 100)}`);
     $('#textbox').focus();
   }
 });
