@@ -69,10 +69,6 @@ body {
   font-size: 0.7rem;
 }
 
-h1:before {
-  content: "// ";
-}
-
 .wrapper {
   margin: 1em 0;
 }

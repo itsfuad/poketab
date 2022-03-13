@@ -356,6 +356,7 @@ $('#messages').on('click', function (evt) {
   }
 });
 
+
 window.addEventListener('resize', () => {
   updateScroll();
 });
@@ -369,7 +370,7 @@ $(window).on('hashchange', function(e){
         // Clear the hash in the URL
         location.hash = '';
     }
-  }, 2000);
+  }, 600);
 })
 
 $('.send').on('focus', function(){
