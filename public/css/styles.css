@@ -56,8 +56,7 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin-bottom: 50px;
-  margin-top: 80vh;
+  padding-bottom: 100px;
 }
 
 .intro h2 {
@@ -155,6 +154,7 @@ button:hover {
   padding: 0;
   font-family: Now;
   font-weight: 300;
+  caret-color: var(--blue);
 }
 
 li,
@@ -463,13 +463,45 @@ button:disabled {
   gap: 5px;
 }
 
+#messages .message .textMessage:hover, #messages .my__message .textMessage:hover {
+  cursor: pointer;
+}
+
+#messages .message .textMessage, #messages .my__message .textMessage {
+  position: relative;
+}
+
+#messages .message .textMessage:hover::after, #messages .my__message .textMessage:hover::after {
+  content: url("./../images/reply.png");
+  position: absolute;
+  top: 0px;
+  right: 90%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: 25px;
+  color: white;
+  z-index: 150;
+  opacity: 1;
+  text-align: left;
+  height: 33px;
+  width: 62px;
+  -webkit-transition: 200ms;
+  transition: 200ms;
+  white-space: pre;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
 #messages .message:target .textMessage, #messages .my__message:target .textMessage {
-  -webkit-animation-name: pulse-animation;
-          animation-name: pulse-animation;
-  -webkit-animation-iteration-count: 2;
-          animation-iteration-count: 2;
-  -webkit-animation-duration: 0.1s;
-          animation-duration: 0.1s;
+  -webkit-animation: pulse-animation 0.3s 2;
+          animation: pulse-animation 0.3s 2;
 }
 
 #messages .message .message__body, #messages .my__message .message__body {
@@ -493,6 +525,10 @@ button:disabled {
   padding: 10px 15px;
   border-radius: 25px;
   font-size: 0.7rem;
+}
+
+#messages .message .textMessage:hover::after {
+  left: 90%;
 }
 
 #messages .my__message .textMessage {
@@ -669,7 +705,7 @@ button:disabled {
 }
 
 .info:hover::after {
-  content: 'PokeTab Messanger \A Version: 3.2.2 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: https:flaticon.com';
+  content: 'PokeTab Messanger \A Version: 3.2.3 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: https:flaticon.com';
   position: absolute;
   bottom: 0;
   right: 0;
@@ -760,20 +796,16 @@ img {
 }
 
 @-webkit-keyframes pulse-animation {
-  0% {
-    background: #1d5acc;
-  }
-  100% {
-    background: var(--blue);
+  50% {
+    -webkit-transform: scale(1.1);
+            transform: scale(1.1);
   }
 }
 
 @keyframes pulse-animation {
-  0% {
-    background: #1d5acc;
-  }
-  100% {
-    background: var(--blue);
+  50% {
+    -webkit-transform: scale(1.1);
+            transform: scale(1.1);
   }
 }
 

@@ -40,8 +40,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: 50px;
-  margin-top: 80vh;
+  padding-bottom: 100px;
   h2{
     font-size: 1.5rem;
     font-family: 'Comforter';
@@ -118,6 +117,7 @@ button:hover {
   padding: 0;
   font-family: Now;
   font-weight: 300;
+  caret-color: var(--blue);
 }
 
 
@@ -367,11 +367,36 @@ scrollbar-width: none;  /* Firefox */
       justify-content: flex-start;
       width: 100%;
       gap: 5px;
+      .textMessage:hover{
+        cursor: pointer;
+      }
+      .textMessage{
+        position: relative;
+        &:hover::after{
+          content: url('./../images/reply.png');
+          position: absolute;
+          top: 0px;
+          right: 90%;
+          display: flex;
+          border-radius: 25px;
+          color: white;
+          //backdrop-filter: blur(1px);
+          //background: #26313d;
+          z-index: 150;
+          opacity: 1;
+          text-align: left;
+          height: 33px;
+          width: 62px;
+          transition: 200ms;
+          white-space: pre;
+          align-content: center;
+          justify-content: center;
+          align-items: center;
+        }
+      }
       &:target .textMessage{
         //background: cornflowerblue;
-        animation-name: pulse-animation;
-        animation-iteration-count: 2;
-        animation-duration: 0.1s;
+        animation: pulse-animation 0.3s 2;
       }
       .message__body{
         display: flex;
@@ -385,6 +410,9 @@ scrollbar-width: none;  /* Firefox */
       padding: 10px 15px;
       border-radius: 25px;
       font-size: 0.7rem;
+      &:hover::after{
+        left: 90%;
+      }
     }
     .my__message .textMessage{
       background: var(--blue);
@@ -503,7 +531,7 @@ scrollbar-width: none;  /* Firefox */
   }
   //create a about tooltip on hover
   &:hover::after{
-    content: 'PokeTab Messanger \A Version: 3.2.2 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: https:flaticon.com';
+    content: 'PokeTab Messanger \A Version: 3.2.3 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: https:flaticon.com';
     position: absolute;
     bottom: 0;
     right: 0;
@@ -567,11 +595,8 @@ img{
 }
 
 @keyframes pulse-animation {
-  0% {
-    background: rgb(29, 90, 204);
-  }
-  100% {
-    background: var(--blue);
+  50% {
+    transform: scale(1.1);
   }
 }
 

@@ -360,6 +360,17 @@ window.addEventListener('resize', () => {
   updateScroll();
 });
 
+$(window).on('hashchange', function(e){
+  setTimeout(function(){
+    let hash = location.hash.replace('#','');
+    if(hash != ''){
+        // Show the hash if it's set
+        //alert(hash);
+        // Clear the hash in the URL
+        location.hash = '';
+    }
+  }, 2000);
+})
 
 $('.send').on('focus', function(){
   //console.log('focused');
