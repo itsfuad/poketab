@@ -83,7 +83,7 @@ socket.on('updateUserList', function (user, key, avatars) {
   $('.users').html(ol);
 });
 
-socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText) {
+socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, id, targetId) {
   elegant.play();
   //console.log(`Avatar: ${avatar}`);
   let formattedTime = moment(message.createdAt).format('h:mm a');
@@ -95,7 +95,8 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText) 
       text: message.text,
       from: `${message.from} replied to ${replyTo}`,
       reply: replyText,
-      replyIcon: "<img src='images/reply-blue.png' height='15px' width='15px'>",
+      id: id,
+      RepId: targetId,
       createdAt: formattedTime,
       attr: "style",
       replyMessageStyle: `display: block; transform: translateY(20px);`,
@@ -108,6 +109,7 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText) 
     html = Mustache.render(template, {
       text: message.text,
       from: message.from,
+      id: id,
       attr: "style",
       replyMessageStyle: `display: none; transform: translateY(0px);`,
       messageTitleStyle: `transform: translateY(0px)`,
@@ -128,8 +130,9 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText) 
   updateScroll();
 });
 
-socket.on('my__message', function (message, avatar, isReply, replyTo, replyText) {
+socket.on('my__message', function (message, avatar, isReply, replyTo, replyText, id, targetId) {
   pop.play();
+  //console.log(id);
   let formattedTime = moment(message.createdAt).format('h:mm a');
   let template, html;
   if (isReply){
@@ -138,8 +141,9 @@ socket.on('my__message', function (message, avatar, isReply, replyTo, replyText)
     html = Mustache.render(template, {
       text: message.text,
       from: `You replied to ${replyTo}`,
+      id: id,
+      RepId: targetId,
       reply: replyText,
-      replyIcon: "<img src='images/reply-blue.png' height='15px' width='15px'>",
       createdAt: formattedTime,
       attr: "style",
       replyMessageStyle: `display: block; transform: translateY(20px);`,
@@ -152,6 +156,7 @@ socket.on('my__message', function (message, avatar, isReply, replyTo, replyText)
     html = Mustache.render(template, {
       text: message.text,
       from: message.from,
+      id: id,
       attr: "style",
       replyMessageStyle: `display: none; transform: translateY(0px);`,
       messageTitleStyle: `display: none; transform: translateY(0px)`,
@@ -250,7 +255,7 @@ $('#message-form').on('submit', function (e) {
 
   socket.emit('createMessage', {
     text: text
-  }, isReply, replyTo, replyText , function () {
+  }, isReply, replyTo, replyText ,targetId, function () {
     $('#textbox').css('height', 'auto');
   });
   $('#textbox').css('height', 'auto');
@@ -327,14 +332,15 @@ $('.toast-popup-close').on('click', ()=>{
 
 let isReply = false;
 let replyTo, replyText;
+let targetId;
 
 $('#messages').on('click', function (evt) {
-  evt.preventDefault();
+  ////evt.preventDefault();
   //console.log('clicked on messages');
   let target = evt.target;
   //console.log(evt);
   if (target.className === 'textMessage'){
-    //console.log(target.innerText);
+    targetId = target.parentElement.parentElement.parentElement.id;
     //trim target text to 10 charecters
     replyText =  `${target.innerText.substring(0, 300)}...`;
     replyTo = evt.target.parentElement.previousElementSibling.previousElementSibling.innerText;
@@ -368,6 +374,7 @@ $("textarea").each(function () {
   this.style.height = "auto";
   this.style.height = (this.scrollHeight) + "px";
 });
+
 
 function linkify(inputText) {
   var replacedText, replacePattern1, replacePattern2, replacePattern3;

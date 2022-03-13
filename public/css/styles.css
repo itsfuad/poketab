@@ -441,6 +441,7 @@ button:disabled {
       grid-template-rows: 1fr;
   scroll-behavior: smooth;
   list-style-type: none;
+  margin-top: 65px;
   gap: 2px;
 }
 
@@ -460,6 +461,15 @@ button:disabled {
           justify-content: flex-start;
   width: 100%;
   gap: 5px;
+}
+
+#messages .message:target .textMessage, #messages .my__message:target .textMessage {
+  -webkit-animation-name: pulse-animation;
+          animation-name: pulse-animation;
+  -webkit-animation-iteration-count: 2;
+          animation-iteration-count: 2;
+  -webkit-animation-duration: 0.1s;
+          animation-duration: 0.1s;
 }
 
 #messages .message .message__body, #messages .my__message .message__body {
@@ -747,6 +757,24 @@ img {
 
 .toast-popup .toast-popup-close:hover {
   cursor: pointer;
+}
+
+@-webkit-keyframes pulse-animation {
+  0% {
+    background: #1d5acc;
+  }
+  100% {
+    background: var(--blue);
+  }
+}
+
+@keyframes pulse-animation {
+  0% {
+    background: #1d5acc;
+  }
+  100% {
+    background: var(--blue);
+  }
 }
 
 @media (orientation: landscape) and (min-device-aspect-ratio: 1 / 1) {

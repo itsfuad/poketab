@@ -2,6 +2,7 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
+const uuid = require("uuid");
 
 const {generateMessage, generateLocationMessage} = require('./utils/message');
 const {isRealString} = require('./utils/validation');
@@ -72,15 +73,17 @@ io.on('connection', (socket) => {
     socket.broadcast.to(params.key).emit('server_message', generateMessage(params.name, `${params.name} joined the chat.🔥`));
   });
 
-  socket.on('createMessage', (message, isReply, replyTo, replyText, callback) => {
+  socket.on('createMessage', (message, isReply, replyTo, replyText, targetId, callback) => {
     let user = users.getUser(socket.id);
     if (user && isRealString(message.text)) {
       text = censorBadWords(message.text);
       //console.log(user);
       //io.to(user.key).emit('newMessage', generateMessage(user.name, text));
       //console.log(user.avatar);
-      socket.emit('my__message', generateMessage(user.name, text), user.avatar, isReply, replyTo, replyText);
-      socket.broadcast.to(user.key).emit('newMessage', generateMessage(user.name, text), user.avatar, isReply, replyTo, replyText);
+      let id = uuid.v4();
+      //console.log(typeof(id));
+      socket.emit('my__message', generateMessage(user.name, text), user.avatar, isReply, replyTo, replyText, id, targetId);
+      socket.broadcast.to(user.key).emit('newMessage', generateMessage(user.name, text), user.avatar, isReply, replyTo, replyText, id, targetId);
     }
   });
 

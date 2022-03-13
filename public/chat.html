@@ -108,11 +108,11 @@
     
     
       <template id="message-template" type="text/template">
-        <li class="message">
+        <li class="message" id="{{id}}">
           <div class="avatar"><img id="avatar" src="{{attrVal}}" height="40px" width="40px" alt="" srcset=""></div>
           <div class="message__body">
-            <div class="message__title title" {{attr}}="{{messageTitleStyle}}"><h3>{{{replyIcon}}}{{from}}</h3></div>
-            <div class="reply-message replyMessage" {{attr}}="{{replyMessageStyle}}">{{reply}}</div>
+            <div class="message__title title" {{attr}}="{{messageTitleStyle}}"><h3>{{from}}</h3></div>
+            <div class="reply-message replyMessage" {{attr}}="{{replyMessageStyle}}"><a href="#{{RepId}}" style="color: white;">{{reply}}</a></div>
             <div class="main-message">
               <p class="textMessage">{{text}}</p>
               <span class='time'>{{createdAt}}</span>
@@ -123,11 +123,11 @@
       </template>
   
       <template id="my-message-template" type="text/template">
-        <li class="my__message">
+        <li class="my__message" id="{{id}}">
           <!--div class="avatar"><img id="avatar" {{attr}}="{{attrVal}}" height="40px" width="40px" alt="" srcset=""></-div-->
           <div class="my__message__body">
-            <div class="my__message__title title" {{attr}}="{{messageTitleStyle}}"><h3>{{{replyIcon}}}{{from}}</h3></div>
-            <div class="my-reply-message replyMessage" {{attr}}="{{replyMessageStyle}}">{{reply}}</div>
+            <div class="my__message__title title" {{attr}}="{{messageTitleStyle}}"><h3>{{from}}</h3></div>
+            <div class="my-reply-message replyMessage" {{attr}}="{{replyMessageStyle}}"><a href="#{{RepId}}" style="color: white;">{{reply}}</a></div>
             <div class="main-message">
               <span class='time'>{{createdAt}}</span>
               <p class="textMessage">{{text}}</p>

@@ -358,6 +358,7 @@ scrollbar-width: none;  /* Firefox */
     grid-template-rows: 1fr;
     scroll-behavior: smooth;
     list-style-type: none;
+    margin-top: 65px;
     gap: 2px;
     .message, .my__message{
       display: flex;
@@ -366,7 +367,12 @@ scrollbar-width: none;  /* Firefox */
       justify-content: flex-start;
       width: 100%;
       gap: 5px;
-      
+      &:target .textMessage{
+        //background: cornflowerblue;
+        animation-name: pulse-animation;
+        animation-iteration-count: 2;
+        animation-duration: 0.1s;
+      }
       .message__body{
         display: flex;
         flex-direction: column;
@@ -557,6 +563,15 @@ img{
     &:hover{
       cursor: pointer;
     }
+  }
+}
+
+@keyframes pulse-animation {
+  0% {
+    background: rgb(29, 90, 204);
+  }
+  100% {
+    background: var(--blue);
   }
 }
 
