@@ -140,11 +140,12 @@ html{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    height: 200px;
+    height: 150px;
     width: 200px;
     align-items: center;
     justify-content: center;
-    align-content: center;
+    align-content: flex-start;
+    overflow: scroll;
     img{
       width: 40px;
       height: 40px;

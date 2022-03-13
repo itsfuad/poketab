@@ -181,7 +181,7 @@ select:-webkit-autofill:focus {
           flex-direction: row;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
-  height: 200px;
+  height: 150px;
   width: 200px;
   -webkit-box-align: center;
       -ms-flex-align: center;
@@ -189,8 +189,9 @@ select:-webkit-autofill:focus {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  -ms-flex-line-pack: center;
-      align-content: center;
+  -ms-flex-line-pack: start;
+      align-content: flex-start;
+  overflow: scroll;
 }
 
 .avatars img {

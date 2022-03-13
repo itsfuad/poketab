@@ -95,11 +95,11 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText) 
       text: message.text,
       from: `${message.from} replied to ${replyTo}`,
       reply: replyText,
+      replyIcon: "<img src='images/reply-blue.png' height='15px' width='15px'>",
       createdAt: formattedTime,
-      display: "block",
-      transformTitle: "translateY(20px)",
-      transformReply: "translateY(20px)",
-      attr: "src",
+      attr: "style",
+      replyMessageStyle: `display: block; transform: translateY(20px);`,
+      messageTitleStyle: `transform: translateY(20px)`,
       attrVal: `images/avatars/${avatar}(custom).png`
     });
   }
@@ -108,11 +108,10 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText) 
     html = Mustache.render(template, {
       text: message.text,
       from: message.from,
-      display: "none",
-      transformTitle: "translateY(0px)",
-      transformReply: "translateY(0px)",
+      attr: "style",
+      replyMessageStyle: `display: none; transform: translateY(0px);`,
+      messageTitleStyle: `transform: translateY(0px)`,
       createdAt: formattedTime,
-      attr: "src",
       attrVal: `images/avatars/${avatar}(custom).png`
     });
   }
@@ -140,11 +139,11 @@ socket.on('my__message', function (message, avatar, isReply, replyTo, replyText)
       text: message.text,
       from: `You replied to ${replyTo}`,
       reply: replyText,
+      replyIcon: "<img src='images/reply-blue.png' height='15px' width='15px'>",
       createdAt: formattedTime,
-      display: "block",
-      transformTitle: "translateY(20px)",
-      transformReply: "translateY(20px)",
-      attr: "src",
+      attr: "style",
+      replyMessageStyle: `display: block; transform: translateY(20px);`,
+      messageTitleStyle: `display: block; transform: translateY(20px)`,
       attrVal: `images/avatars/${avatar}(custom).png`
     });
   }
@@ -153,11 +152,10 @@ socket.on('my__message', function (message, avatar, isReply, replyTo, replyText)
     html = Mustache.render(template, {
       text: message.text,
       from: message.from,
-      display: "none",
-      transformTitle: "translateY(0px)",
-      transformReply: "translateY(0px)",
+      attr: "style",
+      replyMessageStyle: `display: none; transform: translateY(0px);`,
+      messageTitleStyle: `display: none; transform: translateY(0px)`,
       createdAt: formattedTime,
-      attr: "src",
       attrVal: `images/avatars/${avatar}(custom).png`
     });
   }

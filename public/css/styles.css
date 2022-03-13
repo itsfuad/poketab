@@ -42,6 +42,34 @@ body {
   overscroll-behavior-y: contain;
 }
 
+.intro {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 50px;
+  margin-top: 80vh;
+}
+
+.intro h2 {
+  font-size: 1.5rem;
+  font-family: 'Comforter';
+  text-align: center;
+}
+
+.intro .credit {
+  font-size: 0.7rem;
+}
+
 h1:before {
   content: "// ";
 }
@@ -253,6 +281,8 @@ button:disabled {
   display: -ms-flexbox;
   display: flex;
   margin-bottom: 5px;
+  background: black;
+  mix-blend-mode: screen;
   -webkit-box-align: baseline;
   -ms-flex-align: baseline;
   align-items: baseline;
@@ -384,7 +414,6 @@ button:disabled {
 #retlocation {
   -webkit-filter: invert(1);
           filter: invert(1);
-  mix-blend-mode: screen;
   height: 40px;
   width: 40px;
 }
@@ -399,20 +428,17 @@ button:disabled {
 }
 
 #messages {
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
   padding: 10px;
-  background: transparent;
   display: -ms-grid;
   display: grid;
+  grid-auto-flow: row;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
   -ms-grid-rows: 1fr;
       grid-template-rows: 1fr;
-  -webkit-box-align: end;
-      -ms-flex-align: end;
-          align-items: end;
   scroll-behavior: smooth;
   list-style-type: none;
   gap: 2px;
@@ -537,6 +563,16 @@ button:disabled {
 #messages .message__title h3 {
   width: 100%;
   text-align: left;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
 }
 
 #messages .my__message__title h3 {
@@ -623,7 +659,7 @@ button:disabled {
 }
 
 .info:hover::after {
-  content: 'PokeTab Messanger \A Version: 3.2.0 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: https:flaticon.com';
+  content: 'PokeTab Messanger \A Version: 3.2.2 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: https:flaticon.com';
   position: absolute;
   bottom: 0;
   right: 0;
