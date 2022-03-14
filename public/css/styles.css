@@ -476,11 +476,15 @@ button:disabled {
   display: -ms-flexbox;
   display: flex;
   border-radius: 25px;
-  color: white;
+  color: silver;
   z-index: 150;
   opacity: 1;
   text-align: left;
-  height: 33px;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  height: 100%;
   width: 62px;
   -webkit-transition: 200ms;
   transition: 200ms;
@@ -490,9 +494,9 @@ button:disabled {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
 }
 
 #messages .message:target .textMessage, #messages .my__message:target .textMessage {
@@ -701,7 +705,7 @@ button:disabled {
 }
 
 .info:hover::after {
-  content: 'PokeTab Messanger \A Version: 3.2.3 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: https:flaticon.com';
+  content: 'PokeTab Messanger \A Version: 3.2.4 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: https:flaticon.com';
   position: absolute;
   bottom: 0;
   right: 0;

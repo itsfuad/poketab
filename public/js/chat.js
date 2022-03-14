@@ -97,6 +97,7 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, 
       reply: replyText,
       id: id,
       RepId: targetId,
+      repIcon: `<img src='./../images/reply-blue.png' height='10px' width='10px' class='rep-icon'>`,
       createdAt: formattedTime,
       attr: "style",
       replyMessageStyle: `display: block; transform: translateY(20px);`,
@@ -144,6 +145,7 @@ socket.on('my__message', function (message, avatar, isReply, replyTo, replyText,
       id: id,
       RepId: targetId,
       reply: replyText,
+      repIcon: `<img src='./../images/reply-blue.png' height='10px' width='10px' class='rep-icon'>`,
       createdAt: formattedTime,
       attr: "style",
       replyMessageStyle: `display: block; transform: translateY(20px);`,
@@ -338,7 +340,7 @@ $('#messages').on('click', function (evt) {
   ////evt.preventDefault();
   //console.log('clicked on messages');
   let target = evt.target;
-  //console.log(evt);
+  //console.log(target);
   if (target.className === 'textMessage'){
     targetId = target.parentElement.parentElement.parentElement.id;
     //trim target text to 10 charecters
