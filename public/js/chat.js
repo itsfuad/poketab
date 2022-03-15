@@ -382,11 +382,14 @@ $('.users').on('click', function (evt) {
   if (target.className === 'user'){
     let targetId = target.id;
     socket.emit('vibrate', myname, targetId);
-    $('.popup-message').text(`You just vibrated ${target.innerText}'s Device`);
-    $('.popup-message').fadeIn(500);
-    setTimeout(function(){
-      $('.popup-message').fadeOut(500);
-    }, 1000);
+
+    if (targetId !== myid){
+      $('.popup-message').text(`You just vibrated ${target.innerText}'s Device`);
+      $('.popup-message').fadeIn(500);
+      setTimeout(function(){
+        $('.popup-message').fadeOut(500);
+      }, 1000);
+    }
   }
 });
 
