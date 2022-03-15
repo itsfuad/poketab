@@ -475,6 +475,21 @@ scrollbar-width: none;  /* Firefox */
     }
 }
 
+.popup-message{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  background: var(--background-light);
+  padding: 10px;
+  border-radius: 15px;
+  backdrop-filter: blur(2px);
+  font-size: 0.6rem;
+  transform: translateX(-50%);
+}
 
 .chat__footer{
   display: flex;
@@ -637,6 +652,7 @@ img{
   }
   .chat__main{
     padding: 0 10%;
+    position: relative;
   }
   #messages{
     .textMessage, .replyMessage{

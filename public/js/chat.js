@@ -6,6 +6,7 @@ let elegant = new Audio('./../sounds/elegant.wav');
 let typing_sound = new Audio('./../sounds/typing.wav');
 
 let myname;
+let myid;
 
 const appHeight = () => {
   const doc = document.documentElement
@@ -67,17 +68,17 @@ socket.on('disconnect', function () {
   console.log('Disconnected from server');
 });
 
-socket.on('updateUserList', function (user, key, avatars) {
+socket.on('updateUserList', function (users, ids, key, avatars) {
   let ol = $('<ul></ul>');
-
-  for (let i = 0; i < user.length; i++){
-    ol.append($('<li></li>').html(`<img height='30px' width='30px' src='images/avatars/${avatars[i]}(custom).png'> ${user[i]}`));
+  //console.log(users);
+  for (let i = 0; i < users.length; i++){
+    ol.append($(`<li class='user' id='${ids[i]}'></li>`).html(`<img height='30px' width='30px' src='images/avatars/${avatars[i]}(custom).png'> ${users[i]}`));
   }
 
   //$("body").get(0).style.setProperty('--pattern-image', `url("./../images/avatars/${avatars}\(custom\).png")`)
   
 
-  $('.menu').text(`Online: ${user.length}`);
+  $('.menu').text(`Online: ${users.length}`);
   $('.keyname1').text(`${key}`);
   $('.keyname2').text(`${key}`);
   $('.users').html(ol);
@@ -181,8 +182,9 @@ socket.on('my__message', function (message, avatar, isReply, replyTo, replyText,
 });
 
 
-socket.on('server_message', function(message, name = null){
+socket.on('server_message', function(message, name = null, id = null){
   myname = name || myname;
+  myid = id || myid;
   juntos.play();
   let formattedTime = moment(message.createdAt).format('h:mm a');
   let template = $('#server-message-template').html();
@@ -234,6 +236,21 @@ socket.on('typing', (user) => {
 socket.on('stoptyping', () => {
   $('#typingindicator').html('');
   updateScroll();
+});
+
+socket.on('vibrateResponse', (sender_name, id) => {
+  if (id == myid)
+  {
+    //alert('You have been vibrated by ' + sender_name);
+    if(sender_name == myname) sender_name = 'You';
+    //vibrate
+    $('.popup-message').text(`${sender_name} just vibrated your Device`);
+    $('.popup-message').fadeIn(500);
+    navigator.vibrate(1000);
+    setTimeout(function(){
+      $('.popup-message').fadeOut(500);
+    }, 1000);
+  }
 });
 
 $('#message-form').on('submit', function (e) {
@@ -337,7 +354,7 @@ let replyTo, replyText;
 let targetId;
 
 $('#messages').on('click', function (evt) {
-  ////evt.preventDefault();
+  evt.preventDefault();
   //console.log('clicked on messages');
   let target = evt.target;
   //console.log(target);
@@ -357,6 +374,23 @@ $('#messages').on('click', function (evt) {
     $('#textbox').focus();
   }
 });
+
+$('.users').on('click', function (evt) {
+  evt.preventDefault();
+  console.log('clicked on users');
+  let target = evt.target;
+  if (target.className === 'user'){
+    let targetId = target.id;
+    socket.emit('vibrate', myname, targetId);
+    $('.popup-message').text(`You just vibrated ${target.innerText}'s Device`);
+    $('.popup-message').fadeIn(500);
+    setTimeout(function(){
+      $('.popup-message').fadeOut(500);
+    }, 1000);
+  }
+});
+
+
 
 
 window.addEventListener('resize', () => {

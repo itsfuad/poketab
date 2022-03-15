@@ -40,6 +40,11 @@ class Users {
     var avatarArray = users.map((user) => user.avatar);
     return avatarArray;
   }
+  getUserId(key){
+    var users = this.users.filter((user) => user.key === key);
+    var idArray = users.map((user) => user.id);
+    return idArray;
+  }
 }
 
 module.exports = {Users};
