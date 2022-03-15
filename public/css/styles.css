@@ -626,9 +626,7 @@ button:disabled {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  -webkit-box-align: end;
-      -ms-flex-align: end;
-          align-items: flex-end;
+  gap: 5px;
 }
 
 #messages .my__message__title h3 {

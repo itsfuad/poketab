@@ -470,7 +470,7 @@ scrollbar-width: none;  /* Firefox */
       text-align: left;
       display: flex;
       flex-direction: row;
-      align-items: flex-end;
+      gap: 5px;
     }
     .my__message__title h3{
       width: 100%;
