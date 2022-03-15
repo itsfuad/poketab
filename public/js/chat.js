@@ -354,7 +354,7 @@ let replyTo, replyText;
 let targetId;
 
 $('#messages').on('click', function (evt) {
-  evt.preventDefault();
+  //evt.preventDefault();
   //console.log('clicked on messages');
   let target = evt.target;
   //console.log(target);
