@@ -459,12 +459,18 @@ button:disabled {
   gap: 5px;
 }
 
-#messages .message .textMessage:hover, #messages .my__message .textMessage:hover {
-  cursor: pointer;
-}
-
 #messages .message .textMessage, #messages .my__message .textMessage {
   position: relative;
+}
+
+#messages .message .textMessage a, #messages .my__message .textMessage a {
+  text-decoration: underline;
+  color: white;
+  display: inherit;
+}
+
+#messages .message .textMessage a:hover, #messages .my__message .textMessage a:hover {
+  cursor: pointer;
 }
 
 #messages .message .textMessage:hover::after, #messages .my__message .textMessage:hover::after {
@@ -497,6 +503,10 @@ button:disabled {
   -webkit-box-align: start;
       -ms-flex-align: start;
           align-items: flex-start;
+}
+
+#messages .message .textMessage:hover::after:hover, #messages .my__message .textMessage:hover::after:hover {
+  cursor: pointer;
 }
 
 #messages .message:target .textMessage, #messages .my__message:target .textMessage {
@@ -782,7 +792,7 @@ img {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  padding: 10px;
+  padding: 10px 30px 10px 10px;
   background: var(--background-light);
   border-radius: 10px;
   -webkit-backdrop-filter: blur(2px);
@@ -803,6 +813,8 @@ img {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .toast-popup .toast-popup-replying-to .toast-popup-name {
@@ -816,6 +828,8 @@ img {
 .toast-popup .toast-popup-close {
   color: orangered;
   font-weight: 100;
+  position: absolute;
+  right: 10px;
 }
 
 .toast-popup .toast-popup-close:hover {

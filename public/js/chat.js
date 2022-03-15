@@ -93,7 +93,7 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, 
     if (replyTo == myname) replyTo = 'You';
     template = $('#message-template').html();
     html = Mustache.render(template, {
-      text: message.text,
+      text: linkify(message.text),
       from: `${message.from} replied to ${replyTo}`,
       reply: replyText,
       id: id,
@@ -109,7 +109,7 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, 
   else{
     template = $('#message-template').html();
     html = Mustache.render(template, {
-      text: message.text,
+      text: linkify(message.text),
       from: message.from,
       id: id,
       attr: "style",
@@ -141,7 +141,7 @@ socket.on('my__message', function (message, avatar, isReply, replyTo, replyText,
     if (replyTo == myname) replyTo = 'You';
     template = $('#my-message-template').html();
     html = Mustache.render(template, {
-      text: message.text,
+      text: linkify(message.text),
       from: `You replied to ${replyTo}`,
       id: id,
       RepId: targetId,
@@ -157,7 +157,7 @@ socket.on('my__message', function (message, avatar, isReply, replyTo, replyText,
   else{
     template = $('#my-message-template').html();
     html = Mustache.render(template, {
-      text: message.text,
+      text: linkify(message.text),
       from: message.from,
       id: id,
       attr: "style",
