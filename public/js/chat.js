@@ -226,9 +226,13 @@ socket.on('newLocationMessage', function (message) {
   updateScroll();
 });
 
-socket.on('typing', (user) => {
-  let li = $('<li></li>').text(user + ' is typing...');
-  $('#typingindicator').append(li);
+socket.on('typing', (user, avatar) => {
+  let template = $('#typing-template').html();
+  let html = Mustache.render(template, {
+    attrVal: `./../images/avatars/${avatar}(custom).png`,
+    from: user
+  });
+  $('#typingindicator').append(html);
   updateScroll();
   typing_sound.play();
 });
@@ -319,8 +323,6 @@ $('#textbox').on('keydown', function () {
     socket.emit('stoptyping');
   }, 1000);
 });
-
-
 
 
 $('.menu').on('click', function () {

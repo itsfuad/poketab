@@ -108,13 +108,13 @@ io.on('connection', (socket) => {
   socket.on('typing', () => {
     let user = users.getUser(socket.id);
     if (user) {
-      socket.broadcast.emit('typing', user.name);
+      socket.broadcast.emit('typing', user.name, user.avatar);
     }
   });
   socket.on('stoptyping', () => {
     let user = users.getUser(socket.id);
     if (user) {
-      socket.broadcast.emit('stoptyping', user.name);
+      socket.broadcast.emit('stoptyping');
     }
   });
   socket.on('newUserRequest', key => {
