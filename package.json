@@ -1,6 +1,6 @@
 {
   "name": "chatmate",
-  "version": "3.1.0",
+  "version": "3.2.5",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,8 @@
   "dependencies": {
     "express": "^4.14.0",
     "moment": "^2.29.1",
-    "socket.io": "^4.4.1"
+    "socket.io": "^4.4.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "expect": "^27.5.1",

@@ -42,8 +42,31 @@ body {
   overscroll-behavior-y: contain;
 }
 
-h1:before {
-  content: "// ";
+.intro {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding-bottom: 100px;
+}
+
+.intro h2 {
+  font-size: 1.5rem;
+  font-family: 'Comforter';
+  text-align: center;
+}
+
+.intro .credit {
+  font-size: 0.7rem;
 }
 
 .wrapper {
@@ -127,6 +150,7 @@ button:hover {
   padding: 0;
   font-family: Now;
   font-weight: 300;
+  caret-color: var(--blue);
 }
 
 li,
@@ -211,26 +235,6 @@ button:disabled {
   background-attachment: fixed;
 }
 
-.chat__messages {
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
-  padding: 10px;
-  background: transparent;
-  display: -ms-grid;
-  display: grid;
-  -ms-grid-rows: 1fr;
-      grid-template-rows: 1fr;
-  -webkit-box-align: end;
-      -ms-flex-align: end;
-          align-items: end;
-  scroll-behavior: smooth;
-  list-style-type: none;
-  gap: 2px;
-}
-
 #send-location:hover {
   cursor: pointer;
 }
@@ -239,7 +243,6 @@ button:disabled {
   width: 35px;
   height: 35px;
   border-radius: 50%;
-  margin-right: 10px;
   text-align: center;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -250,55 +253,6 @@ button:disabled {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-}
-
-.message, .my__message {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-}
-
-.message {
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: flex-start;
-}
-
-.my__message {
-  -webkit-box-align: end;
-      -ms-flex-align: end;
-          align-items: flex-end;
-}
-
-.message__title {
-  padding-left: 10px;
-}
-
-.message__title h3 {
-  font-size: 0.7rem;
-  width: 100%;
-}
-
-.title {
-  margin-top: 5px !important;
-}
-
-.message__title h4 {
-  margin-right: 10px;
-}
-
-.my__message__title h3 {
-  width: 100%;
-  font-size: 0.7rem;
-  text-align: right;
-  padding-right: 5px;
 }
 
 .location__message {
@@ -323,50 +277,14 @@ button:disabled {
   display: -ms-flexbox;
   display: flex;
   margin-bottom: 5px;
+  background: black;
+  mix-blend-mode: screen;
   -webkit-box-align: baseline;
   -ms-flex-align: baseline;
   align-items: baseline;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
-}
-
-.message__body, .my__message__body {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  gap: 0;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -ms-flex-line-pack: center;
-      align-content: center;
-  -webkit-box-align: end;
-      -ms-flex-align: end;
-          align-items: flex-end;
-}
-
-.message__body p, .my__message__body p {
-  background: var(--background-light);
-  border-radius: 24px;
-  padding: 12px;
-  font-size: 0.7rem;
-  width: 60vw;
-  max-width: -webkit-max-content;
-  max-width: -moz-max-content;
-  max-width: max-content;
-  overflow-wrap: break-word;
-  text-align: justify;
-  -webkit-backdrop-filter: blur(2px);
-          backdrop-filter: blur(2px);
-}
-
-.my__message__body p {
-  background: var(--blue);
 }
 
 .server__message {
@@ -477,10 +395,6 @@ button:disabled {
   display: none;
 }
 
-.text {
-  display: none;
-}
-
 #typingindicator {
   list-style-type: none;
   color: grey;
@@ -496,7 +410,6 @@ button:disabled {
 #retlocation {
   -webkit-filter: invert(1);
           filter: invert(1);
-  mix-blend-mode: screen;
   height: 40px;
   width: 40px;
 }
@@ -508,6 +421,250 @@ button:disabled {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+}
+
+#messages {
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  padding: 10px;
+  display: -ms-grid;
+  display: grid;
+  grid-auto-flow: row;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  -ms-grid-rows: 1fr;
+      grid-template-rows: 1fr;
+  scroll-behavior: smooth;
+  list-style-type: none;
+  margin-top: 65px;
+  gap: 2px;
+}
+
+#messages .message, #messages .my__message {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  width: 100%;
+  gap: 5px;
+}
+
+#messages .message .textMessage, #messages .my__message .textMessage {
+  position: relative;
+}
+
+#messages .message .textMessage a, #messages .my__message .textMessage a {
+  text-decoration: underline;
+  color: white;
+  display: inherit;
+}
+
+#messages .message .textMessage a:hover, #messages .my__message .textMessage a:hover {
+  cursor: pointer;
+}
+
+#messages .message .textMessage:hover::after, #messages .my__message .textMessage:hover::after {
+  content: url("./../images/reply.png");
+  position: absolute;
+  top: 0px;
+  right: 90%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: 25px;
+  color: silver;
+  z-index: 150;
+  opacity: 1;
+  text-align: left;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  height: 100%;
+  width: 62px;
+  -webkit-transition: 200ms;
+  transition: 200ms;
+  white-space: pre;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+#messages .message .textMessage:hover::after:hover, #messages .my__message .textMessage:hover::after:hover {
+  cursor: pointer;
+}
+
+#messages .message:target .textMessage, #messages .my__message:target .textMessage {
+  -webkit-animation: pulse-animation 0.3s 2;
+          animation: pulse-animation 0.3s 2;
+}
+
+#messages .message .message__body, #messages .my__message .message__body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+#messages .message .textMessage {
+  background: #26313d;
+  padding: 10px 15px;
+  border-radius: 25px;
+  font-size: 0.7rem;
+}
+
+#messages .message .textMessage:hover::after {
+  left: 90%;
+}
+
+#messages .my__message .textMessage {
+  background: var(--blue);
+  padding: 10px 15px;
+  border-radius: 25px;
+  font-size: 0.7rem;
+}
+
+#messages .main-message {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  z-index: 2;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+}
+
+#messages .replyMessage {
+  padding: 10px 15px 25px 10px;
+  font-size: 0.7rem;
+  background: #3f5266;
+  border-radius: 15px 15px 15px 0px;
+  z-index: 1;
+}
+
+#messages .replyMessage, #messages .title {
+  -webkit-transform: translateY(20px);
+          transform: translateY(20px);
+}
+
+#messages .replyMessage.active, #messages .title.active {
+  -webkit-transform: translateY(20px);
+          transform: translateY(20px);
+}
+
+#messages .my-reply-message {
+  border-radius: 15px 15px 0px 15px;
+}
+
+#messages .my__message {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+}
+
+#messages .my__message__body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+#messages .my__message__body .title h3 {
+  width: 100%;
+  text-align: right;
+}
+
+#messages .title h3 {
+  font-size: 0.7rem;
+}
+
+#messages .message__title h3 {
+  width: 100%;
+  text-align: left;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  gap: 5px;
+}
+
+#messages .my__message__title h3 {
+  width: 100%;
+  text-align: right;
+}
+
+#messages .textMessage, #messages .replyMessage {
+  max-width: 50vw;
+  text-align: justify;
+  word-wrap: break-word;
+}
+
+.popup-message {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  background: var(--background-light);
+  padding: 10px;
+  border-radius: 15px;
+  -webkit-backdrop-filter: blur(2px);
+          backdrop-filter: blur(2px);
+  font-size: 0.6rem;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
 }
 
 .chat__footer {
@@ -583,7 +740,7 @@ button:disabled {
 }
 
 .info:hover::after {
-  content: 'PokeTab Messanger \A Version: 3.0.2 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: https:flaticon.com';
+  content: 'PokeTab Messanger \A Version: 3.2.5 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: https:flaticon.com';
   position: absolute;
   bottom: 0;
   right: 0;
@@ -614,6 +771,81 @@ img {
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
+}
+
+.toast-popup {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 10px 30px 10px 10px;
+  background: var(--background-light);
+  border-radius: 10px;
+  -webkit-backdrop-filter: blur(2px);
+          backdrop-filter: blur(2px);
+}
+
+.toast-popup .toast-popup-replying-to {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.toast-popup .toast-popup-replying-to .toast-popup-name {
+  color: var(--blue);
+}
+
+.toast-popup .toast-popup-replying-to .toast-popup-message {
+  font-size: 0.7rem;
+}
+
+.toast-popup .toast-popup-close {
+  color: orangered;
+  font-weight: 100;
+  position: absolute;
+  right: 10px;
+}
+
+.toast-popup .toast-popup-close:hover {
+  cursor: pointer;
+}
+
+@-webkit-keyframes pulse-animation {
+  50% {
+    -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+  }
+}
+
+@keyframes pulse-animation {
+  50% {
+    -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+  }
 }
 
 @media (orientation: landscape) and (min-device-aspect-ratio: 1 / 1) {
@@ -647,9 +879,6 @@ img {
     width: 25vw;
     border-right: 2px solid var(--background-light);
   }
-  .message__body p, .my__message__body p {
-    width: 40vw;
-  }
   .topbar {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -663,6 +892,10 @@ img {
   }
   .chat__main {
     padding: 0 10%;
+    position: relative;
+  }
+  #messages .textMessage, #messages .replyMessage {
+    max-width: 30vw;
   }
 }
 /*# sourceMappingURL=styles.css.map */

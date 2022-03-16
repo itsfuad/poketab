@@ -35,9 +35,20 @@ body {
   overscroll-behavior-y: contain;
 }
 
-
-h1:before {
-  content: "// ";
+.intro{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 100px;
+  h2{
+    font-size: 1.5rem;
+    font-family: 'Comforter';
+    text-align: center;
+  }
+  .credit{
+    font-size: 0.7rem;
+  }
 }
 
 .wrapper {
@@ -101,6 +112,7 @@ button:hover {
   padding: 0;
   font-family: Now;
   font-weight: 300;
+  caret-color: var(--blue);
 }
 
 
@@ -183,20 +195,6 @@ button:disabled {
   background-attachment: fixed;
 }
 
-.chat__messages {
-  flex-grow: 1;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
-  padding: 10px;
-  background: transparent;
-  display: grid;
-  grid-template-rows: 1fr;
-  align-items: end;
-  scroll-behavior: smooth;
-  list-style-type: none;
-  gap: 2px;
-  //backdrop-filter: blur(2px);
-}
 
 #send-location{
   &:hover{
@@ -208,7 +206,6 @@ button:disabled {
   width: 35px;
   height: 35px;
   border-radius: 50%;
-  margin-right: 10px;
   //background: #698ea5;
   text-align: center;
   display: flex;
@@ -216,47 +213,6 @@ button:disabled {
   justify-content: center;
 }
 
-
-
-.message, .my__message{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.message{
-  align-items: flex-start;
-}
-.my__message{
-  align-items: flex-end;
-}
-
-.message__title{
-  padding-left: 10px;
-  h3{
-    font-size: 0.7rem;
-    width: 100%;
-  }
-}
-
-.title{
-  margin-top: 5px !important;
-}
-
-.message__title{
-  h4 {
-    margin-right: 10px;
-  }
-} 
-
-.my__message__title{
-  h3{
-    width: 100%;
-    font-size: 0.7rem;
-    text-align: right;
-    padding-right: 5px;
-  }
-}
 
 .location__message{
   display: flex;
@@ -269,6 +225,8 @@ button:disabled {
   padding-left: 10px;
   display: flex;
   margin-bottom: 5px;
+  background: black;
+  mix-blend-mode: screen;
   -webkit-box-align: baseline;
   -ms-flex-align: baseline;
   align-items: baseline;
@@ -276,33 +234,6 @@ button:disabled {
   -ms-flex-pack: center;
   justify-content: center;
 }
-
-.message__body, .my__message__body{
-  display: flex;
-  flex-direction: row;
-  gap: 0;
-  justify-content: center;
-  align-content: center;
-  align-items: flex-end;
-  p{
-    background: var(--background-light);
-    border-radius: 24px;
-    padding: 12px;
-    font-size: 0.7rem;
-    width: 60vw;
-    max-width: max-content;
-    overflow-wrap: break-word;
-    text-align: justify;
-    backdrop-filter: blur(2px);
-  }
-}
-
-.my__message__body{
-  p{
-    background: var(--blue);
-  }
-}
-
 
 .server__message{
   text-align: center;
@@ -390,10 +321,6 @@ scrollbar-width: none;  /* Firefox */
   display: none;
 }
 
-.text{
-  display: none;
-}
-
 #typingindicator{
   list-style-type: none;
   color: grey;
@@ -407,7 +334,6 @@ scrollbar-width: none;  /* Firefox */
 
 #retlocation{
   filter: invert(1);
-  mix-blend-mode: screen;
   height: 40px;
   width: 40px;
 }
@@ -417,6 +343,161 @@ scrollbar-width: none;  /* Firefox */
   align-items: center;
 }
 
+#messages{
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    padding: 10px;
+    display: grid;
+    grid-auto-flow: row;
+    flex-grow: 1;
+    grid-template-rows: 1fr;
+    scroll-behavior: smooth;
+    list-style-type: none;
+    margin-top: 65px;
+    gap: 2px;
+    .message, .my__message{
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: flex-start;
+      width: 100%;
+      gap: 5px;
+      .textMessage{
+        position: relative;
+        a{
+          text-decoration: underline;
+          color: white;
+          display: inherit;
+          &:hover{
+            cursor: pointer;
+          }
+        }
+        &:hover::after{
+          content: url('./../images/reply.png');
+          position: absolute;
+          top: 0px;
+          right: 90%;
+          display: flex;
+          border-radius: 25px;
+          color: silver;
+          //backdrop-filter: blur(1px);
+          //background: #26313d;
+          z-index: 150;
+          opacity: 1;
+          text-align: left;
+          flex-direction: row;
+          height: 100%;
+          width: 62px;
+          transition: 200ms;
+          white-space: pre;
+          align-content: center;
+          justify-content: center;
+          align-items: flex-start;
+          &:hover{
+            cursor: pointer;
+          }
+        }
+      }
+      &:target .textMessage{
+        //background: cornflowerblue;
+        animation: pulse-animation 0.3s 2;
+      }
+      .message__body{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-end;
+      }
+    }
+    .message .textMessage{
+      background: #26313d;
+      padding: 10px 15px;
+      border-radius: 25px;
+      font-size: 0.7rem;
+      &:hover::after{
+        left: 90%;
+      }
+    }
+    .my__message .textMessage{
+      background: var(--blue);
+      padding: 10px 15px;
+      border-radius: 25px;
+      font-size: 0.7rem;
+    }
+    .main-message{
+      display: flex;
+      flex-direction: row;
+      z-index: 2;
+      align-items: flex-end;
+    }
+    .replyMessage{
+      padding: 10px 15px 25px 10px;
+      font-size: 0.7rem;
+      background: #3f5266;
+      border-radius: 15px 15px 15px 0px;
+      z-index: 1;
+    }
+    .replyMessage, .title{
+      transform: translateY(20px);
+      &.active{
+        transform: translateY(20px);
+      }
+    }
+    .my-reply-message{
+      border-radius: 15px 15px 0px 15px;
+    }
+    .my__message{
+      flex-direction: row-reverse;
+    }
+    .my__message__body{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: flex-end;
+      .title{
+        h3{
+          width: 100%;
+          text-align: right;
+        }
+      }
+    }
+
+    .title h3{
+      font-size: 0.7rem;
+    }
+    .message__title h3{
+      width: 100%;
+      text-align: left;
+      display: flex;
+      flex-direction: row;
+      gap: 5px;
+    }
+    .my__message__title h3{
+      width: 100%;
+      text-align: right;
+    }
+    .textMessage, .replyMessage{
+      max-width: 50vw;
+      text-align: justify;
+      word-wrap: break-word;
+    }
+}
+
+.popup-message{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  background: var(--background-light);
+  padding: 10px;
+  border-radius: 15px;
+  backdrop-filter: blur(2px);
+  font-size: 0.6rem;
+  transform: translateX(-50%);
+}
 
 .chat__footer{
   display: flex;
@@ -469,7 +550,7 @@ scrollbar-width: none;  /* Firefox */
   }
   //create a about tooltip on hover
   &:hover::after{
-    content: 'PokeTab Messanger \A Version: 3.0.2 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: https:flaticon.com';
+    content: 'PokeTab Messanger \A Version: 3.2.5 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: https:flaticon.com';
     position: absolute;
     bottom: 0;
     right: 0;
@@ -499,6 +580,47 @@ img{
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
+}
+
+.toast-popup{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px 10px 10px;
+  background: var(--background-light);
+  border-radius: 10px;
+  backdrop-filter: blur(2px);
+  .toast-popup-replying-to{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    .toast-popup-name{
+      color: var(--blue);
+    }
+    .toast-popup-message{
+      font-size: 0.7rem;
+    }
+  }
+  .toast-popup-close{
+    color: orangered;
+    font-weight: 100;
+    position: absolute;
+    right: 10px;
+    &:hover{
+      cursor: pointer;
+    }
+  }
+}
+
+@keyframes pulse-animation {
+  50% {
+    transform: scale(1.1);
+  }
 }
 
 @media (orientation: landscape) and (min-device-aspect-ratio: 1/1) {
@@ -531,11 +653,6 @@ img{
     }
   }
 
-  .message__body, .my__message__body{
-    p{
-      width: 40vw;
-    }
-  }
   .topbar{
     display: flex;
     height: 0;
@@ -547,5 +664,11 @@ img{
   }
   .chat__main{
     padding: 0 10%;
+    position: relative;
+  }
+  #messages{
+    .textMessage, .replyMessage{
+      max-width: 30vw;
+    }
   }
 }

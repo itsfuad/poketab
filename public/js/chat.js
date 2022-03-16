@@ -5,6 +5,9 @@ let juntos = new Audio('./../sounds/juntos.wav');
 let elegant = new Audio('./../sounds/elegant.wav');
 let typing_sound = new Audio('./../sounds/typing.wav');
 
+let myname;
+let myid;
+
 const appHeight = () => {
   const doc = document.documentElement
   doc.style.setProperty('--app-height', `${window.innerHeight}px`)
@@ -65,34 +68,57 @@ socket.on('disconnect', function () {
   console.log('Disconnected from server');
 });
 
-socket.on('updateUserList', function (user, key, avatars) {
+socket.on('updateUserList', function (users, ids, key, avatars) {
   let ol = $('<ul></ul>');
-
-  for (let i = 0; i < user.length; i++){
-    ol.append($('<li></li>').html(`<img height='30px' width='30px' src='images/avatars/${avatars[i]}(custom).png'> ${user[i]}`));
+  //console.log(users);
+  for (let i = 0; i < users.length; i++){
+    ol.append($(`<li class='user' id='${ids[i]}'></li>`).html(`<img height='30px' width='30px' src='images/avatars/${avatars[i]}(custom).png'> ${users[i]}`));
   }
 
   //$("body").get(0).style.setProperty('--pattern-image', `url("./../images/avatars/${avatars}\(custom\).png")`)
   
 
-  $('.menu').text(`Online: ${user.length}`);
+  $('.menu').text(`Online: ${users.length}`);
   $('.keyname1').text(`${key}`);
   $('.keyname2').text(`${key}`);
   $('.users').html(ol);
 });
 
-socket.on('newMessage', function (message, avatar) {
+socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, id, targetId) {
   elegant.play();
   //console.log(`Avatar: ${avatar}`);
   let formattedTime = moment(message.createdAt).format('h:mm a');
-  let template = $('#message-template').html();
-  let html = Mustache.render(template, {
-    text: message.text,
-    from: message.from,
-    createdAt: formattedTime,
-    attr: "src",
-    attrVal: `images/avatars/${avatar}(custom).png`
-  });
+  let template, html;
+  if (isReply){
+    if (replyTo == myname) replyTo = 'You';
+    template = $('#message-template').html();
+    html = Mustache.render(template, {
+      text: linkify(message.text),
+      from: `${message.from} replied to ${replyTo}`,
+      reply: replyText,
+      id: id,
+      RepId: targetId,
+      repIcon: `<img src='./../images/reply-blue.png' height='10px' width='10px' class='rep-icon'> `,
+      createdAt: formattedTime,
+      attr: "style",
+      replyMessageStyle: `display: block; transform: translateY(20px);`,
+      messageTitleStyle: `transform: translateY(20px)`,
+      attrVal: `images/avatars/${avatar}(custom).png`
+    });
+  }
+  else{
+    template = $('#message-template').html();
+    html = Mustache.render(template, {
+      text: linkify(message.text),
+      from: message.from,
+      id: id,
+      attr: "style",
+      replyMessageStyle: `display: none; transform: translateY(0px);`,
+      messageTitleStyle: `transform: translateY(0px)`,
+      createdAt: formattedTime,
+      attrVal: `images/avatars/${avatar}(custom).png`
+    });
+  }
   //pop.play();
   //$("#messages li:last div p")
   html = html.replace(/¶/g ,'<br>');
@@ -102,18 +128,45 @@ socket.on('newMessage', function (message, avatar) {
   {
     $("#messages li:last div p").css({"background": "none", "font-size": "30px", "padding": "0px"});
   }
+  closePopup();
   updateScroll();
 });
 
-socket.on('my__message', function (message) {
+socket.on('my__message', function (message, avatar, isReply, replyTo, replyText, id, targetId) {
   pop.play();
+  //console.log(id);
   let formattedTime = moment(message.createdAt).format('h:mm a');
-  let template = $('#my-message-template').html();
-  let html = Mustache.render(template, {
-    text: message.text,
-    from: message.from,
-    createdAt: formattedTime
-  });
+  let template, html;
+  if (isReply){
+    if (replyTo == myname) replyTo = 'You';
+    template = $('#my-message-template').html();
+    html = Mustache.render(template, {
+      text: linkify(message.text),
+      from: `You replied to ${replyTo}`,
+      id: id,
+      RepId: targetId,
+      reply: replyText,
+      repIcon: `<img src='./../images/reply-blue.png' height='10px' width='10px' class='rep-icon'> `,
+      createdAt: formattedTime,
+      attr: "style",
+      replyMessageStyle: `display: block; transform: translateY(20px);`,
+      messageTitleStyle: `display: block; transform: translateY(20px)`,
+      attrVal: `images/avatars/${avatar}(custom).png`
+    });
+  }
+  else{
+    template = $('#my-message-template').html();
+    html = Mustache.render(template, {
+      text: linkify(message.text),
+      from: message.from,
+      id: id,
+      attr: "style",
+      replyMessageStyle: `display: none; transform: translateY(0px);`,
+      messageTitleStyle: `display: none; transform: translateY(0px)`,
+      createdAt: formattedTime,
+      attrVal: `images/avatars/${avatar}(custom).png`
+    });
+  }
   //pop.play();
   html = html.replace(/¶/g ,'<br>');
   //html = linkify(html);
@@ -124,11 +177,14 @@ socket.on('my__message', function (message) {
   {
     $("#messages li:last div p").css({"background": "none", "font-size": "30px", "padding": "0px"});
   }
+  closePopup();
   updateScroll();
 });
 
 
-socket.on('server_message', function(message){
+socket.on('server_message', function(message, name = null, id = null){
+  myname = name || myname;
+  myid = id || myid;
   juntos.play();
   let formattedTime = moment(message.createdAt).format('h:mm a');
   let template = $('#server-message-template').html();
@@ -182,12 +238,27 @@ socket.on('stoptyping', () => {
   updateScroll();
 });
 
+socket.on('vibrateResponse', (sender_name, id) => {
+  if (id == myid)
+  {
+    //alert('You have been vibrated by ' + sender_name);
+    if(sender_name == myname) sender_name = 'You';
+    //vibrate
+    $('.popup-message').text(`${sender_name} just vibrated your Device`);
+    $('.popup-message').fadeIn(500);
+    navigator.vibrate(1000);
+    setTimeout(function(){
+      $('.popup-message').fadeOut(500);
+    }, 1000);
+  }
+});
+
 $('#message-form').on('submit', function (e) {
   e.preventDefault();
   let messageTextbox = $('[name=message]');
   let text = messageTextbox.val();
   messageTextbox.val('');
-
+  
   //trim text to 255 charecters
   if (text.length > 10000) {
     text = text.substring(0, 10000);
@@ -203,12 +274,11 @@ $('#message-form').on('submit', function (e) {
 
   socket.emit('createMessage', {
     text: text
-  }, function () {
-    //console.log(text);
-    //document.getElementById('textbox').style.background = '#f0f';
-    //document.getElementById('textbox').style.height = '52px';
+  }, isReply, replyTo, replyText ,targetId, function () {
     $('#textbox').css('height', 'auto');
   });
+  $('#textbox').css('height', 'auto');
+  closePopup();
 });
 
 let locationButton = $('#send-location');
@@ -267,10 +337,80 @@ $('#textbox').on('focus', function () {
   updateScroll();
 });
 
+function closePopup()
+{
+  isReply = false;
+  $('.toast-popup').hide();
+  $('.toast-popup-name').text('');
+  $('.toast-popup-message').text('');
+}
+
+$('.toast-popup-close').on('click', ()=>{
+  closePopup();
+});
+
+let isReply = false;
+let replyTo, replyText;
+let targetId;
+
+$('#messages').on('click', function (evt) {
+  //evt.preventDefault();
+  //console.log('clicked on messages');
+  let target = evt.target;
+  //console.log(target);
+  if (target.className === 'textMessage'){
+    targetId = target.parentElement.parentElement.parentElement.id;
+    //trim target text to 10 charecters
+    replyText =  `${target.innerText.substring(0, 300)}...`;
+    replyTo = evt.target.parentElement.previousElementSibling.previousElementSibling.innerText;
+    replyTo = replyTo.replace(/ replied to [a-zA-Z]+/g, '');
+    let replyToPop = replyTo;
+    if (replyToPop == myname) replyToPop = 'You';
+    if (replyTo == 'You') replyTo = myname;
+    isReply = true;
+    $('.toast-popup').show();
+    $('.toast-popup-name').text(`Replying to ${replyToPop}`);
+    $('.toast-popup-message').text(`${target.innerText.substring(0, 100)}`);
+    $('#textbox').focus();
+  }
+});
+
+$('.users').on('click', function (evt) {
+  evt.preventDefault();
+  console.log('clicked on users');
+  let target = evt.target;
+  if (target.className === 'user'){
+    let targetId = target.id;
+    socket.emit('vibrate', myname, targetId);
+
+    if (targetId !== myid){
+      $('.popup-message').text(`You just vibrated ${target.innerText}'s Device`);
+      $('.popup-message').fadeIn(500);
+      setTimeout(function(){
+        $('.popup-message').fadeOut(500);
+      }, 1000);
+    }
+  }
+});
+
+
+
+
 window.addEventListener('resize', () => {
   updateScroll();
 });
 
+$(window).on('hashchange', function(e){
+  setTimeout(function(){
+    let hash = location.hash.replace('#','');
+    if(hash != ''){
+        // Show the hash if it's set
+        //alert(hash);
+        // Clear the hash in the URL
+        location.hash = '';
+    }
+  }, 600);
+})
 
 $('.send').on('focus', function(){
   //console.log('focused');
@@ -285,6 +425,7 @@ $("textarea").each(function () {
   this.style.height = "auto";
   this.style.height = (this.scrollHeight) + "px";
 });
+
 
 function linkify(inputText) {
   var replacedText, replacePattern1, replacePattern2, replacePattern3;

@@ -2,6 +2,7 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
+const uuid = require("uuid");
 
 const {generateMessage, generateLocationMessage} = require('./utils/message');
 const {isRealString} = require('./utils/validation');
@@ -67,23 +68,24 @@ io.on('connection', (socket) => {
     socket.join(params.key);
     users.removeUser(socket.id);
     users.addUser(socket.id, params.name, params.key, avatar);
-    io.to(params.key).emit('updateUserList', users.getUserList(params.key), params.key, users.getAvatarList(params.key));
-    socket.emit('server_message', generateMessage('', `You joined the chat.🔥`));
+    //console.log(socket.id);
+    io.to(params.key).emit('updateUserList', users.getUserList(params.key), users.getUserId(params.key), params.key, users.getAvatarList(params.key));
+    socket.emit('server_message', generateMessage('', `You joined the chat.🔥`), params.name, socket.id);
     socket.broadcast.to(params.key).emit('server_message', generateMessage(params.name, `${params.name} joined the chat.🔥`));
-    callback();
   });
 
-  socket.on('createMessage', (message, callback) => {
+  socket.on('createMessage', (message, isReply, replyTo, replyText, targetId, callback) => {
     let user = users.getUser(socket.id);
     if (user && isRealString(message.text)) {
       text = censorBadWords(message.text);
       //console.log(user);
       //io.to(user.key).emit('newMessage', generateMessage(user.name, text));
       //console.log(user.avatar);
-      socket.emit('my__message', generateMessage(user.name, text), user.avatar);
-      socket.broadcast.to(user.key).emit('newMessage', generateMessage(user.name, text), user.avatar);
+      let id = uuid.v4();
+      //console.log(typeof(id));
+      socket.emit('my__message', generateMessage(user.name, text), user.avatar, isReply, replyTo, replyText, id, targetId);
+      socket.broadcast.to(user.key).emit('newMessage', generateMessage(user.name, text), user.avatar, isReply, replyTo, replyText, id, targetId);
     }
-    callback();
   });
 
   socket.on('createLocationMessage', (coords) => {
@@ -97,7 +99,7 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     let user = users.removeUser(socket.id);
     if (user) {
-      io.to(user.key).emit('updateUserList', users.getUserList(user.key), user.key, users.getAvatarList(user.key));
+      io.to(user.key).emit('updateUserList', users.getUserList(user.key), users.getUserId(user.key), user.key, users.getAvatarList(user.key));
       io.to(user.key).emit('server_message', generateMessage(user.name, `${user.name} left the chat.🐸`));
       console.log(`User ${user.name} disconnected from key ${user.key}`);
     }
@@ -121,6 +123,14 @@ io.on('connection', (socket) => {
     let avatarList = users.getAvatarList(key);
     socket.emit('newUserResponse', userlist, avatarList);
   });
+
+  socket.on('vibrate', (sender_name, userId) => {
+    let user = users.getUser(userId);
+    if (user) {
+      io.to(user.key).emit('vibrateResponse', sender_name, userId); 
+    }
+  });
+
 });
 
 

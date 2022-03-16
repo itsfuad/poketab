@@ -16,7 +16,6 @@ if (error_code !== url){
 }
 
 
-
 $('#next').on('click',()=>{
     //alert('sadasd');
     let key = $('#key').val();
@@ -39,12 +38,11 @@ socket.on('newUserResponse', (users, avatars) => {
         $('.form-2').css({'text-align':'center','color': 'red', 'display': 'flex','flex-direction': 'column', 'justify-content': 'center', 'align-items': 'center'});
         $('.form-2 img').css('border-radius','50%');
     }
-    $('.form-1').hide(100);
-    $('.form-2').show(100);
-
     e_avatars.forEach(avatar => {
         $(`label[for='${avatar}']`).hide();
     });
+    $('.form-1').hide(100);
+    $('.form-2').show(100);
 });
 
 function check(){

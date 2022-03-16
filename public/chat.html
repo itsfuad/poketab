@@ -46,7 +46,7 @@
 
   <meta charset="utf-8">
   <title>Inbox | PokeTab Messanger</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="manifest" href="manifest.json" crossorigin="use-credentials">
   <link rel="icon" href="./images/avatars/pikachu.png">
@@ -56,7 +56,7 @@
 <body>
   <div id="preloader" style="z-index: 100; overflow: hidden; visibility: visible; position: absolute;height: 100vh;width: 100vw;display: flex;position: fixed; flex-direction: column; background: #111d2a;justify-content: center;align-items: center;">
     <!--create a preloder screen-->
-    <img src="./images/loader.gif" height="80px" width="80px" alt="" srcset="" style="filter: invert(1); mix-blend-mode: screen;">
+    <img src="./images/loader.gif" height="100px" width="100px" alt="" srcset="">
     <h3 style="margin: 0;">Connecting to server</h3>
   </div>
   <div id="main-screen" style="visibility: hidden;">
@@ -81,8 +81,22 @@
       </div>
       
       <div class="chat__main">
-        <ol id="messages" class="chat__messages"></ol>
+        <ol id="messages" class="chat__messages">
+          <div class="intro">
+            <img src="images/loader.gif" height="100px" width="100px" alt="" srcset="">
+            <h2>Welcome To PokeTab Messanger</h2>
+            <div class="credit">Developed by <a href="http://itsfuad.netlify.app">Fuad Hasan</a> 🐸</div>
+          </div>
+        </ol>
+        <div class="toast-popup" style="display: none;">
+          <div class="toast-popup-replying-to">
+            <div class="toast-popup-name"></div>
+            <div class="toast-popup-message"></div>
+          </div>
+          <div class="toast-popup-close">×</div>
+        </div>
         <ul id="typingindicator"></ul>
+        <div class="popup-message" style="display: none;"></div>
         <div class="chat__footer">
           <form id="message-form">
             <!--input name="message" type="text" placeholder="Message" autofocus autocomplete="off" /-->
@@ -95,21 +109,32 @@
     
     
       <template id="message-template" type="text/template">
-        <li class="message">
-          <div class="message__title title">
-            <h3>{{from}}</h3>
-          </div>
+        <li class="message" id="{{id}}">
+          <div class="avatar"><img id="avatar" src="{{attrVal}}" height="40px" width="40px" alt="" srcset=""></div>
           <div class="message__body">
-            <div class="avatar"><img id="avatar" {{attr}}="{{attrVal}}" height="40px" width="40px" alt="" srcset=""></div><p>{{text}}</p><span class='time'>{{createdAt}}</span>
+            <div class="message__title title" {{attr}}="{{messageTitleStyle}}"><h3>{{{repIcon}}}{{from}}</h3></div>
+            <div class="reply-message replyMessage" {{attr}}="{{replyMessageStyle}}"><a href="#{{RepId}}" style="color: silver;">{{reply}}</a></div>
+            <div class="main-message">
+              <p class="textMessage">{{{text}}}</p>
+              <span class='time'>{{createdAt}}</span>
+            </div>
           </div>
+          
         </li>
       </template>
   
       <template id="my-message-template" type="text/template">
-        <li class="my__message">
+        <li class="my__message" id="{{id}}">
+          <!--div class="avatar"><img id="avatar" {{attr}}="{{attrVal}}" height="40px" width="40px" alt="" srcset=""></-div-->
           <div class="my__message__body">
-            <span class='time'>{{createdAt}}</span><p>{{text}}</p>
+            <div class="my__message__title title" {{attr}}="{{messageTitleStyle}}"><h3>{{{repIcon}}}{{from}}</h3></div>
+            <div class="my-reply-message replyMessage" {{attr}}="{{replyMessageStyle}}"><a href="#{{RepId}}" style="color: silver;">{{reply}}</a></div>
+            <div class="main-message">
+              <span class='time'>{{createdAt}}</span>
+              <p class="textMessage">{{{text}}}</p>
+            </div>
           </div>
+          
         </li>
       </template>
   
