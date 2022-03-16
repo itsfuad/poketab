@@ -123,7 +123,7 @@ ul {
 
 h3 {
   text-align: center;
-  font-size: 1.3rem;
+  font-size: 0.7rem;
   color: var(--blue);
 }
 
@@ -326,6 +326,62 @@ scrollbar-width: none;  /* Firefox */
   color: grey;
   font-size: 0.7rem;
   padding: 0 0 5px 15px;
+  li{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+  }
+}
+
+.ticontainer{
+  background: #26313d;
+  padding: 10px 15px;
+  border-radius: 25px;
+  font-size: 0.7rem;
+  width: min-content;
+}
+
+.tiblock {
+  align-items: center;
+  display: flex;
+  height: 17px;
+  width: min-content;
+}
+
+.ticontainer .tidot {
+  background-color: #90949c;
+}
+
+.tidot {
+  -webkit-animation: mercuryTypingAnimation 1.5s infinite ease-in-out;
+  border-radius: 10px;
+  display: inline-block;
+  height: 5px;
+  margin-right: 3px;
+  width: 5px;
+}
+
+@-webkit-keyframes mercuryTypingAnimation{
+0%{
+-webkit-transform:translateY(0px)
+}
+28%{
+-webkit-transform:translateY(-5px)
+}
+44%{
+-webkit-transform:translateY(0px)
+}
+}
+
+.tidot:nth-child(1){
+-webkit-animation-delay:200ms;
+}
+.tidot:nth-child(2){
+-webkit-animation-delay:300ms;
+}
+.tidot:nth-child(3){
+-webkit-animation-delay:400ms;
 }
 
 #sendlocation{
@@ -550,7 +606,7 @@ scrollbar-width: none;  /* Firefox */
   }
   //create a about tooltip on hover
   &:hover::after{
-    content: 'PokeTab Messanger \A Version: 3.2.5 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: https:flaticon.com';
+    content: 'PokeTab Messanger \A Version: 3.2.7 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: https:flaticon.com';
     position: absolute;
     bottom: 0;
     right: 0;
