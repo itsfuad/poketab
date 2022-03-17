@@ -425,6 +425,7 @@ scrollbar-width: none;  /* Firefox */
       gap: 5px;
       .textMessage{
         position: relative;
+        transition: ease-in-out 300ms;
         a{
           text-decoration: underline;
           color: white;
@@ -458,10 +459,6 @@ scrollbar-width: none;  /* Firefox */
             cursor: pointer;
           }
         }
-      }
-      &:target .textMessage{
-        //background: cornflowerblue;
-        animation: pulse-animation 0.3s 2;
       }
       .message__body{
         display: flex;
@@ -675,12 +672,6 @@ img{
     &:hover{
       cursor: pointer;
     }
-  }
-}
-
-@keyframes pulse-animation {
-  50% {
-    transform: scale(1.1);
   }
 }
 

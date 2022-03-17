@@ -247,10 +247,12 @@ input[type='button'], input[type='submit'] {
 
 input[type='button']:hover, input[type='submit']:hover {
   cursor: pointer;
+  background: var(--hoverblue);
+  border: 2px solid var(--hoverblue);
 }
 
 input[type='button']:focus, input[type='submit']:focus {
   outline: none;
-  border: 2px solid var(--blue);
+  border: 2px solid var(--hoverblue);
 }
 /*# sourceMappingURL=index.css.map */

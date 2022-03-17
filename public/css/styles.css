@@ -548,6 +548,8 @@ button:disabled {
 
 #messages .message .textMessage, #messages .my__message .textMessage {
   position: relative;
+  -webkit-transition: ease-in-out 300ms;
+  transition: ease-in-out 300ms;
 }
 
 #messages .message .textMessage a, #messages .my__message .textMessage a {
@@ -594,11 +596,6 @@ button:disabled {
 
 #messages .message .textMessage:hover::after:hover, #messages .my__message .textMessage:hover::after:hover {
   cursor: pointer;
-}
-
-#messages .message:target .textMessage, #messages .my__message:target .textMessage {
-  -webkit-animation: pulse-animation 0.3s 2;
-          animation: pulse-animation 0.3s 2;
 }
 
 #messages .message .message__body, #messages .my__message .message__body {
@@ -919,20 +916,6 @@ img {
 
 .toast-popup .toast-popup-close:hover {
   cursor: pointer;
-}
-
-@-webkit-keyframes pulse-animation {
-  50% {
-    -webkit-transform: scale(1.1);
-            transform: scale(1.1);
-  }
-}
-
-@keyframes pulse-animation {
-  50% {
-    -webkit-transform: scale(1.1);
-            transform: scale(1.1);
-  }
 }
 
 @media (orientation: landscape) and (min-device-aspect-ratio: 1 / 1) {

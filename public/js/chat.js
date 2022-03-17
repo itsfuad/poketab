@@ -97,7 +97,7 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, 
       from: `${message.from} replied to ${replyTo}`,
       reply: replyText,
       id: id,
-      RepId: targetId,
+      repId: targetId,
       repIcon: `<img src='./../images/reply-blue.png' height='10px' width='10px' class='rep-icon'> `,
       createdAt: formattedTime,
       attr: "style",
@@ -144,7 +144,7 @@ socket.on('my__message', function (message, avatar, isReply, replyTo, replyText,
       text: linkify(message.text),
       from: `You replied to ${replyTo}`,
       id: id,
-      RepId: targetId,
+      repId: targetId,
       reply: replyText,
       repIcon: `<img src='./../images/reply-blue.png' height='10px' width='10px' class='rep-icon'> `,
       createdAt: formattedTime,
@@ -359,7 +359,7 @@ $('#messages').on('click', function (evt) {
   //evt.preventDefault();
   //console.log('clicked on messages');
   let target = evt.target;
-  //console.log(target);
+  
   if (target.className === 'textMessage'){
     targetId = target.parentElement.parentElement.parentElement.id;
     //trim target text to 10 charecters
@@ -374,6 +374,23 @@ $('#messages').on('click', function (evt) {
     $('.toast-popup-name').text(`Replying to ${replyToPop}`);
     $('.toast-popup-message').text(`${target.innerText.substring(0, 100)}`);
     $('#textbox').focus();
+  }
+  else if (target.className.includes('replyMessage')){
+    const msgId = target.dataset.repid;
+    const element = document.getElementById(msgId);
+    /*const elementRect = element.getBoundingClientRect();
+    const absoluteElementTop = elementRect.top + window.pageYOffset;
+    const middle = absoluteElementTop - (window.innerHeight / 2);
+    window.scrollTo(0, middle);*/
+    element.scrollIntoView({block: "center"});
+    $('#messages .my__message').css('filter', 'brightness(0.5)');
+    $('#messages .message').css('filter', 'brightness(0.5)');
+    $(`#${msgId}`).css('filter', 'initial');
+    setTimeout(function(){
+      $('#messages .my__message').css('filter', '');
+      $('#messages .message').css('filter', '');
+      $(`#${msgId}`).css('filter', '');
+    }, 1000);
   }
 });
 

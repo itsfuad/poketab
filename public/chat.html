@@ -114,7 +114,7 @@
           <div class="avatar"><img id="avatar" src="{{attrVal}}" height="40px" width="40px" alt="" srcset=""></div>
           <div class="message__body">
             <div class="message__title title" {{attr}}="{{messageTitleStyle}}"><h3>{{{repIcon}}}{{from}}</h3></div>
-            <div class="reply-message replyMessage" {{attr}}="{{replyMessageStyle}}"><a href="#{{RepId}}" style="color: silver;">{{reply}}</a></div>
+            <div class="reply-message replyMessage" {{attr}}="{{replyMessageStyle}}" data-repid="{{repId}}">{{reply}}</div>
             <div class="main-message">
               <p class="textMessage">{{{text}}}</p>
               <span class='time'>{{createdAt}}</span>
@@ -129,7 +129,7 @@
           <!--div class="avatar"><img id="avatar" {{attr}}="{{attrVal}}" height="40px" width="40px" alt="" srcset=""></-div-->
           <div class="my__message__body">
             <div class="my__message__title title" {{attr}}="{{messageTitleStyle}}"><h3>{{{repIcon}}}{{from}}</h3></div>
-            <div class="my-reply-message replyMessage" {{attr}}="{{replyMessageStyle}}"><a href="#{{RepId}}" style="color: silver;">{{reply}}</a></div>
+            <div class="my-reply-message replyMessage" {{attr}}="{{replyMessageStyle}}" data-repid="{{repId}}">{{reply}}</div>
             <div class="main-message">
               <span class='time'>{{createdAt}}</span>
               <p class="textMessage">{{{text}}}</p>
@@ -181,7 +181,7 @@
   <script defer src="/js/libs/moment.js"></script>
   <script defer src="/js/libs/mustache.js"></script>
   <script defer src="/js/libs/deparam.js"></script>
-  <script defer src="/js/chat.js"></script>
+  <script defer src="/js/chat.min.js"></script>
 </body>
 
 </html>
