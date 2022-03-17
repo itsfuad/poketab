@@ -17,6 +17,16 @@ let users = new Users();
 
 app.use(express.static(publicPath));
 
+
+app.get('*', (req, res) => {
+  //console.log(req);
+  res.sendFile(publicPath + '/404.html');
+});
+app.get('/', (req, res) => {
+  //console.log(req);
+  res.sendFile(publicPath + '/index.html');
+});
+
 function censorBadWords(text)
 {
   text = text.replace(/fuck/g, 'f**k');
