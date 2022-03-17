@@ -15,9 +15,20 @@ const appHeight = () => {
 window.addEventListener('resize', appHeight);
 appHeight();
 
+let scrolling = false;
+
+window.onscroll = (e) => {  
+  scrolling = true;
+  setTimeout(() => {
+    scrolling = false;
+  }, 2000);  
+}
 
 function updateScroll(){
-  var element = document.getElementById("messages");
+  if (scrolling) {
+    return;
+  }
+  let element = document.getElementById("messages");
   element.scrollTop = element.scrollHeight;
 }
 
