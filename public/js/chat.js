@@ -237,20 +237,14 @@ socket.on('newLocationMessage', function (message) {
   updateScroll();
 });
 
-socket.on('typing', (user, avatar) => {
-  let template = $('#typing-template').html();
-  let html = Mustache.render(template, {
-    attrVal: `./../images/avatars/${avatar}(custom).png`,
-    from: user
-  });
-  $('#typingindicator').append(html);
+socket.on('typing', (user, id) => {
+  let li = $(`<li id="${id}"></li>`).text(user + ' is typing...');
+  $('#typingindicator').append(li);
   updateScroll();
-  typing_sound.play();
 });
 
-socket.on('stoptyping', () => {
-  $('#typingindicator').html('');
-  updateScroll();
+socket.on('stoptyping', (id) => {
+  $(`#${id}`).remove();
 });
 
 socket.on('vibrateResponse', (sender_name, id) => {
@@ -287,6 +281,8 @@ $('#message-form').on('submit', function (e) {
   text = text.trim();
   text = text.replace(/\n/g, '¶');
 
+  typing = false;
+  socket.emit('stoptyping');
   socket.emit('createMessage', {
     text: text
   }, isReply, replyTo, replyText ,targetId, function () {
@@ -430,23 +426,10 @@ window.addEventListener('resize', () => {
   updateScroll();
 });
 
-$(window).on('hashchange', function(e){
-  setTimeout(function(){
-    let hash = location.hash.replace('#','');
-    if(hash != ''){
-        // Show the hash if it's set
-        //alert(hash);
-        // Clear the hash in the URL
-        location.hash = '';
-    }
-  }, 600);
-})
-
 $('.send').on('focus', function(){
   //console.log('focused');
   $('#textbox').focus();
 });
-
 
 
 $("textarea").each(function () {

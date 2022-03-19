@@ -83,11 +83,11 @@
       <div class="chat__main">
         <ol id="messages" class="chat__messages">
           <div class="intro">
-            <img src="images/loader.gif" height="100px" width="100px" alt="" srcset="">
             <h2>Welcome To PokeTab Messanger</h2>
             <div class="credit">Developed by <a href="http://itsfuad.netlify.app">Fuad Hasan</a> 🐸</div>
           </div>
         </ol>
+        <ul id="typingindicator"></ul>
         <div class="toast-popup" style="display: none;">
           <div class="toast-popup-replying-to">
             <div class="toast-popup-name"></div>
@@ -95,8 +95,6 @@
           </div>
           <div class="toast-popup-close">×</div>
         </div>
-        <ul id="typingindicator">          
-        </ul>
         <div class="popup-message" style="display: none;"></div>
         <div class="chat__footer">
           <form id="message-form">
@@ -156,7 +154,7 @@
           </div>
         </li>
       </template>
-      <template id="typing-template">
+      <!--template id="typing-template">
         <li>
           <div class="avatar"><img id="avatar" src="{{attrVal}}" height="40px" width="40px" alt="" srcset=""></div>
           <div class="message__body">
@@ -172,7 +170,7 @@
             </div>
           </div>
         </li>
-      </template>
+      </template-->
     </div>
   </div>
 
@@ -181,7 +179,7 @@
   <script defer src="/js/libs/moment.js"></script>
   <script defer src="/js/libs/mustache.js"></script>
   <script defer src="/js/libs/deparam.js"></script>
-  <script defer src="/js/chat.min.js"></script>
+  <script defer src="/js/chat.js"></script>
 </body>
 
 </html>
