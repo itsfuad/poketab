@@ -728,6 +728,10 @@ button:disabled {
   word-wrap: break-word;
 }
 
+.audio-btn:hover {
+  cursor: pointer;
+}
+
 .popup-message {
   display: -webkit-box;
   display: -ms-flexbox;

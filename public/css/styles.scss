@@ -542,6 +542,12 @@ scrollbar-width: none;  /* Firefox */
     }
 }
 
+.audio-btn{
+  &:hover{
+    cursor: pointer;
+  }
+}
+
 .popup-message{
   display: flex;
   flex-direction: column;

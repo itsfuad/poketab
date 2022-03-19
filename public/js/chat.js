@@ -420,6 +420,45 @@ $('.users').on('click', function (evt) {
 });
 
 
+// Based On https://github.com/webrtc/samples/tree/gh-pages/src/content/getusermedia/audio
+
+function handleSuccess(stream) {
+  if (window.stream) {
+    window.stream.getAudioTracks().forEach(track => track.stop());
+    window.stream = null;
+  } else {
+    const audio = document.createElement('audio');
+    audio.controls = true;
+    audio.autoplay = true;
+    window.stream = stream;
+    audio.srcObject = stream;
+
+    stream.oninactive = function() {
+      console.log('Stream ended');
+    };
+  }
+}
+
+function handleError(e){
+  console.log("ruin", e.message);
+}
+
+
+$('.audio-btn').on('click', ()=>{
+  if ( window.stream ) {
+    $('.audio-btn img').attr('src', './images/mic-off-red.png');
+  } else {
+    $('.audio-btn img').attr('src', './images/mic-on-green.png');
+  }
+  if (navigator.mediaDevices) {
+    const constraints = window.constraints = {
+      audio: true, 
+      video: false
+    }
+    navigator.mediaDevices.getUserMedia(constraints).then(handleSuccess).catch(handleError)
+  }
+});
+
 
 
 window.addEventListener('resize', () => {
