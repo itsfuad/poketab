@@ -492,6 +492,9 @@ scrollbar-width: none;  /* Firefox */
       background: #3f5266;
       border-radius: 15px 15px 15px 0px;
       z-index: 1;
+      &:hover{
+        cursor: pointer;
+      }
     }
     .replyMessage, .title{
       transform: translateY(20px);

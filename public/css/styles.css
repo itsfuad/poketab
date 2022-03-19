@@ -654,6 +654,10 @@ button:disabled {
   z-index: 1;
 }
 
+#messages .replyMessage:hover {
+  cursor: pointer;
+}
+
 #messages .replyMessage, #messages .title {
   -webkit-transform: translateY(20px);
           transform: translateY(20px);
