@@ -438,12 +438,10 @@ scrollbar-width: none;  /* Firefox */
           content: url('./../images/reply.png');
           position: absolute;
           top: 0px;
-          right: 90%;
+          left: -50px;
           display: flex;
           border-radius: 25px;
           color: silver;
-          //backdrop-filter: blur(1px);
-          //background: #26313d;
           z-index: 150;
           opacity: 1;
           text-align: left;

@@ -566,7 +566,7 @@ button:disabled {
   content: url("./../images/reply.png");
   position: absolute;
   top: 0px;
-  right: 90%;
+  left: -50px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
