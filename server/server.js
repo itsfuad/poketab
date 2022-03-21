@@ -3,6 +3,7 @@ const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
 const uuid = require("uuid");
+const bodyParser = require('body-parser');
 
 const {generateMessage, generateLocationMessage} = require('./utils/message');
 const {isRealString} = require('./utils/validation');
@@ -16,15 +17,22 @@ let io = socketIO(server);
 let users = new Users();
 
 app.use(express.static(publicPath));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-
-
-app.get('/', (req, res) => {
+app.post('/', (req, res) => {
   //console.log(req);
   res.sendFile(publicPath + '/index.html');
 });
 
-app.get('*', (req, res) => {
+app.post('/chat', (req, res) => {
+  console.log(req.body);
+  res.sendFile(publicPath + `/chat.html`);
+  res.redirect(`/chat.html?key=${req.body.key}&name=${req.body.name}&avatar=${req.body.avatar}`);
+});
+
+app.post('*', (req, res) => {
   //console.log(req);
   res.sendFile(publicPath + '/404.html');
 });
