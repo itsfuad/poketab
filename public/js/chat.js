@@ -463,10 +463,11 @@ function emo_test(str){
   return emoji_regex.test(str);
 }
 
-/*
-$("textarea").on("keypress", function(e) {
-  if (e.keyCode === 13) {
-    $(".send").click();
+
+$('#textbox').on('keydown', (evt) => {
+  //console.log('Enter: ', evt.key === 'Enter');
+  //console.log('ctrl: ', evt.ctrlKey);
+  if (evt.ctrlKey && (evt.key === 'Enter')){
+      $('.send').click();
   }
 });
-*/
