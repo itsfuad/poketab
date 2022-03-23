@@ -45,11 +45,14 @@ html{
   body {
     display: flex;
     flex-direction: column;
+    align-items: center;
     background: var(--background);
     background-size: contain;
     color: var(--foreground);
     height: var(--app-height);
     user-select: none;
+    overflow-x: hidden;
+    overflow-y: scroll;
     overscroll-behavior-y: contain;
   }
 
@@ -90,6 +93,7 @@ html{
     width: 100vw;
     justify-content: center;
     background: var(--background);
+    padding-top: 20px;
   }
 
   #form{
@@ -199,4 +203,23 @@ html{
             outline: none;
             border: 2px solid var(--hoverblue);
       }
+}
+
+.howtouse{
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  padding: 30px;
+  text-align: justify;
+  font-size: 0.7rem;
+  color: rgb(186, 186, 186);
+  ul{
+    list-style-type: disc;
+  }
+}
+
+.footer{
+  font-size: 0.6rem;
+  color: rgb(186, 186, 186);
+  padding: 10px;
 }

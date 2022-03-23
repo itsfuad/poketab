@@ -283,9 +283,8 @@ $('#message-form').on('submit', function (e) {
 
   typing = false;
   socket.emit('stoptyping');
-  socket.emit('createMessage', {
-    text: text
-  }, isReply, replyTo, replyText ,targetId, function () {
+  socket.emit('createMessage', {text: text}, isReply, replyTo, replyText ,targetId, 
+  function () {
     $('#textbox').css('height', 'auto');
   });
   $('#textbox').css('height', 'auto');

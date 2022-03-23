@@ -53,6 +53,9 @@ body {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   background: var(--background);
   background-size: contain;
   color: var(--foreground);
@@ -61,6 +64,8 @@ body {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+  overflow-x: hidden;
+  overflow-y: scroll;
   overscroll-behavior-y: contain;
 }
 
@@ -125,6 +130,7 @@ body {
       -ms-flex-pack: center;
           justify-content: center;
   background: var(--background);
+  padding-top: 20px;
 }
 
 #form {
@@ -255,5 +261,30 @@ input[type='button']:hover, input[type='submit']:hover {
 input[type='button']:focus, input[type='submit']:focus {
   outline: none;
   border: 2px solid var(--hoverblue);
+}
+
+.howtouse {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 100vw;
+  padding: 30px;
+  text-align: justify;
+  font-size: 0.7rem;
+  color: #bababa;
+}
+
+.howtouse ul {
+  list-style-type: disc;
+}
+
+.footer {
+  font-size: 0.6rem;
+  color: #bababa;
+  padding: 10px;
 }
 /*# sourceMappingURL=index.css.map */
