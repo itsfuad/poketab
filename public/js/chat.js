@@ -224,11 +224,10 @@ $('#message-form').on('submit', function (e) {
   let formattedTime = moment(moment().valueOf()).format('hh:mm a');
   let template, html;
   if (isReply) {
-    if (replyTo == myname) replyTo = 'You';
     template = $('#my-message-template').html();
     html = Mustache.render(template, {
       text: linkify(text),
-      from: `You replied to ${replyTo}`,
+      from: `You replied to ${replyTo == myname ? 'You': replyTo}`,
       id: replaceId,
       repId: targetId,
       reply: replyText,
@@ -243,6 +242,7 @@ $('#message-form').on('submit', function (e) {
     html = Mustache.render(template, {
       text: linkify(text),
       id: replaceId,
+      from: myname,
       attr: "style",
       replyMessageStyle: `display: none; transform: translateY(0px);`,
       messageTitleStyle: `display: none; transform: translateY(0px)`,
