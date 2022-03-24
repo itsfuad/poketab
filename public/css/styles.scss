@@ -560,6 +560,7 @@ scrollbar-width: none;  /* Firefox */
   backdrop-filter: blur(2px);
   font-size: 0.6rem;
   transform: translateX(-50%);
+  z-index: 100;
 }
 
 .chat__footer{

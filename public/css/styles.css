@@ -757,6 +757,7 @@ button:disabled {
   font-size: 0.6rem;
   -webkit-transform: translateX(-50%);
           transform: translateX(-50%);
+  z-index: 100;
 }
 
 .chat__footer {
