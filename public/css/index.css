@@ -237,8 +237,8 @@ input[type="radio"]:checked + label img {
   padding-top: 10px;
 }
 
-textarea:focus, input:focus {
-  border: none;
+input[type='text'] {
+  border: 2px solid var(--hoverblue);
   outline: none;
 }
 
