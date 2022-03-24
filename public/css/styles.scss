@@ -484,6 +484,7 @@ scrollbar-width: none;  /* Firefox */
       display: flex;
       flex-direction: row;
       z-index: 2;
+      gap: 5px;
       align-items: flex-end;
     }
     .replyMessage{

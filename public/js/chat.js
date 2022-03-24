@@ -1,32 +1,30 @@
-//init socket.io
 const socket = io();
-//load audio files
+
 let pop = new Audio('./../sounds/pop.wav');
 let juntos = new Audio('./../sounds/juntos.wav');
 let elegant = new Audio('./../sounds/elegant.wav');
 let typing_sound = new Audio('./../sounds/typing.wav');
-//my name and id
+
 let myname;
 let myid;
-//resizeable app height
+
 const appHeight = () => {
   const doc = document.documentElement
   doc.style.setProperty('--app-height', `${window.innerHeight}px`)
 }
-//resize event
+
 window.addEventListener('resize', appHeight);
-//init size for every browsers
+
 appHeight();
-//user not scrolling through the messages
+
 let scrolling = false;
-//on user scroll event
 window.onscroll = (e) => {
   scrolling = true;
   setTimeout(() => {
     scrolling = false;
   }, 2000);
 }
-//scroll up function
+
 function updateScroll() {
   if (scrolling) {
     return;
@@ -36,16 +34,13 @@ function updateScroll() {
 }
 
 function scrollToBottom() {
-  // Selectors
   let messages = $('#messages');
   let newMessage = messages.children('li:last-child')
-  // Heights
   let clientHeight = messages.prop('clientHeight');
   let scrollTop = messages.prop('scrollTop');
   let scrollHeight = messages.prop('scrollHeight');
   let newMessageHeight = newMessage.innerHeight();
   let lastMessageHeight = newMessage.prev().innerHeight();
-
   if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
     messages.scrollTop(scrollHeight);
   }
@@ -61,7 +56,6 @@ function censorBadWords(text) {
   text = text.replace(/cock/g, 'c**k');
   text = text.replace(/baal/g, 'b**l');
   text = text.replace(/sex/g, 's*x');
-
   text = text.replace(/Fuck/g, 'F**k');
   text = text.replace(/Shit/g, 'S**t');
   text = text.replace(/Bitch/g, 'B**t');
@@ -75,27 +69,22 @@ function censorBadWords(text) {
 }
 
 function makeid(length) {
-  var result = '';
-  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  var charactersLength = characters.length;
-  for (var i = 0; i < length; i++) {
+  let result = '';
+  let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() *
       charactersLength));
   }
   return result;
 }
 
-//this function runs after connecting to the socket.io server
 socket.on('connect', function () {
-  //get the username, key and avatar info from url
   let params = $.deparam(window.location.search);
   console.log("Connected to server");
   elegant.play();
-  //request for join
   socket.emit('join', params, function (err) {
     if (err) {
-      //alert(err);
-      //check for error callback
       if (err == 'empty') {
         window.location.href = '/?NR_0';
       } else if (err == 'exists') {
@@ -118,7 +107,6 @@ socket.on('disconnect', function () {
 
 socket.on('updateUserList', function (users, ids, key, avatars) {
   let ol = $('<ul></ul>');
-  //console.log(users);
   for (let i = 0; i < users.length; i++) {
     ol.append($(`<li class='user' id='${ids[i]}'></li>`).html(`<img height='30px' width='30px' src='images/avatars/${avatars[i]}(custom).png'> ${users[i]}`));
   }
@@ -177,7 +165,7 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, 
 socket.on('my__message', function (replaceId, id) {
   pop.play();
   $(`#${replaceId}`).attr('id', id);
-  $(`#${id} .sent`).attr('src', './images/seen.png');
+  $(`#${id} .sent`).attr('src', './images/sent-s.png');
 });
 
 
@@ -284,12 +272,8 @@ $('#message-form').on('submit', function (e) {
       createdAt: formattedTime,
     });
   }
-  //pop.play();
   html = html.replace(/¶/g, '<br>');
-  //html = linkify(html);
-  //console.log(html);
-  //$('#messages').append(html);
-  //console.log(emo_test(message.text));
+  $('#messages').append(html);
   if (emo_test(text)) {
     $("#messages li:last div p").css({
       "background": "none",
@@ -297,11 +281,6 @@ $('#message-form').on('submit', function (e) {
       "padding": "0px"
     });
   }
-  //closePopup();
-  //updateScroll();
-
-
-  $('#messages').append(html);
   typing = false;
   socket.emit('stoptyping');
   socket.emit('createMessage', {
@@ -336,8 +315,6 @@ locationButton.on('click', function () {
   });
 });
 
-
-//typing indicator
 let typing = false;
 let timeout = undefined;
 $('#textbox').on('keydown', function () {
@@ -359,14 +336,10 @@ $('#textbox').on('keydown', function () {
 $('.menu').on('click', function () {
   $('.menuwrapper').addClass('active');
 });
-
 $('.chat').on('click', function () {
   $('.menuwrapper').removeClass('active');
 });
-
 $('#textbox').on('focus', function () {
-  //document.getElementById('textbox').style.background = '#f0f';
-  //console.log('text box selected..\nScrolling to bottom');
   updateScroll();
 });
 
@@ -386,13 +359,9 @@ let replyTo, replyText;
 let targetId;
 
 $('#messages').on('click', function (evt) {
-  //evt.preventDefault();
-  //console.log('clicked on messages');
   let target = evt.target;
-
   if (target.className === 'textMessage') {
     targetId = target.parentElement.parentElement.parentElement.id;
-    //trim target text to 10 charecters
     replyText = `${target.innerText.substring(0, 200)} ...`;
     replyTo = evt.target.parentElement.previousElementSibling.previousElementSibling.innerText;
     replyTo = replyTo.replace(/ replied to [a-zA-Z]+/g, '');
@@ -407,10 +376,6 @@ $('#messages').on('click', function (evt) {
   } else if (target.className.includes('replyMessage')) {
     const msgId = target.dataset.repid;
     const element = document.getElementById(msgId);
-    /*const elementRect = element.getBoundingClientRect();
-    const absoluteElementTop = elementRect.top + window.pageYOffset;
-    const middle = absoluteElementTop - (window.innerHeight / 2);
-    window.scrollTo(0, middle);*/
     element.scrollIntoView({
       block: "center"
     });
@@ -432,7 +397,6 @@ $('.users').on('click', function (evt) {
   if (target.className === 'user') {
     let targetId = target.id;
     socket.emit('vibrate', myname, targetId);
-
     if (targetId !== myid) {
       $('.popup-message').text(`You just vibrated ${target.innerText}'s Device`);
       $('.popup-message').fadeIn(500);
@@ -444,14 +408,11 @@ $('.users').on('click', function (evt) {
 });
 
 
-
-
 window.addEventListener('resize', () => {
   updateScroll();
 });
 
 $('.send').on('focus', function () {
-  //console.log('focused');
   $('#textbox').focus();
 });
 
@@ -465,32 +426,23 @@ $("textarea").each(function () {
 
 
 function linkify(inputText) {
-  var replacedText, replacePattern1, replacePattern2, replacePattern3;
-
-  //URLs starting with http://, https://, or ftp://
+  let replacedText, replacePattern1, replacePattern2, replacePattern3;
   replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
   replacedText = inputText.replace(replacePattern1, '<a href="$1" target="_blank">$1</a>');
-
-  //URLs starting with "www." (without // before it, or it'd re-link the ones done above).
   replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
   replacedText = replacedText.replace(replacePattern2, '$1<a href="http://$2" target="_blank">$2</a>');
-
-  //Change email addresses to mailto:: links.
   replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
   replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
   return replacedText;
 }
 
-var emoji_regex = /^(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])+$/;
+const emoji_regex = /^(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])+$/;
 
 function emo_test(str) {
   return emoji_regex.test(str);
 }
 
-
 $('#textbox').on('keydown', (evt) => {
-  //console.log('Enter: ', evt.key === 'Enter');
-  //console.log('ctrl: ', evt.ctrlKey);
   if (evt.ctrlKey && (evt.key === 'Enter')) {
     $('.send').click();
   }

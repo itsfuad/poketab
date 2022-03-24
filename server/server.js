@@ -30,7 +30,6 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.post('/', (req, res) => {
-  //console.log(req);
   res.sendFile(publicPath + '/index.html');
 });
 
@@ -41,7 +40,6 @@ app.post('/chat', (req, res) => {
 });
 
 app.post('*', (req, res) => {
-  //console.log(req);
   res.sendFile(publicPath + '/404.html');
 });
 
@@ -49,31 +47,23 @@ app.post('*', (req, res) => {
 io.on('connection', (socket) => {
 
   socket.on('join', (params, callback) => {
-    //console.log(params);
     if (!isRealString(params.name) || !isRealString(params.key)) {
       return callback('empty');
     }
     if (params.avatar === undefined) {
       return callback('avatar');
     }
-    //check if username already exists in key
     let userList = users.getUserList(params.key);
     let user = userList.includes(params.name);
     let avatar = params.avatar;
-    //console.log(users.getUserList(params.key));
-    //console.log(userList.includes(params.name));
-    // console.log(params);
     if (user) {
       return callback('exists');
     }
 
     console.log(`New user ${params.name} connected on key ${params.key}`);
-    //console.log(getActivekeys(io));
-
     socket.join(params.key);
     users.removeUser(socket.id);
     users.addUser(socket.id, params.name, params.key, avatar);
-    //console.log(socket.id);
     io.to(params.key).emit('updateUserList', users.getUserList(params.key), users.getUserId(params.key), params.key, users.getAvatarList(params.key));
     socket.emit('server_message', generateMessage('', `You joined the chat.🔥`), params.name, socket.id);
     socket.broadcast.to(params.key).emit('server_message', generateMessage(params.name, `${params.name} joined the chat.🔥`));
@@ -82,11 +72,7 @@ io.on('connection', (socket) => {
   socket.on('createMessage', (message, replaceId, isReply, replyTo, replyText, targetId, callback) => {
     let user = users.getUser(socket.id);
     if (user && isRealString(message.text)) {
-      //console.log(user);
-      //io.to(user.key).emit('newMessage', generateMessage(user.name, text));
-      //console.log(user.avatar);
       let id = uuid.v4();
-      //console.log(typeof(id));
       socket.emit('my__message', replaceId, id);
       socket.broadcast.to(user.key).emit('newMessage', generateMessage(user.name, message.text), user.avatar, isReply, replyTo, replyText, id, targetId);
     }
@@ -94,7 +80,6 @@ io.on('connection', (socket) => {
 
   socket.on('createLocationMessage', (coords) => {
     let user = users.getUser(socket.id);
-
     if (user) {
       io.to(user.key).emit('newLocationMessage', generateLocationMessage(user.name, coords.latitude, coords.longitude));
     }
@@ -134,9 +119,7 @@ io.on('connection', (socket) => {
       io.to(user.key).emit('vibrateResponse', sender_name, userId);
     }
   });
-
 });
-
 
 
 server.listen(port, () => {
