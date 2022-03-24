@@ -94,7 +94,7 @@ io.on('connection', (socket) => {
     socket.broadcast.to(params.key).emit('server_message', generateMessage(params.name, `${params.name} joined the chat.🔥`));
   });
 
-  socket.on('createMessage', (message, isReply, replyTo, replyText, targetId, callback) => {
+  socket.on('createMessage', (message, replaceId, isReply, replyTo, replyText, targetId, callback) => {
     let user = users.getUser(socket.id);
     if (user && isRealString(message.text)) {
       text = censorBadWords(message.text);
@@ -103,7 +103,7 @@ io.on('connection', (socket) => {
       //console.log(user.avatar);
       let id = uuid.v4();
       //console.log(typeof(id));
-      socket.emit('my__message', generateMessage(user.name, text), user.avatar, isReply, replyTo, replyText, id, targetId);
+      socket.emit('my__message', replaceId, id);
       socket.broadcast.to(user.key).emit('newMessage', generateMessage(user.name, text), user.avatar, isReply, replyTo, replyText, id, targetId);
     }
   });

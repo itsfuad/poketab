@@ -504,6 +504,8 @@ scrollbar-width: none;  /* Firefox */
     }
     .my-reply-message{
       border-radius: 15px 15px 0px 15px;
+      position: relative;
+      right: 15px;
     }
     .my__message{
       flex-direction: row-reverse;
@@ -534,6 +536,8 @@ scrollbar-width: none;  /* Firefox */
     .my__message__title h3{
       width: 100%;
       text-align: right;
+      position: relative;
+      right: 15px;
     }
     .textMessage, .replyMessage{
       max-width: 50vw;
@@ -609,7 +613,7 @@ scrollbar-width: none;  /* Firefox */
   }
   //create a about tooltip on hover
   &:hover::after{
-    content: 'PokeTab Messanger \A Version: 3.2.7 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: https:flaticon.com';
+    content: 'PokeTab Messanger \A Version: 3.2.7 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: flaticon.com';
     position: absolute;
     bottom: 0;
     right: 0;

@@ -1,30 +1,33 @@
-let socket = io();
-
+//init socket.io
+const socket = io();
+//load audio files
 let pop = new Audio('./../sounds/pop.wav');
 let juntos = new Audio('./../sounds/juntos.wav');
 let elegant = new Audio('./../sounds/elegant.wav');
 let typing_sound = new Audio('./../sounds/typing.wav');
-
+//my name and id
 let myname;
 let myid;
-
+//resizeable app height
 const appHeight = () => {
   const doc = document.documentElement
   doc.style.setProperty('--app-height', `${window.innerHeight}px`)
 }
+//resize event
 window.addEventListener('resize', appHeight);
+//init size for every browsers
 appHeight();
-
+//user not scrolling through the messages
 let scrolling = false;
-
-window.onscroll = (e) => {  
+//on user scroll event
+window.onscroll = (e) => {
   scrolling = true;
   setTimeout(() => {
     scrolling = false;
-  }, 2000);  
+  }, 2000);
 }
-
-function updateScroll(){
+//scroll up function
+function updateScroll() {
   if (scrolling) {
     return;
   }
@@ -32,7 +35,7 @@ function updateScroll(){
   element.scrollTop = element.scrollHeight;
 }
 
-function scrollToBottom () {
+function scrollToBottom() {
   // Selectors
   let messages = $('#messages');
   let newMessage = messages.children('li:last-child')
@@ -47,21 +50,22 @@ function scrollToBottom () {
     messages.scrollTop(scrollHeight);
   }
 }
-
+//this function runs after connecting to the socket.io server
 socket.on('connect', function () {
+  //get the username, key and avatar info from url
   let params = $.deparam(window.location.search);
   console.log("Connected to server");
   elegant.play();
+  //request for join
   socket.emit('join', params, function (err) {
     if (err) {
       //alert(err);
+      //check for error callback
       if (err == 'empty') {
         window.location.href = '/?NR_0';
-      }
-      else if (err == 'exists'){
+      } else if (err == 'exists') {
         window.location.href = '/?UE_1';
-      }
-      else if (err == 'avatar'){
+      } else if (err == 'avatar') {
         window.location.href = '/?NA_0';
       }
 
@@ -69,8 +73,6 @@ socket.on('connect', function () {
       console.log('No error');
     }
   });
-  //document.getElementById('main-screen').style.visibility = 'visible';
-  //document.getElementById('preloader').style.visibility = 'hidden';
   $('#main-screen').css('visibility', 'visible');
   $('#preloader').css('visibility', 'hidden');
 });
@@ -82,13 +84,9 @@ socket.on('disconnect', function () {
 socket.on('updateUserList', function (users, ids, key, avatars) {
   let ol = $('<ul></ul>');
   //console.log(users);
-  for (let i = 0; i < users.length; i++){
+  for (let i = 0; i < users.length; i++) {
     ol.append($(`<li class='user' id='${ids[i]}'></li>`).html(`<img height='30px' width='30px' src='images/avatars/${avatars[i]}(custom).png'> ${users[i]}`));
   }
-
-  //$("body").get(0).style.setProperty('--pattern-image', `url("./../images/avatars/${avatars}\(custom\).png")`)
-  
-
   $('.menu').text(`Online: ${users.length}`);
   $('.keyname1').text(`${key}`);
   $('.keyname2').text(`${key}`);
@@ -97,10 +95,9 @@ socket.on('updateUserList', function (users, ids, key, avatars) {
 
 socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, id, targetId) {
   elegant.play();
-  //console.log(`Avatar: ${avatar}`);
   let formattedTime = moment(message.createdAt).format('h:mm a');
   let template, html;
-  if (isReply){
+  if (isReply) {
     if (replyTo == myname) replyTo = 'You';
     template = $('#message-template').html();
     html = Mustache.render(template, {
@@ -116,8 +113,7 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, 
       messageTitleStyle: `transform: translateY(20px)`,
       attrVal: `images/avatars/${avatar}(custom).png`
     });
-  }
-  else{
+  } else {
     template = $('#message-template').html();
     html = Mustache.render(template, {
       text: linkify(message.text),
@@ -130,70 +126,27 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, 
       attrVal: `images/avatars/${avatar}(custom).png`
     });
   }
-  //pop.play();
-  //$("#messages li:last div p")
-  html = html.replace(/¶/g ,'<br>');
+  html = html.replace(/¶/g, '<br>');
   $('#messages').append(html);
-  //console.log(emo_test(message.text));
-  if (emo_test(message.text))
-  {
-    $("#messages li:last div p").css({"background": "none", "font-size": "30px", "padding": "0px"});
+  if (emo_test(message.text)) {
+    $("#messages li:last div p").css({
+      "background": "none",
+      "font-size": "30px",
+      "padding": "0px"
+    });
   }
   closePopup();
   updateScroll();
 });
 
-socket.on('my__message', function (message, avatar, isReply, replyTo, replyText, id, targetId) {
+socket.on('my__message', function (replaceId, id) {
   pop.play();
-  //console.log(id);
-  let formattedTime = moment(message.createdAt).format('h:mm a');
-  let template, html;
-  if (isReply){
-    if (replyTo == myname) replyTo = 'You';
-    template = $('#my-message-template').html();
-    html = Mustache.render(template, {
-      text: linkify(message.text),
-      from: `You replied to ${replyTo}`,
-      id: id,
-      repId: targetId,
-      reply: replyText,
-      repIcon: `<img src='./../images/reply-blue.png' height='10px' width='10px' class='rep-icon'> `,
-      createdAt: formattedTime,
-      attr: "style",
-      replyMessageStyle: `display: block; transform: translateY(20px);`,
-      messageTitleStyle: `display: block; transform: translateY(20px)`,
-      attrVal: `images/avatars/${avatar}(custom).png`
-    });
-  }
-  else{
-    template = $('#my-message-template').html();
-    html = Mustache.render(template, {
-      text: linkify(message.text),
-      from: message.from,
-      id: id,
-      attr: "style",
-      replyMessageStyle: `display: none; transform: translateY(0px);`,
-      messageTitleStyle: `display: none; transform: translateY(0px)`,
-      createdAt: formattedTime,
-      attrVal: `images/avatars/${avatar}(custom).png`
-    });
-  }
-  //pop.play();
-  html = html.replace(/¶/g ,'<br>');
-  //html = linkify(html);
-  //console.log(html);
-  $('#messages').append(html);
-  //console.log(emo_test(message.text));
-  if (emo_test(message.text))
-  {
-    $("#messages li:last div p").css({"background": "none", "font-size": "30px", "padding": "0px"});
-  }
-  closePopup();
-  updateScroll();
+  $(`#${replaceId}`).attr('id', id);
+  $(`#${id} .sent`).attr('src', './images/seen.png');
 });
 
 
-socket.on('server_message', function(message, name = null, id = null){
+socket.on('server_message', function (message, name = null, id = null) {
   myname = name || myname;
   myid = id || myid;
   juntos.play();
@@ -204,23 +157,16 @@ socket.on('server_message', function(message, name = null, id = null){
     from: message.from,
     createdAt: formattedTime
   });
- // html = html.replace(/<p>Welcome/g, `<p style='color: var(--blue);'>Welcome to the chat key!`);
- // html = html.replace(/<p>[a-z]+ joined/i, `<p style='color: limegreen;'>${message.from} joined`);
- // html = html.replace(/<p>[a-z]+ left/i, `<p style='color: orangered;'>${message.from} left`);
-  
-  //change html color if html contains 'joined'
-  if (message.text.includes('joined')){
+  if (message.text.includes('joined')) {
     html = html.replace(/<p>/g, `<p style='color: limegreen;'>`);
   }
-  if (message.text.includes('left')){
+  if (message.text.includes('left')) {
     html = html.replace(/<p>/g, `<p style='color: orangered;'>`);
-  }
-  else{
+  } else {
     html = html.replace(/<p>/g, `<p style='color: var(--blue);'>`);
   }
-  
+
   $('#messages').append(html);
-  //console.log(html);
   updateScroll();
 });
 
@@ -248,15 +194,12 @@ socket.on('stoptyping', (id) => {
 });
 
 socket.on('vibrateResponse', (sender_name, id) => {
-  if (id == myid)
-  {
-    //alert('You have been vibrated by ' + sender_name);
-    if(sender_name == myname) sender_name = 'You';
-    //vibrate
+  if (id == myid) {
+    if (sender_name == myname) sender_name = 'You';
     $('.popup-message').text(`${sender_name} just vibrated your Device`);
     $('.popup-message').fadeIn(500);
     navigator.vibrate(1000);
-    setTimeout(function(){
+    setTimeout(function () {
       $('.popup-message').fadeOut(500);
     }, 1000);
   }
@@ -267,28 +210,75 @@ $('#message-form').on('submit', function (e) {
   let messageTextbox = $('[name=message]');
   let text = messageTextbox.val();
   messageTextbox.val('');
-  
-  //trim text to 255 charecters
   if (text.length > 10000) {
     text = text.substring(0, 10000);
   }
-  //console.log(`Length: ${text.replace(/\n/g,'').replace(/ /g,'').length}`);
-  if (text.replace(/\n/g,'').replace(/ /g,'').length == 0){
+  if (text.replace(/\n/g, '').replace(/ /g, '').length == 0) {
     $('#textbox').css('height', 'auto');
     return;
   }
-  
   text = text.trim();
   text = text.replace(/\n/g, '¶');
+  let replaceId = 'fgs-A78a-adgk2';
 
+  let formattedTime = moment(moment().valueOf()).format('hh:mm a');
+  let template, html;
+  if (isReply) {
+    if (replyTo == myname) replyTo = 'You';
+    template = $('#my-message-template').html();
+    html = Mustache.render(template, {
+      text: linkify(text),
+      from: `You replied to ${replyTo}`,
+      id: replaceId,
+      repId: targetId,
+      reply: replyText,
+      repIcon: `<img src='./../images/reply-blue.png' height='10px' width='10px' class='rep-icon'> `,
+      createdAt: formattedTime,
+      attr: "style",
+      replyMessageStyle: `display: block; transform: translateY(20px);`,
+      messageTitleStyle: `display: block; transform: translateY(20px)`,
+    });
+  } else {
+    template = $('#my-message-template').html();
+    html = Mustache.render(template, {
+      text: linkify(text),
+      id: replaceId,
+      attr: "style",
+      replyMessageStyle: `display: none; transform: translateY(0px);`,
+      messageTitleStyle: `display: none; transform: translateY(0px)`,
+      createdAt: formattedTime,
+    });
+  }
+  //pop.play();
+  html = html.replace(/¶/g, '<br>');
+  //html = linkify(html);
+  //console.log(html);
+  //$('#messages').append(html);
+  //console.log(emo_test(message.text));
+  if (emo_test(text)) {
+    $("#messages li:last div p").css({
+      "background": "none",
+      "font-size": "30px",
+      "padding": "0px"
+    });
+  }
+  //closePopup();
+  //updateScroll();
+
+
+  $('#messages').append(html);
   typing = false;
   socket.emit('stoptyping');
-  socket.emit('createMessage', {text: text}, isReply, replyTo, replyText ,targetId, 
-  function () {
-    $('#textbox').css('height', 'auto');
-  });
+  socket.emit('createMessage', {
+      text: text
+    }, replaceId, isReply, replyTo, replyText, targetId,
+    function () {
+      $('#textbox').css('height', 'auto');
+    });
   $('#textbox').css('height', 'auto');
+
   closePopup();
+  updateScroll();
 });
 
 let locationButton = $('#send-location');
@@ -345,15 +335,14 @@ $('#textbox').on('focus', function () {
   updateScroll();
 });
 
-function closePopup()
-{
+function closePopup() {
   isReply = false;
   $('.toast-popup').hide();
   $('.toast-popup-name').text('');
   $('.toast-popup-message').text('');
 }
 
-$('.toast-popup-close').on('click', ()=>{
+$('.toast-popup-close').on('click', () => {
   closePopup();
 });
 
@@ -365,11 +354,11 @@ $('#messages').on('click', function (evt) {
   //evt.preventDefault();
   //console.log('clicked on messages');
   let target = evt.target;
-  
-  if (target.className === 'textMessage'){
+
+  if (target.className === 'textMessage') {
     targetId = target.parentElement.parentElement.parentElement.id;
     //trim target text to 10 charecters
-    replyText =  `${target.innerText.substring(0, 200)} ...`;
+    replyText = `${target.innerText.substring(0, 200)} ...`;
     replyTo = evt.target.parentElement.previousElementSibling.previousElementSibling.innerText;
     replyTo = replyTo.replace(/ replied to [a-zA-Z]+/g, '');
     let replyToPop = replyTo;
@@ -380,19 +369,20 @@ $('#messages').on('click', function (evt) {
     $('.toast-popup-name').text(`Replying to ${replyToPop}`);
     $('.toast-popup-message').text(`${target.innerText.substring(0, 50)} ...`);
     $('#textbox').focus();
-  }
-  else if (target.className.includes('replyMessage')){
+  } else if (target.className.includes('replyMessage')) {
     const msgId = target.dataset.repid;
     const element = document.getElementById(msgId);
     /*const elementRect = element.getBoundingClientRect();
     const absoluteElementTop = elementRect.top + window.pageYOffset;
     const middle = absoluteElementTop - (window.innerHeight / 2);
     window.scrollTo(0, middle);*/
-    element.scrollIntoView({block: "center"});
+    element.scrollIntoView({
+      block: "center"
+    });
     $('#messages .my__message').css('filter', 'brightness(0.5)');
     $('#messages .message').css('filter', 'brightness(0.5)');
     $(`#${msgId}`).css('filter', 'initial');
-    setTimeout(function(){
+    setTimeout(function () {
       $('#messages .my__message').css('filter', '');
       $('#messages .message').css('filter', '');
       $(`#${msgId}`).css('filter', '');
@@ -404,14 +394,14 @@ $('.users').on('click', function (evt) {
   evt.preventDefault();
   console.log('clicked on users');
   let target = evt.target;
-  if (target.className === 'user'){
+  if (target.className === 'user') {
     let targetId = target.id;
     socket.emit('vibrate', myname, targetId);
 
-    if (targetId !== myid){
+    if (targetId !== myid) {
       $('.popup-message').text(`You just vibrated ${target.innerText}'s Device`);
       $('.popup-message').fadeIn(500);
-      setTimeout(function(){
+      setTimeout(function () {
         $('.popup-message').fadeOut(500);
       }, 1000);
     }
@@ -425,7 +415,7 @@ window.addEventListener('resize', () => {
   updateScroll();
 });
 
-$('.send').on('focus', function(){
+$('.send').on('focus', function () {
   //console.log('focused');
   $('#textbox').focus();
 });
@@ -458,7 +448,7 @@ function linkify(inputText) {
 
 var emoji_regex = /^(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])+$/;
 
-function emo_test(str){
+function emo_test(str) {
   return emoji_regex.test(str);
 }
 
@@ -466,7 +456,7 @@ function emo_test(str){
 $('#textbox').on('keydown', (evt) => {
   //console.log('Enter: ', evt.key === 'Enter');
   //console.log('ctrl: ', evt.ctrlKey);
-  if (evt.ctrlKey && (evt.key === 'Enter')){
-      $('.send').click();
+  if (evt.ctrlKey && (evt.key === 'Enter')) {
+    $('.send').click();
   }
 });

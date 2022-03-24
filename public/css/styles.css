@@ -670,6 +670,8 @@ button:disabled {
 
 #messages .my-reply-message {
   border-radius: 15px 15px 0px 15px;
+  position: relative;
+  right: 15px;
 }
 
 #messages .my__message {
@@ -720,6 +722,8 @@ button:disabled {
 #messages .my__message__title h3 {
   width: 100%;
   text-align: right;
+  position: relative;
+  right: 15px;
 }
 
 #messages .textMessage, #messages .replyMessage {
@@ -828,7 +832,7 @@ button:disabled {
 }
 
 .info:hover::after {
-  content: 'PokeTab Messanger \A Version: 3.2.7 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: https:flaticon.com';
+  content: 'PokeTab Messanger \A Version: 3.2.7 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: flaticon.com';
   position: absolute;
   bottom: 0;
   right: 0;
