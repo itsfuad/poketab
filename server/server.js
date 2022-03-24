@@ -18,7 +18,6 @@ let users = new Users();
 
 app.use(express.static(publicPath));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/', (req, res) => {
