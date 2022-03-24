@@ -50,6 +50,41 @@ function scrollToBottom() {
     messages.scrollTop(scrollHeight);
   }
 }
+
+function censorBadWords(text) {
+  text = text.replace(/fuck/g, 'f**k');
+  text = text.replace(/shit/g, 's**t');
+  text = text.replace(/bitch/g, 'b**t');
+  text = text.replace(/asshole/g, 'a**hole');
+  text = text.replace(/dick/g, 'd**k');
+  text = text.replace(/pussy/g, 'p**s');
+  text = text.replace(/cock/g, 'c**k');
+  text = text.replace(/baal/g, 'b**l');
+  text = text.replace(/sex/g, 's*x');
+
+  text = text.replace(/Fuck/g, 'F**k');
+  text = text.replace(/Shit/g, 'S**t');
+  text = text.replace(/Bitch/g, 'B**t');
+  text = text.replace(/Asshole/g, 'A**hole');
+  text = text.replace(/Dick/g, 'D**k');
+  text = text.replace(/Pussy/g, 'P**s');
+  text = text.replace(/Cock/g, 'C**k');
+  text = text.replace(/Baal/g, 'B**l');
+  text = text.replace(/Sex/g, 'S*x');
+  return text;
+}
+
+function makeid(length) {
+  var result = '';
+  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for (var i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() *
+      charactersLength));
+  }
+  return result;
+}
+
 //this function runs after connecting to the socket.io server
 socket.on('connect', function () {
   //get the username, key and avatar info from url
@@ -218,9 +253,9 @@ $('#message-form').on('submit', function (e) {
     return;
   }
   text = text.trim();
+  text = censorBadWords(text);
   text = text.replace(/\n/g, '¶');
-  let replaceId = 'fgs-A78a-adgk2';
-
+  let replaceId = makeid(10);
   let formattedTime = moment(moment().valueOf()).format('hh:mm a');
   let template, html;
   if (isReply) {

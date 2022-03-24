@@ -5,9 +5,16 @@ const socketIO = require('socket.io');
 const uuid = require("uuid");
 const bodyParser = require('body-parser');
 
-const {generateMessage, generateLocationMessage} = require('./utils/message');
-const {isRealString} = require('./utils/validation');
-const {Users} = require('./utils/users');
+const {
+  generateMessage,
+  generateLocationMessage
+} = require('./utils/message');
+const {
+  isRealString
+} = require('./utils/validation');
+const {
+  Users
+} = require('./utils/users');
 
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
@@ -18,7 +25,9 @@ let users = new Users();
 
 app.use(express.static(publicPath));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
 app.post('/', (req, res) => {
   //console.log(req);
@@ -36,38 +45,15 @@ app.post('*', (req, res) => {
   res.sendFile(publicPath + '/404.html');
 });
 
-function censorBadWords(text)
-{
-  text = text.replace(/fuck/g, 'f**k');
-  text = text.replace(/shit/g, 's**t');
-  text = text.replace(/bitch/g, 'b**t');
-  text = text.replace(/asshole/g, 'a**hole');
-  text = text.replace(/dick/g, 'd**k');
-  text = text.replace(/pussy/g, 'p**s');
-  text = text.replace(/cock/g, 'c**k');
-  text = text.replace(/baal/g, 'b**l');
-  text = text.replace(/sex/g, 's*x');
-
-  text = text.replace(/Fuck/g, 'F**k');
-  text = text.replace(/Shit/g, 'S**t');
-  text = text.replace(/Bitch/g, 'B**t');
-  text = text.replace(/Asshole/g, 'A**hole');
-  text = text.replace(/Dick/g, 'D**k');
-  text = text.replace(/Pussy/g, 'P**s');
-  text = text.replace(/Cock/g, 'C**k');
-  text = text.replace(/Baal/g, 'B**l');
-  text = text.replace(/Sex/g, 'S*x');
-  return text;
-}
 
 io.on('connection', (socket) => {
-  
+
   socket.on('join', (params, callback) => {
     //console.log(params);
     if (!isRealString(params.name) || !isRealString(params.key)) {
       return callback('empty');
     }
-    if(params.avatar === undefined){
+    if (params.avatar === undefined) {
       return callback('avatar');
     }
     //check if username already exists in key
@@ -76,7 +62,7 @@ io.on('connection', (socket) => {
     let avatar = params.avatar;
     //console.log(users.getUserList(params.key));
     //console.log(userList.includes(params.name));
-   // console.log(params);
+    // console.log(params);
     if (user) {
       return callback('exists');
     }
@@ -96,14 +82,13 @@ io.on('connection', (socket) => {
   socket.on('createMessage', (message, replaceId, isReply, replyTo, replyText, targetId, callback) => {
     let user = users.getUser(socket.id);
     if (user && isRealString(message.text)) {
-      text = censorBadWords(message.text);
       //console.log(user);
       //io.to(user.key).emit('newMessage', generateMessage(user.name, text));
       //console.log(user.avatar);
       let id = uuid.v4();
       //console.log(typeof(id));
       socket.emit('my__message', replaceId, id);
-      socket.broadcast.to(user.key).emit('newMessage', generateMessage(user.name, text), user.avatar, isReply, replyTo, replyText, id, targetId);
+      socket.broadcast.to(user.key).emit('newMessage', generateMessage(user.name, message.text), user.avatar, isReply, replyTo, replyText, id, targetId);
     }
   });
 
@@ -111,10 +96,10 @@ io.on('connection', (socket) => {
     let user = users.getUser(socket.id);
 
     if (user) {
-      io.to(user.key).emit('newLocationMessage', generateLocationMessage(user.name, coords.latitude, coords.longitude));  
+      io.to(user.key).emit('newLocationMessage', generateLocationMessage(user.name, coords.latitude, coords.longitude));
     }
   });
-  
+
   socket.on('disconnect', () => {
     let user = users.removeUser(socket.id);
     if (user) {
@@ -127,13 +112,13 @@ io.on('connection', (socket) => {
   socket.on('typing', () => {
     let user = users.getUser(socket.id);
     if (user) {
-      socket.broadcast.to(user.key).emit('typing', user.name, user.id+'-typing');
+      socket.broadcast.to(user.key).emit('typing', user.name, user.id + '-typing');
     }
   });
   socket.on('stoptyping', () => {
     let user = users.getUser(socket.id);
     if (user) {
-      socket.broadcast.to(user.key).emit('stoptyping', user.id+'-typing');
+      socket.broadcast.to(user.key).emit('stoptyping', user.id + '-typing');
     }
   });
   socket.on('newUserRequest', key => {
@@ -146,7 +131,7 @@ io.on('connection', (socket) => {
   socket.on('vibrate', (sender_name, userId) => {
     let user = users.getUser(userId);
     if (user) {
-      io.to(user.key).emit('vibrateResponse', sender_name, userId); 
+      io.to(user.key).emit('vibrateResponse', sender_name, userId);
     }
   });
 
