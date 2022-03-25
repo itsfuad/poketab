@@ -24,6 +24,10 @@ $('#next').on('click',()=>{
         $('#key-label').css('color','red');
         return;
     }
+    if (key.length <= 4){
+        $('#key-label').text('Key must be more than 4 characters');
+        $('#key-label').css('color', 'red');
+    }
     else{
         socket.emit('newUserRequest', key);
         //disable radio button which contains values of e_avatars
