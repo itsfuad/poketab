@@ -25,12 +25,12 @@ $('#next').on('click',()=>{
         return;
     }
     if (key.length <= 4){
-        $('#key-label').text('Key must be more than 4 characters');
+        $('#key-label').text('Key less than 5 digit');
         $('#key-label').css('color', 'red');
+        return;
     }
     else{
         socket.emit('newUserRequest', key);
-        //disable radio button which contains values of e_avatars
     }
 });
 
