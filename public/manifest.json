@@ -1,11 +1,11 @@
 {
     "name": "PokeTab Messenger",
     "short_name": "PokeTab",
-    "start_url": "./",
+    "start_url": "/",
     "display": "standalone",
     "background_color": "#111d2a",
     "theme_color": "#111d2a",
-    "scope": "./",
+    "scope": "/",
     "description": "Temporary Group Chatting App",
     "icons": [
         {
