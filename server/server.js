@@ -23,30 +23,45 @@ let server = http.createServer(app);
 let io = socketIO(server);
 let users = new Users();
 
+//view engine setup
+app.set('views', path.join(__dirname, '../public'));
+app.set('view engine', 'ejs');
+
 app.use(express.static(publicPath));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-  extended: true
+  extended: false
 }));
 
-app.post('/', (req, res) => {
-  res.sendFile(publicPath + '/index.html');
+app.get('/', (req, res) => {
+  res.redirect('/login');
+});
+
+app.get('/login', (req, res) => {
+  res.render('login');
+});
+
+app.get('/chat', (req, res) => {
+  res.redirect('/');
+});
+
+app.get('*', (req, res) => {
+  res.render('404');
 });
 
 app.post('/chat', (req, res) => {
-  console.log(req.body);
-  res.sendFile(publicPath + `/chat.html`);
-  res.redirect(`/chat.html?key=${req.body.key}&name=${req.body.name}&avatar=${req.body.avatar}`);
+  //console.log(req.body);
+  //res.sendFile(publicPath + `/chat.html`);
+  res.render('chat', {myname: req.body.name, mykey: req.body.key, myavatar: req.body.avatar});
+  //res.redirect(`/chat.html?key=${req.body.key}&name=${req.body.name}&avatar=${req.body.avatar}`);
 });
 
-app.post('*', (req, res) => {
-  res.sendFile(publicPath + '/404.html');
-});
 
 
 io.on('connection', (socket) => {
 
   socket.on('join', (params, callback) => {
+    console.log(params.name, params.key);
     if (!isRealString(params.name) || !isRealString(params.key)) {
       return callback('empty');
     }

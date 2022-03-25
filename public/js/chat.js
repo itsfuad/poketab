@@ -80,11 +80,21 @@ function makeid(length) {
 }
 
 socket.on('connect', function () {
-  let params = $.deparam(window.location.search);
+  let name = $('#myname').text();
+  let key = $('#mykey').text();
+  let avatar = $('#myavatar').text();
+  let params = {
+    name: name,
+    key: key,
+    avatar: avatar
+  };
+  console.log(params);
+  //params = $.deparam(window.location.search);
   console.log("Connected to server");
   elegant.play();
   socket.emit('join', params, function (err) {
     if (err) {
+      /*
       if (err == 'empty') {
         window.location.href = '/?NR_0';
       } else if (err == 'exists') {
@@ -92,7 +102,8 @@ socket.on('connect', function () {
       } else if (err == 'avatar') {
         window.location.href = '/?NA_0';
       }
-
+      */
+     console.log(err);
     } else {
       console.log('No error');
     }
