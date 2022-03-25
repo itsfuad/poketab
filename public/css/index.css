@@ -8,11 +8,6 @@
   src: url("./../fonts/Now-Regular.otf");
 }
 
-@font-face {
-  font-family: 'Pokemon';
-  src: url("./../fonts/Pokemon.ttf");
-}
-
 :root {
   --blue: #6aa4db;
   --hoverblue: #0575e6;
