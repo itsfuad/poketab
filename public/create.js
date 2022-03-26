@@ -15,6 +15,28 @@ if (error_code !== url){
     error.innerText = '*Please fill up all requirements*';
 }
 
+function makeid(length) {
+    let result = '';
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() *
+        charactersLength));
+    }
+    return result;
+}
+
+$('#key').val(makeid(10));
+$('#key').on('click', ()=>{
+    let text = $('#key').val();
+    console.log(text);
+    navigator.clipboard.writeText(text);
+    $('.popup-message').text(`Copied to clipboard`);
+    $('.popup-message').fadeIn(500);
+    setTimeout(function () {
+      $('.popup-message').fadeOut(500);
+    }, 1000);
+});
 
 $('#next').on('click',()=>{
     //alert('sadasd');
