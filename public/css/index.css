@@ -8,6 +8,16 @@
   src: url("./../fonts/Now-Regular.otf");
 }
 
+@font-face {
+  font-family: 'James';
+  src: url("./../fonts/James.ttf");
+}
+
+@font-face {
+  font-family: 'Comic';
+  src: url("./../fonts/comic.ttf");
+}
+
 :root {
   --blue: #6aa4db;
   --hoverblue: #0575e6;
@@ -23,7 +33,7 @@
           box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: Now;
+  font-family: Comic;
   font-weight: 300;
   caret-color: var(--blue);
 }
@@ -253,7 +263,7 @@ input[type="radio"]:checked + label img {
   position: absolute;
   bottom: 50%;
   left: 50%;
-  background: var(--background-light);
+  background: #00000072;
   padding: 10px;
   border-radius: 15px;
   -webkit-backdrop-filter: blur(2px);
@@ -275,9 +285,15 @@ input[type="radio"]:checked + label img {
   cursor: pointer;
 }
 
-input[type='text'] {
-  border: 2px solid var(--hoverblue);
+input[type='text'], input[type='number'] {
+  border: 2px solid var(--blue);
   outline: none;
+  -webkit-transition: 200ms;
+  transition: 200ms;
+}
+
+input[type='text']:focus, input[type='number']:focus {
+  border: 2px solid var(--hoverblue);
 }
 
 img {
