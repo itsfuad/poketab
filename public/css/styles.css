@@ -761,6 +761,10 @@ button:disabled {
   z-index: 100;
 }
 
+.key:hover {
+  cursor: pointer;
+}
+
 .chat__footer {
   display: -webkit-box;
   display: -ms-flexbox;

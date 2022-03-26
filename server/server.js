@@ -41,6 +41,10 @@ app.get('/login', (req, res) => {
   res.render('login');
 });
 
+app.get('/create', (req, res) => {
+  res.render('create');
+});
+
 app.get('/chat', (req, res) => {
   res.redirect('/');
 });
@@ -52,7 +56,7 @@ app.get('*', (req, res) => {
 app.post('/chat', (req, res) => {
   //console.log(req.body);
   //res.sendFile(publicPath + `/chat.html`);
-  res.render('chat', {myname: req.body.name, mykey: req.body.key, myavatar: req.body.avatar});
+  res.render('chat', {myname: req.body.name, mykey: req.body.key, myavatar: req.body.avatar, maxuser: req.body.maxuser});
   //res.redirect(`/chat.html?key=${req.body.key}&name=${req.body.name}&avatar=${req.body.avatar}`);
 });
 
@@ -61,7 +65,7 @@ app.post('/chat', (req, res) => {
 io.on('connection', (socket) => {
 
   socket.on('join', (params, callback) => {
-    console.log(params.name, params.key);
+    console.log(params.name, params.key, params.maxuser);
     if (!isRealString(params.name) || !isRealString(params.key)) {
       return callback('empty');
     }
@@ -70,7 +74,6 @@ io.on('connection', (socket) => {
     }
     let userList = users.getUserList(params.key);
     let user = userList.includes(params.name);
-    let avatar = params.avatar;
     if (user) {
       return callback('exists');
     }
@@ -78,7 +81,7 @@ io.on('connection', (socket) => {
     console.log(`New user ${params.name} connected on key ${params.key}`);
     socket.join(params.key);
     users.removeUser(socket.id);
-    users.addUser(socket.id, params.name, params.key, avatar);
+    users.addUser(socket.id, params.name, params.key, params.avatar, params.maxuser || users.getMaxUser(params.key));
     io.to(params.key).emit('updateUserList', users.getUserList(params.key), users.getUserId(params.key), params.key, users.getAvatarList(params.key));
     socket.emit('server_message', generateMessage('', `You joined the chat.🔥`), params.name, socket.id);
     socket.broadcast.to(params.key).emit('server_message', generateMessage(params.name, `${params.name} joined the chat.🔥`));
@@ -121,11 +124,33 @@ io.on('connection', (socket) => {
       socket.broadcast.to(user.key).emit('stoptyping', user.id + '-typing');
     }
   });
-  socket.on('newUserRequest', key => {
-    console.log('New User Attempt');
-    let userlist = users.getUserList(key);
-    let avatarList = users.getAvatarList(key);
-    socket.emit('newUserResponse', userlist, avatarList);
+  socket.on('joinRequest', key => {
+    console.log('Requset for join chat: ' + key);
+    let maxuser = users.getMaxUser(key);
+    let keyExists = users.getUserList(key).length > 0;
+    if (!keyExists){
+      socket.emit('joinResponse', keyExists, null, null, null);
+    }
+    else{
+      console.log('New User Attempt');
+      let userlist = users.getUserList(key);
+      let avatarList = users.getAvatarList(key);
+      socket.emit('joinResponse',keyExists, userlist, avatarList, maxuser);
+    }
+  });
+  socket.on('createRequest', key => {
+    console.log('Requset for create chat: ' + key);
+    let keyExists = users.getUserList(key).length > 0;
+    if (keyExists){
+      socket.emit('createResponse', keyExists, null, null);
+    }
+    else{
+      socket.emit('createResponse', keyExists);
+      console.log('New User Attempt');
+      let userlist = users.getUserList(key);
+      let avatarList = users.getAvatarList(key);
+      socket.emit('createResponse', keyExists, userlist, avatarList);
+    }
   });
 
   socket.on('vibrate', (sender_name, userId) => {

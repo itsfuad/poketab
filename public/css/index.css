@@ -179,6 +179,10 @@ select:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s;
 }
 
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
 .avatars {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -232,7 +236,7 @@ input[type="radio"]:checked + label img {
   padding-top: 10px;
 }
 
-input[type='text'] {
+input[type='text'], input[type='number'] {
   border: 2px solid var(--hoverblue);
   outline: none;
 }
@@ -264,6 +268,17 @@ input[type='button']:focus, input[type='submit']:focus {
 }
 
 .howtouse {
+  width: 100vw;
+  padding: 30px;
+  text-align: justify;
+  font-size: 0.7rem;
+}
+
+.howtouse ul {
+  list-style-type: disc;
+}
+
+.line {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -274,25 +289,22 @@ input[type='button']:focus, input[type='submit']:focus {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  width: 100vw;
-  padding: 30px;
-  text-align: justify;
-  font-size: 0.7rem;
-  color: #bababa;
   border-top: 2px solid var(--background-light);
   border-left: 0;
   border-right: 0;
   border-bottom: 0;
+  color: #bababa;
 }
 
-.howtouse .h1 {
+.line .h1 {
   font-size: 1rem;
   padding: 5px;
   text-align: center;
 }
 
-.howtouse ul {
-  list-style-type: disc;
+#create {
+  text-align: center;
+  color: var(--blue);
 }
 
 .footer {

@@ -53,29 +53,29 @@
     <link rel="manifest" href="manifest.json" crossorigin="use-credentials">
     <link rel="icon" href="/images/avatars/pikachu.png">
     
-    <title>Join | PokeTab Messanger</title>
+    <title>Create | PokeTab Messanger</title>
 </head>
 <body>
     <div class="container">
         <form action="/chat" method="post" autocomplete="on" id="form" onsubmit="return check();">
             <div class="form-1" style="display: block;">
                 <div class="form-field">
-                    <div class="h3">Join a Chat <img src="/images/pokeball.png" alt="" srcset=""></div>
+                    <div class="h3">Create Chat <img src="/images/pokeball.png" alt="" srcset=""></div>
                     <div id="error-callback"></div>
                 </div>
                 <div class="form-field">
-                    <label for="key" id="key-label">Enter Join Key</label>
+                    <label for="key" id="key-label">Unique Key</label>
                     <input type="text" name="key" id="key" minlength="5">
                 </div>
                 <div class="form-field">
                     <input type="button" value="Next" id="next">
                 </div>
-                <div class="create-chat">
-                    <fieldset class="line">
-                        <legend class="h1">Or</legend>
-                        <a id="create" href="/create">Create chat</a>
-                    </fieldset>
-                </div>
+                            <div class="create-chat">
+                <fieldset class="line">
+                    <legend class="h1">Or</legend>
+                    <a id="create" href="/login">Join chat</a>
+                </fieldset>
+            </div>
             </div>
             <div class="form-2" style="display: none;">
                 <div class="form-field">
@@ -147,6 +147,10 @@
                 </div>
                 </div>
                 <div class="form-field">
+                    <label for="max-user">Select max user</label>
+                    <input type="number" name="maxuser" max="15" min="2" value="2">
+                </div>
+                <div class="form-field">
                     <input type="submit" value="Join" id="join">
                 </div>
             </div>
@@ -169,6 +173,6 @@
     </div>
     <script defer src="/socket.io/socket.io.js"></script>
     <script defer src="/js/libs/jquery-3.1.0.min.js"></script>
-    <script defer src="/login.js"></script>
+    <script defer src="/create.js"></script>
 </body>
 </html>

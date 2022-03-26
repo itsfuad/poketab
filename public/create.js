@@ -30,31 +30,25 @@ $('#next').on('click',()=>{
         return;
     }
     else{
-        socket.emit('joinRequest', key);
+        socket.emit('createRequest', key);
     }
 });
 
-socket.on('joinResponse', (keyExists, users, avatars, maxuser) => {
-    //console.log(maxuser);
-    if (!keyExists){
-        $('#key-label').text('Key does not exists');
-        $('#key-label').css('color','red');
-     }
-     else{
-         e_users = users;
-         e_avatars = avatars;
-         if(e_users.length >= maxuser){
-             $('.form-2').html("<img src='images/sad-cry.gif' loop=infinite height='80px' width='80px'>Access denied on this Key");
-             $('.form-2').css({'text-align':'center','color': 'red', 'display': 'flex','flex-direction': 'column', 'gap': '20px', 'justify-content': 'center', 'align-items': 'center'});
-             $('.form-2 img').css('border-radius','50%');
-         }
-         e_avatars.forEach(avatar => {
-             $(`label[for='${avatar}']`).hide();
-         });
-         $('.form-1').hide(100);
-         $('.howtouse').hide(100);
-         $('.form-2').show(100);
-     }
+socket.on('createResponse', (keyExists, users, avatars) => {
+    if (keyExists){
+       $('#key-label').text('Key already exists');
+       $('#key-label').css('color','red');
+    }
+    else{
+        e_users = users;
+        e_avatars = avatars;
+        e_avatars.forEach(avatar => {
+            $(`label[for='${avatar}']`).hide();
+        });
+        $('.form-1').hide(100);
+        $('.howtouse').hide(100);
+        $('.form-2').show(100);
+    }
 });
 
 function check(){

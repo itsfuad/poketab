@@ -563,6 +563,11 @@ scrollbar-width: none;  /* Firefox */
   transform: translateX(-50%);
   z-index: 100;
 }
+.key{
+  &:hover{
+    cursor: pointer;
+  }
+}
 
 .chat__footer{
   display: flex;

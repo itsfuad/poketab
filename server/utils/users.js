@@ -12,8 +12,11 @@
 class Users {
   constructor () {
     this.users = [];
+    this.MaxUser = new Map();
   }
-  addUser (id, name, key, avatar) {
+  addUser (id, name, key, avatar, maxuser) {
+    this.MaxUser.set(key, maxuser);
+    console.log(`Maxuser: ${maxuser}`);
     var user = {id, name, key, avatar};
     this.users.push(user);
     return user;
@@ -39,6 +42,9 @@ class Users {
     var users = this.users.filter((user) => user.key === key);
     var avatarArray = users.map((user) => user.avatar);
     return avatarArray;
+  }
+  getMaxUser(key){
+    return this.MaxUser.get(key);
   }
   getUserId(key){
     var users = this.users.filter((user) => user.key === key);

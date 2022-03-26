@@ -83,12 +83,15 @@ socket.on('connect', function () {
   let name = $('#myname').text();
   let key = $('#mykey').text();
   let avatar = $('#myavatar').text();
+  let maxuser = $('#maxuser').text();
+  //console.log(name, key, avatar, maxuser);
   let params = {
     name: name,
     key: key,
-    avatar: avatar
+    avatar: avatar,
+    maxuser: maxuser
   };
-  console.log(params);
+  //console.log(params);
   //params = $.deparam(window.location.search);
   console.log("Connected to server");
   elegant.play();
@@ -400,6 +403,21 @@ $('#messages').on('click', function (evt) {
     }, 1000);
   }
 });
+
+$('.key').on('click', () => {
+  console.log('clicked');
+  let text = $('.keyname1').text();
+  //copy text to clipboard
+  //copyToClipboard(text);
+  //show toast
+  navigator.clipboard.writeText(text);
+  $('.popup-message').text(`Copied to clipboard`);
+  $('.popup-message').fadeIn(500);
+  setTimeout(function () {
+    $('.popup-message').fadeOut(500);
+  }, 1000);
+});
+
 
 $('.users').on('click', function (evt) {
   evt.preventDefault();
