@@ -46,6 +46,9 @@ class Users {
   getMaxUser(key){
     return this.MaxUser.get(key);
   }
+  removeMaxUser(key){
+    this.MaxUser.delete(key);
+  }
   getUserId(key){
     var users = this.users.filter((user) => user.key === key);
     var idArray = users.map((user) => user.id);
