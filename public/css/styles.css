@@ -122,6 +122,9 @@ button:hover {
 
 .chat__sidebar ul {
   list-style-type: none;
+  border-top: 2px solid var(--background-light);
+  margin: 5px;
+  overflow-y: scroll;
 }
 
 .chat__sidebar ul li {
@@ -141,6 +144,7 @@ button:hover {
   font-size: 1rem;
   font-weight: 900;
   gap: 5px;
+  overflow-x: scroll;
 }
 
 * {
@@ -817,6 +821,16 @@ button:disabled {
   outline: 2px solid var(--blue);
 }
 
+#maxuser {
+  font-size: 0.7rem;
+  position: relative;
+  right: 0;
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  color: var(--blue);
+}
+
 .info {
   margin: 0;
   padding: 5px;
@@ -838,7 +852,7 @@ button:disabled {
 }
 
 .info:hover::after {
-  content: 'PokeTab Messanger \A Version: 3.2.7 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: flaticon.com';
+  content: 'PokeTab Messanger \A Version: 4.0.1 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: flaticon.com';
   position: absolute;
   bottom: 0;
   right: 0;

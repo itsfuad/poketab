@@ -18,6 +18,7 @@ if (error_code !== url){
 
 $('#next').on('click',()=>{
     //alert('sadasd');
+
     let key = $('#key').val();
     if (key === '') {
         $('#key-label').text('Key is required');
@@ -90,7 +91,10 @@ function check(){
         $('#name-label').text('Choose avatar');
         $('#name-label').css('color','red');
     }
-    return (allow && checked);    
+    if (allow && checked){
+        $('#join').val('Processing...');
+    }
+    return (allow && checked);
 }
 
 

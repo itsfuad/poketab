@@ -27,6 +27,7 @@ function makeid(length) {
 }
 
 $('#key').val(makeid(10));
+
 $('#key').on('click', ()=>{
     let text = $('#key').val();
     console.log(text);
@@ -106,7 +107,10 @@ function check(){
         $('#name-label').text('Choose avatar');
         $('#name-label').css('color','red');
     }
-    return (allow && checked);    
+    if (allow && checked){
+        $('#join').val('Processing...');
+    }
+    return (allow && checked);
 }
 
 

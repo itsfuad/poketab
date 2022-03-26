@@ -190,7 +190,7 @@ input[type="radio"] {
   align-items: center;
   justify-content: center;
   position: absolute;
-  bottom: 100px;
+  bottom: 50%;
   left: 50%;
   background: var(--background-light);
   padding: 10px;
@@ -202,12 +202,16 @@ input[type="radio"] {
 }
 
 .copy-key{
+  border: none !important;
+  outline: none !important;
+  background: var(--background-light) !important;
+  text-align: center !important;
   &:hover{
     cursor: pointer;
   }
 }
 
-input[type='text'], input[type='number'] {
+input[type='text'] {
   border: 2px solid var(--hoverblue);
   outline: none;
 }
@@ -239,7 +243,7 @@ width: 100vw;
 padding: 30px;
 text-align: justify;
 font-size: 0.7rem;
-
+max-width: max-content;
 ul{
   list-style-type: disc;
 }
