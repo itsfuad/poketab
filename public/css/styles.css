@@ -368,6 +368,7 @@ input[type=file] {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
+  gap: 5px;
   -webkit-box-align: end;
       -ms-flex-align: end;
           align-items: flex-end;

@@ -296,6 +296,7 @@ input[type=file] {
   .main-image{
     display: flex;
     flex-direction: row;
+    gap: 5px;
     align-items: flex-end;
     justify-content: flex-start;
   }
