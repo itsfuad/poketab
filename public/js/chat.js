@@ -172,7 +172,7 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, 
       "padding": "0px"
     });
   }
-  closePopup();
+  //closePopup();
   updateScroll();
 });
 
