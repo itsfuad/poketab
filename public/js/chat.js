@@ -373,9 +373,18 @@ $('.menu').on('click', function () {
 });
 $('.chat').on('click', function () {
   $('.menuwrapper').removeClass('active');
+  $('.about').fadeOut(200);
 });
 $('#textbox').on('focus', function () {
   updateScroll();
+});
+
+$('.info').on('click', ()=> {
+  $('.about').fadeIn(200);
+});
+
+$('.close').on('click', ()=> {
+  $('.about').fadeOut(200);
 });
 
 function closePopup() {
@@ -570,3 +579,4 @@ $('#textbox').on('keydown', (evt) => {
     $('.send').click();
   }
 });
+document.addEventListener('contextmenu', event => event.preventDefault());

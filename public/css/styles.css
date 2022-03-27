@@ -418,12 +418,25 @@ input[type=file] {
 }
 
 .lightbox {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100vw;
+  height: 100vh;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
+  background: #00000072;
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
   z-index: 100;
 }
 
@@ -431,58 +444,42 @@ input[type=file] {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  position: absolute;
+  top: 0;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  gap: 30px;
-  font-size: 2rem;
-  padding: 10px 30px;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  z-index: 110;
-  position: relative;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 20px;
+  width: 100%;
 }
 
-.lightbox .tool .lightbox__close {
-  color: orangered;
-}
-
-.lightbox .tool .lightbox__close:hover {
-  cursor: pointer;
-}
-
-.lightbox .tool .lightbox__save {
-  color: white;
-}
-
-.lightbox .tool .lightbox__save:hover {
+.lightbox .tool .lightbox__save:hover, .lightbox .tool .lightbox__close:hover {
   cursor: pointer;
 }
 
 .lightbox .lightbox__image {
+  width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  padding: 20px;
-  position: relative;
-  top: 0;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .lightbox .lightbox__image img {
-  max-height: 80vh;
-  max-width: 90vw;
-  overflow: hidden;
+  max-width: 80vw;
+  max-height: 60vh;
 }
 
 .avatar {
@@ -608,6 +605,8 @@ input[type=file] {
   height: var(--topbarsize);
   width: 100%;
   background: transparent;
+  -webkit-backdrop-filter: blur(2px);
+          backdrop-filter: blur(2px);
   z-index: 10;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
@@ -628,7 +627,7 @@ input[type=file] {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
-  padding: 0 0 0 10px;
+  padding: 0 20px;
   width: 100%;
 }
 
@@ -695,7 +694,6 @@ input[type=file] {
       grid-template-rows: 1fr;
   scroll-behavior: smooth;
   list-style-type: none;
-  margin-top: 65px;
   gap: 2px;
 }
 
@@ -988,47 +986,52 @@ input[type=file] {
 }
 
 .info {
-  margin: 0;
-  padding: 5px;
-  height: 30px;
-  width: 30px;
-  text-align: center;
-  font-family: Now;
-  font-size: 1rem;
-  font-weight: 900;
-  color: grey;
-  -webkit-transition: 200ms;
-  transition: 200ms;
+  padding: 10px;
 }
 
 .info:hover {
   cursor: pointer;
-  color: white;
 }
 
-.info:hover::after {
-  content: 'PokeTab Messanger \A Version: 4.0.2 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: flaticon.com';
+.about {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  position: fixed;
+  font-size: 0.7rem;
+  padding: 30px;
+  border-radius: 10px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  background: #1d2f42;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.about .close {
+  color: orangered;
   position: absolute;
   bottom: 0;
-  right: 0;
-  -webkit-transform: translate(-5%, 120%);
-          transform: translate(-5%, 120%);
-  background: var(--focus);
-  -webkit-backdrop-filter: blur(3px);
-          backdrop-filter: blur(3px);
-  padding: 15px;
-  border-radius: 5px;
-  color: white;
-  background: #0b1926c7;
-  font-size: 0.7rem;
-  font-weight: 900;
-  z-index: 10;
-  opacity: 1;
-  text-align: left;
-  width: 150px;
-  -webkit-transition: 200ms;
-  transition: 200ms;
-  white-space: pre;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.about .close:hover {
+  cursor: pointer;
 }
 
 img {
@@ -1058,8 +1061,9 @@ img {
       -ms-flex-align: center;
           align-items: center;
   padding: 10px;
+  margin: 0 20px;
   background: var(--focus);
-  border-radius: 10px 10px 0 0;
+  border-radius: 10px;
   -webkit-backdrop-filter: blur(2px);
           backdrop-filter: blur(2px);
 }
@@ -1105,45 +1109,50 @@ img {
   .chat {
     padding-top: 0;
   }
-  .menu {
+  /*
+  .menu{
     display: none;
   }
-  .keyname {
+  .keyname{
     display: none;
   }
-  .menuwrapper {
-    display: none;
-  }
-  .info {
+
+  .info{
     position: absolute;
     top: 10px;
     right: 0;
     margin: 10px;
   }
-  .menuwrapper2 {
-    display: -webkit-box;
-    display: -ms-flexbox;
+
+  .menuwrapper2{
     display: flex;
     left: 0;
     background: var(--primary);
     width: 30vw;
+    .chat__sidebar{
+      width: 25vw;
+      border-right: 2px solid var(--focus);
+    }
   }
-  .menuwrapper2 .chat__sidebar {
-    width: 25vw;
-    border-right: 2px solid var(--focus);
-  }
-  .topbar {
-    display: -webkit-box;
-    display: -ms-flexbox;
+
+  .topbar{
     display: flex;
     height: 0;
     margin: 0;
     padding: 0;
+    .topbar-wrapper{
+      background: transparent;
+    }
   }
-  .topbar .topbar-wrapper {
-    background: transparent;
+  */
+  .topbar {
+    padding: 0 25%;
+  }
+  .menuwrapper {
+    width: 25%;
   }
   .chat__main {
+    padding: 0 25%;
     position: relative;
   }
   #messages .textMessage, #messages .replyMessage {

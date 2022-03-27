@@ -330,47 +330,39 @@ input[type=file] {
 }
 
 .lightbox{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.8);
+  background: #00000072;
+  backdrop-filter: blur(10px);
   z-index: 100;
   .tool{
     display: flex;
+    position: absolute;
+    top: 0;
     flex-direction: row;
-    justify-content: space-between;
-    gap: 30px;
-    font-size: 2rem;
-    padding: 10px 30px;
     align-items: center;
-    z-index: 110;
-    position: relative;
-    .lightbox__close{
-      color: orangered;
-      &:hover{
-        cursor: pointer;
-      }
-    }
-    .lightbox__save{
-      color: white;
+    justify-content: space-between;
+    padding: 20px;
+    width: 100%;
+    .lightbox__save, .lightbox__close{
       &:hover{
         cursor: pointer;
       }
     }
   }
   .lightbox__image{
+    width: 100%;
     display: flex;
-    justify-content: center;
     align-items: center;
-    padding: 20px;
-    position: relative;
-    top: 0;
+    justify-content: center;
     img{
-      max-height: 80vh;
-      max-width: 90vw;
-      overflow: hidden;
+      max-width: 80vw;
+      max-height: 60vh;
     }
   }
 }
@@ -472,6 +464,7 @@ scrollbar-width: none;  /* Firefox */
   height: var(--topbarsize);
   width: 100%;
   background: transparent;
+  backdrop-filter: blur(2px);
   z-index: 10;
   //margin: 10px 0;
   justify-content: center;
@@ -481,7 +474,7 @@ scrollbar-width: none;  /* Firefox */
     align-items: center;
     justify-content: space-between;
     //background: var(--focus);
-    padding: 0 0 0 10px;
+    padding: 0 20px;
     width: 100%;
     //backdrop-filter: blur(2px);
   }
@@ -531,7 +524,6 @@ scrollbar-width: none;  /* Firefox */
     grid-template-rows: 1fr;
     scroll-behavior: smooth;
     list-style-type: none;
-    margin-top: 65px;
     gap: 2px;
     .message, .my__message{
       display: flex;
@@ -731,44 +723,41 @@ scrollbar-width: none;  /* Firefox */
 }
 
 .info{
-  margin: 0;
-  padding: 5px;
-  height: 30px;
-  width: 30px;
-  text-align: center;
-  font-family: Now;
-  font-size: 1rem;
-  font-weight: 900;
-  color: grey;
-  transition: 200ms;
+  padding: 10px;
   &:hover{
     cursor: pointer;
-    color: white;
   }
-  //create a about tooltip on hover
-  &:hover::after{
-    content: 'PokeTab Messanger \A Version: 4.0.2 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: flaticon.com';
+}
+
+.about{
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  position: fixed;
+  font-size: 0.7rem;
+  padding: 30px;
+  border-radius: 10px;
+  width: max-content;
+  background: #1d2f42;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  .close{
+    color: orangered;
     position: absolute;
     bottom: 0;
-    right: 0;
-    transform: translate(-5%, 120%);
-    background: var(--focus);
-    backdrop-filter: blur(3px);
-    padding: 15px;
-    border-radius: 5px;
-    color: white;
-    background: #0b1926c7;
-    font-size: 0.7rem;
-    font-weight: 900;
-    z-index: 10;
-    opacity: 1;
-    text-align: left;
-    width: 150px;
-    transition: 200ms;
-    white-space: pre;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    &:hover{
+      cursor: pointer;
+    }
   }
-  
 }
+
+
 
 img{
   user-drag: none;
@@ -786,8 +775,9 @@ img{
   justify-content: space-between;
   align-items: center;
   padding: 10px;
+  margin: 0 20px;
   background: var(--focus);
-  border-radius: 10px 10px 0 0;
+  border-radius: 10px;
   backdrop-filter: blur(2px);
   .toast-popup-replying-to{
     display: flex;
@@ -819,15 +809,14 @@ img{
   .chat{
     padding-top: 0;
   }
+  /*
   .menu{
     display: none;
   }
   .keyname{
     display: none;
   }
-  .menuwrapper{
-    display: none;
-  }
+
   .info{
     position: absolute;
     top: 10px;
@@ -855,8 +844,15 @@ img{
       background: transparent;
     }
   }
+  */
+  .topbar{
+    padding: 0 25%;
+  }
+  .menuwrapper{
+    width: 25%;
+  }
   .chat__main{
-    //padding: 0 10%;
+    padding: 0 25%;
     position: relative;
   }
 
