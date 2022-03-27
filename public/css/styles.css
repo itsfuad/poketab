@@ -265,7 +265,7 @@ input[type=file] {
   left: 0;
   width: 100%;
   height: 40%;
-  background: #26313d;
+  background: #192431;
   z-index: 100;
 }
 
@@ -312,6 +312,10 @@ input[type=file] {
 .sent {
   font-size: 0.6rem;
   color: var(--secondary);
+}
+
+.imageMessage:hover, .textMessage:hover {
+  cursor: pointer;
 }
 
 .fa-paper-plane, .fa-location-crosshairs, .fa-image {
@@ -399,6 +403,74 @@ input[type=file] {
   max-width: 50vw;
   border-radius: 10px;
   max-height: 300px;
+}
+
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 100;
+}
+
+.lightbox .tool {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  gap: 30px;
+  font-size: 2rem;
+  padding: 10px 30px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  z-index: 110;
+  position: relative;
+}
+
+.lightbox .tool .lightbox__close {
+  color: orangered;
+}
+
+.lightbox .tool .lightbox__close:hover {
+  cursor: pointer;
+}
+
+.lightbox .tool .lightbox__save {
+  color: white;
+}
+
+.lightbox .tool .lightbox__save:hover {
+  cursor: pointer;
+}
+
+.lightbox .lightbox__image {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 20px;
+  position: relative;
+  top: 0;
+}
+
+.lightbox .lightbox__image img {
+  max-height: 80vh;
+  max-width: 90vw;
+  overflow: hidden;
 }
 
 .avatar {
@@ -523,9 +595,8 @@ input[type=file] {
   position: absolute;
   height: var(--topbarsize);
   width: 100%;
-  /* background: var(--focus); */
+  background: transparent;
   z-index: 10;
-  margin: 10px 0;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -545,12 +616,8 @@ input[type=file] {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
-  padding: 10px;
-  border-radius: 50px;
-  background: var(--focus);
-  width: 90%;
-  -webkit-backdrop-filter: blur(2px);
-          backdrop-filter: blur(2px);
+  padding: 0 0 0 10px;
+  width: 100%;
 }
 
 .menuwrapper2 {
@@ -873,7 +940,7 @@ input[type=file] {
           justify-content: center;
   width: 100%;
   padding: 0 10px;
-  background: var(--primary);
+  background: transparent;
 }
 
 .chat__footer #message-form #textbox {
@@ -918,8 +985,6 @@ input[type=file] {
   font-size: 1rem;
   font-weight: 900;
   color: grey;
-  border: 2px solid;
-  border-radius: 50%;
   -webkit-transition: 200ms;
   transition: 200ms;
 }
@@ -930,7 +995,7 @@ input[type=file] {
 }
 
 .info:hover::after {
-  content: 'PokeTab Messanger \A Version: 4.0.1 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: flaticon.com';
+  content: 'PokeTab Messanger \A Version: 4.0.2 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: flaticon.com';
   position: absolute;
   bottom: 0;
   right: 0;
@@ -980,8 +1045,8 @@ img {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  padding: 10px 30px 10px 10px;
-  background: var(--primary);
+  padding: 10px;
+  background: var(--focus);
   border-radius: 10px 10px 0 0;
   -webkit-backdrop-filter: blur(2px);
           backdrop-filter: blur(2px);
@@ -1074,6 +1139,9 @@ img {
   }
   #messages .image-message {
     max-width: 30vw;
+  }
+  .lightbox .lightbox__image img {
+    max-width: 40vw;
   }
 }
 /*# sourceMappingURL=styles.css.map */

@@ -1,9 +1,10 @@
 const socket = io();
 
-let pop = new Audio('./../sounds/pop.wav');
-let juntos = new Audio('./../sounds/juntos.wav');
-let elegant = new Audio('./../sounds/elegant.wav');
-let typing_sound = new Audio('./../sounds/typing.wav');
+let incommingmessage = new Audio('./../sounds/incommingmessage.wav');
+let outgoingmessage = new Audio('./../sounds/outgoingmessage.wav');
+let joinsound = new Audio('./../sounds/join.wav');
+let leavesound = new Audio('./../sounds/leave.wav');
+let typingsound = new Audio('./../sounds/typing.wav');
 
 let myname;
 let myid;
@@ -94,7 +95,6 @@ socket.on('connect', function () {
   //console.log(params);
   //params = $.deparam(window.location.search);
   console.log("Connected to server");
-  elegant.play();
   socket.emit('join', params, function (err) {
     if (err) {
       /*
@@ -124,14 +124,14 @@ socket.on('updateUserList', function (users, ids, key, avatars) {
   for (let i = 0; i < users.length; i++) {
     ol.append($(`<li class='user' id='${ids[i]}'></li>`).html(`<img height='30px' width='30px' src='images/avatars/${avatars[i]}(custom).png'> ${users[i]}`));
   }
-  $('.menu').text(`Online: ${users.length}`);
+  $('.menu').html(`<i class="fa-solid fa-user"></i> ${users.length}`);
   $('.keyname1').text(`${key}`);
   $('.keyname2').text(`${key}`);
   $('.users').html(ol);
 });
 
 socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, id, targetId) {
-  elegant.play();
+  incommingmessage.play();
   let formattedTime = moment(message.createdAt).format('hh:mm a');
   let template, html;
   if (isReply) {
@@ -178,7 +178,7 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, 
 
 
 socket.on('messageSent', function (replaceId, id) {
-  pop.play();
+  outgoingmessage.play();
   $(`#${replaceId}`).attr('id', id);
   $(`#${id} .sent`).attr('class', 'fa-solid fa-circle-check sent');
 });
@@ -187,7 +187,7 @@ socket.on('messageSent', function (replaceId, id) {
 socket.on('server_message', function (message, name = null, id = null) {
   myname = name || myname;
   myid = id || myid;
-  juntos.play();
+
   let formattedTime = moment(message.createdAt).format('hh:mm a');
   let template = $('#server-message-template').html();
   let html = Mustache.render(template, {
@@ -197,9 +197,11 @@ socket.on('server_message', function (message, name = null, id = null) {
   });
   if (message.text.includes('joined')) {
     html = html.replace(/<p>/g, `<p style='color: limegreen;'>`);
+    joinsound.play();
   }
   if (message.text.includes('left')) {
     html = html.replace(/<p>/g, `<p style='color: orangered;'>`);
+    leavesound.play();
   } else {
     html = html.replace(/<p>/g, `<p style='color: var(--blue);'>`);
   }
@@ -216,12 +218,13 @@ socket.on('newLocationMessage', function (message) {
     url: message.url,
     createdAt: formattedTime
   });
-  pop.play();
+  incommingmessage.play();
   $('#messages').append(html);
   updateScroll();
 });
 
 socket.on('typing', (user, id) => {
+  typingsound.play();
   let li = $(`<li id="${id}"></li>`).text(user + ' is typing...');
   $('#typingindicator').append(li);
   updateScroll();
@@ -252,7 +255,7 @@ socket.on('imageGet', (sendername, imagefile, avatar, id) => {
     image: `<img class='image-message' src='${imagefile}'>`,
     createdAt: moment().format('hh:mm a')
   });
-  pop.play();
+  incommingmessage.play();
   $('#messages').append(html);
   //on image loadedd
   $(`#${id}`).find('.image-message').on('load', function () {
@@ -322,7 +325,7 @@ $('#message-form').on('submit', function (e) {
       $('#textbox').css('height', 'auto');
     });
   $('#textbox').css('height', 'auto');
-
+  
   closePopup();
   updateScroll();
 });
@@ -392,6 +395,7 @@ let targetId;
 
 $('#messages').on('click', function (evt) {
   let target = evt.target;
+  //console.log(target);
   if (target.className === 'textMessage') {
     targetId = target.parentElement.parentElement.parentElement.id;
     replyText = `${target.innerText.substring(0, 200)} ...`;
@@ -419,6 +423,9 @@ $('#messages').on('click', function (evt) {
       $('#messages .message').css('filter', '');
       $(`#${msgId}`).css('filter', '');
     }, 1000);
+  }else if(target.className.includes('image-message')){
+    $('.lightbox__image').append(`<img src="${target.src}" alt="">`);
+    $('.lightbox').fadeIn(100);
   }
 });
 
@@ -506,7 +513,6 @@ $('.sendimage').on('click', () => {
       image: `<img class='image-message' src='${e.target.result}'>`,
       createdAt: moment(moment().valueOf()).format('hh:mm a')
     });
-    pop.play();
     $('#messages').append(html);
     updateScroll();
     socket.emit('image', myname, tempId, e.target.result);
@@ -515,6 +521,32 @@ $('.sendimage').on('click', () => {
   $('.previewimage__image').html("");
 });
 
+$('.lightbox__close').on('click', ()=>{
+  lightboxClose();
+});
+
+function lightboxClose()
+{
+  $('.lightbox').fadeOut(100, ()=>{
+    $('.lightbox__image').html("");
+  });
+}
+
+$('.lightbox__save').on('click', ()=>{
+  console.log('Saving image');
+  let a = document.createElement('a');
+  a.href = $('.lightbox__image img').attr('src');
+  a.download = `${makeid(15)}.png`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+});
+
+$('.lightbox').on('click', e => { 
+  if (e.target.className === 'lightbox__image'){
+    lightboxClose();
+  }
+});
 
 function linkify(inputText) {
   let replacedText, replacePattern1, replacePattern2, replacePattern3;

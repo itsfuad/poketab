@@ -230,7 +230,7 @@ input[type=file] {
   left: 0;
   width: 100%;
   height: 40%;
-  background: #26313d;
+  background: #192431;
   z-index: 100;
   .previewimage__image{
     display: flex;
@@ -267,6 +267,12 @@ input[type=file] {
 .sent{
   font-size: 0.6rem;
   color: var(--secondary);
+}
+
+.imageMessage, .textMessage{
+  &:hover{
+    cursor: pointer;
+  }
 }
 
 .fa-paper-plane, .fa-location-crosshairs, .fa-image{
@@ -315,6 +321,52 @@ input[type=file] {
   max-width: 50vw;
   border-radius: 10px;
   max-height: 300px;
+}
+
+.lightbox{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  z-index: 100;
+  .tool{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 30px;
+    font-size: 2rem;
+    padding: 10px 30px;
+    align-items: center;
+    z-index: 110;
+    position: relative;
+    .lightbox__close{
+      color: orangered;
+      &:hover{
+        cursor: pointer;
+      }
+    }
+    .lightbox__save{
+      color: white;
+      &:hover{
+        cursor: pointer;
+      }
+    }
+  }
+  .lightbox__image{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+    top: 0;
+    img{
+      max-height: 80vh;
+      max-width: 90vw;
+      overflow: hidden;
+    }
+  }
 }
 
 .avatar{
@@ -413,20 +465,19 @@ scrollbar-width: none;  /* Firefox */
   position: absolute;
   height: var(--topbarsize);
   width: 100%;
-  /* background: var(--focus); */
+  background: transparent;
   z-index: 10;
-  margin: 10px 0;
+  //margin: 10px 0;
   justify-content: center;
   .topbar-wrapper{
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding: 10px;
-    border-radius: 50px;
-    background: var(--focus);
-    width: 90%;
-    backdrop-filter: blur(2px);
+    //background: var(--focus);
+    padding: 0 0 0 10px;
+    width: 100%;
+    //backdrop-filter: blur(2px);
   }
 }
 
@@ -641,7 +692,7 @@ scrollbar-width: none;  /* Firefox */
     justify-content: center;
     width: 100%;
     padding: 0 10px;
-    background: var(--primary);
+    background: transparent;
     #textbox{
       max-height: 100px;
       max-height: 100px;
@@ -683,8 +734,6 @@ scrollbar-width: none;  /* Firefox */
   font-size: 1rem;
   font-weight: 900;
   color: grey;
-  border: 2px solid;
-  border-radius: 50%;
   transition: 200ms;
   &:hover{
     cursor: pointer;
@@ -692,7 +741,7 @@ scrollbar-width: none;  /* Firefox */
   }
   //create a about tooltip on hover
   &:hover::after{
-    content: 'PokeTab Messanger \A Version: 4.0.1 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: flaticon.com';
+    content: 'PokeTab Messanger \A Version: 4.0.2 \A Developer: Fuad Hasan \A Email: fuad.cs22@gmail.com \A Icons: flaticon.com';
     position: absolute;
     bottom: 0;
     right: 0;
@@ -730,8 +779,8 @@ img{
   align-items: flex-start;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 30px 10px 10px;
-  background: var(--primary);
+  padding: 10px;
+  background: var(--focus);
   border-radius: 10px 10px 0 0;
   backdrop-filter: blur(2px);
   .toast-popup-replying-to{
@@ -760,6 +809,7 @@ img{
 }
 
 @media (orientation: landscape) and (min-device-aspect-ratio: 1/1) {
+  
   .chat{
     padding-top: 0;
   }
@@ -778,6 +828,7 @@ img{
     right: 0;
     margin: 10px;
   }
+
   .menuwrapper2{
     display: flex;
     left: 0;
@@ -802,6 +853,7 @@ img{
     //padding: 0 10%;
     position: relative;
   }
+
   #messages{
     .textMessage, .replyMessage{
       max-width: 30vw;
@@ -809,5 +861,8 @@ img{
     .image-message{
       max-width: 30vw;
     }    
+  }
+  .lightbox .lightbox__image img{
+    max-width: 40vw;
   }
 }
