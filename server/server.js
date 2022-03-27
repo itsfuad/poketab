@@ -105,6 +105,16 @@ io.on('connection', (socket) => {
     }
   });
 
+  socket.on('image', (sendername, tempId, imagefile) => {
+    let user = users.getUser(socket.id);
+    if (user) {
+      let id = uuid.v4();
+      console.log(tempId);
+      socket.emit('imageSent', tempId, id);
+      socket.broadcast.to(user.key).emit('imageGet', sendername, imagefile, user.avatar, id);
+    }
+  });
+
   socket.on('disconnect', () => {
     let user = users.removeUser(socket.id);
     if (user) {

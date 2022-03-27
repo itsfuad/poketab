@@ -143,7 +143,7 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, 
       reply: replyText,
       id: id,
       repId: targetId,
-      repIcon: `<img src='./../images/reply-blue.png' height='10px' width='10px' class='rep-icon'> `,
+      repIcon: `<i class="fa-solid fa-reply"></i>`,
       createdAt: formattedTime,
       attr: "style",
       replyMessageStyle: `display: block; transform: translateY(20px);`,
@@ -179,7 +179,7 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, 
 socket.on('my__message', function (replaceId, id) {
   pop.play();
   $(`#${replaceId}`).attr('id', id);
-  $(`#${id} .sent`).attr('src', './images/sent-s.png');
+  $(`#${id} .sent`).attr('class', 'fa-solid fa-circle-check sent');
 });
 
 
@@ -242,6 +242,26 @@ socket.on('vibrateResponse', (sender_name, id) => {
   }
 });
 
+socket.on('imageGet', (sendername, imagefile, avatar, id) => {
+  let template = $('#image-message-template').html();
+  let html = Mustache.render(template, {
+    from: sendername,
+    id: id,
+    attrVal: `images/avatars/${avatar}(custom).png`,
+    image: `<img class='image-message' src='${imagefile}'>`,
+    createdAt: moment().format('h:mm a')
+  });
+  pop.play();
+  $('#messages').append(html);
+  updateScroll();
+});
+
+socket.on('imageSent', (replaceId, id) => {
+  pop.play();
+  $(`#${replaceId}`).attr('id', id);
+  $(`#${id} .sent`).attr('src', './images/sent-s.png');
+});
+
 $('#message-form').on('submit', function (e) {
   e.preventDefault();
   let messageTextbox = $('[name=message]');
@@ -268,7 +288,7 @@ $('#message-form').on('submit', function (e) {
       id: replaceId,
       repId: targetId,
       reply: replyText,
-      repIcon: `<img src='./../images/reply-blue.png' height='10px' width='10px' class='rep-icon'> `,
+      repIcon: `<i class="fa-solid fa-reply"></i>`,
       createdAt: formattedTime,
       attr: "style",
       replyMessageStyle: `display: block; transform: translateY(20px);`,
@@ -315,16 +335,16 @@ locationButton.on('click', function () {
     return alert('Geolocation not supported by your browser.');
   }
 
-  locationButton.attr('disabled', 'disabled').html(`<img id="sendlocation" height='25px' width="25px" src="./images/icons8-gps-48.png" alt="" srcset="">`);
+  locationButton.attr('disabled', 'disabled').html(`<i class="fa-solid fa-location-crosshairs"></i>`);
 
   navigator.geolocation.getCurrentPosition(function (position) {
-    locationButton.removeAttr('disabled').html(`<img id="sendlocation" height='25px' width="25px" src="./images/icons8-gps-48.png" alt="" srcset="">`);
+    locationButton.removeAttr('disabled').html(`<i class="fa-solid fa-location-crosshairs"></i>`);
     socket.emit('createLocationMessage', {
       latitude: position.coords.latitude,
       longitude: position.coords.longitude
     });
   }, function () {
-    locationButton.removeAttr('disabled').html(`<img id="sendlocation" height='25px' width="25px" src="./images/icons8-gps-48.png" alt="" srcset="">`);
+    locationButton.removeAttr('disabled').html(`<i class="fa-solid fa-location-crosshairs"></i>`);
     alert('Unable to fetch location.');
   });
 });
@@ -384,7 +404,7 @@ $('#messages').on('click', function (evt) {
     if (replyTo == 'You') replyTo = myname;
     isReply = true;
     $('.toast-popup').show();
-    $('.toast-popup-name').text(`Replying to ${replyToPop}`);
+    $('.toast-popup-name').html(`<i class="fa-solid fa-reply"></i> Replying to ${replyToPop}`);
     $('.toast-popup-message').text(`${target.innerText.substring(0, 50)} ...`);
     $('#textbox').focus();
   } else if (target.className.includes('replyMessage')) {
@@ -451,6 +471,50 @@ $("textarea").each(function () {
 }).on("input", function () {
   this.style.height = "auto";
   this.style.height = (this.scrollHeight) + "px";
+});
+
+
+$('#photo').on('change', ()=>{
+  console.log('Photo selected');
+  
+  var file = $('#photo')[0].files[0];
+  var reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = function(e)
+  {
+    $('.previewimage__image').html("<img src='"+e.target.result+"' alt='image'/>");
+  }
+  $('.previewimage').show();
+
+});
+
+$('.previewimage__close').on('click', () => {
+  $('.previewimage').hide(100);
+});
+
+$('.sendimage').on('click', () => {
+  console.log('Sending image');
+
+  var file = $('#photo')[0].files[0];
+  var reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = function(e)
+  {
+    let tempId = makeid(10);
+    let template = $('#my-image-message-template').html();
+    let html = Mustache.render(template, {
+      from: myname,
+      id: tempId,
+      image: `<img class='image-message' src='${e.target.result}'>`,
+      createdAt: moment(moment().valueOf()).format('hh:mm a')
+    });
+    pop.play();
+    $('#messages').append(html);
+    updateScroll();
+    socket.emit('image', myname, tempId, e.target.result);
+  }
+  $('.previewimage').hide();
+  $('.previewimage__image').html("");
 });
 
 

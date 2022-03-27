@@ -76,7 +76,7 @@
     <div class="menuwrapper">
       <div class="chat__sidebar">
         <h3>#<span class="keyname1 key"></span></h3>
-        <div id="maxuser">Max User:<%=maxuser%></div>
+        <div id="maxuser"><i class="fa-solid fa-user"></i> Max User:<%=maxuser%></div>
         <div class="users"></div>
       </div>
     </div>
@@ -84,7 +84,7 @@
       <div class="menuwrapper2">
         <div class="chat__sidebar">
           <h3>#<span class="keyname2 key"></span></h3>
-          <div id="maxuser">Max User:<%=maxuser%></div>
+          <div id="maxuser"><i class="fa-solid fa-user"></i> Max User:<%=maxuser%></div>
           <div class="users"></div>
         </div>
       </div>
@@ -102,19 +102,28 @@
             <div class="toast-popup-name"></div>
             <div class="toast-popup-message"></div>
           </div>
-          <div class="toast-popup-close">×</div>
+          <div class="toast-popup-close"><i class="fa-solid fa-circle-xmark"></i></div>
         </div>
         <div class="popup-message" style="display: none;"></div>
         <div class="chat__footer">
           <form id="message-form">
             <!--input name="message" type="text" placeholder="Message" autofocus autocomplete="off" /-->
-            <div class="location" id="send-location"><img id="sendlocation" height='25px' width="25px" src="/images/icons8-gps-48.png" alt="" srcset=""></div>
+            <div class="location" id="send-location"><i class="fa-solid fa-location-crosshairs"></i></div>
+            <div class="upload_image">
+              <label for="photo"><i class="fa-solid fa-image"></i></label>
+              <input type="file" name="photo" id="photo" accept="image/*">
+            </div>
             <textarea name="message" id="textbox" placeholder="Type message..."></textarea>
-            <button class="send"><img src="/images/icons8-send-32.png" alt="" srcset=""></button>
+            <button class="send"><i class="fa-solid fa-paper-plane"></i></button>
           </form>
         </div>
       </div>
-    
+      
+      <div class="previewimage" style="display: none;">
+        <div class="previewimage__close"><i class="fa-solid fa-circle-xmark"></i></div>
+        <div class="previewimage__image"></div>
+        <div class="sendimage"><i class="fa-solid fa-paper-plane"></i></div>
+      </div>
     
       <template id="message-template" type="text/template">
         <li class="message" id="{{id}}">
@@ -140,7 +149,7 @@
             <div class="main-message">
               <span class='time'>{{createdAt}}</span>
               <p class="textMessage">{{{text}}}</p>
-              <img src="/images/sending-s.png" height="10px" width="10px" class="sent">
+              <i class="fa-regular fa-circle-check sent"></i>
             </div>
           </div>
           
@@ -164,8 +173,36 @@
           </div>
         </li>
       </template>
+
+      <template id="image-message-template" type="text/template">
+        <li class="image" id="{{id}}">
+          <div class="avatar"><img id="avatar" src="{{attrVal}}" height="40px" width="40px" alt="" srcset=""></div>
+          <div class="image__body">
+            <div class="image__title title"><h3>{{from}}</h3></div>
+            <div class="main-image">
+              <div class="imageMessage">{{{image}}}</div>
+              <span class='time'>{{createdAt}}</span>
+            </div>
+          </div>
+        </li>
+      </template>
+
+      <template id="my-image-message-template" type="text/template">
+        <li class="my__image" id="{{id}}">
+          <div class="image__body">
+            <div class="image__title title" style="display: none;"><h3>{{from}}</h3></div>
+            <div class="main-image">
+              <span class='time'>{{createdAt}}</span>
+              <div class="imageMessage">{{{image}}}</div>
+              <img src="/images/sending-s.png" height="10px" width="10px" class="sent">
+            </div>
+          </div>
+        </li>
+      </template>
+
     </div>
   </div>
+  <script src="https://kit.fontawesome.com/0a4c75c9d0.js" crossorigin="anonymous"></script>
   <script defer src="/socket.io/socket.io.js"></script>
   <script defer src="/js/libs/jquery-3.1.0.min.js"></script>
   <script defer src="/js/libs/moment.min.js"></script>
