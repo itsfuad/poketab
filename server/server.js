@@ -110,7 +110,7 @@ io.on('connection', (socket) => {
     if (user) {
       let id = uuid.v4();
       console.log(tempId);
-      socket.emit('imageSent', tempId, id);
+      socket.emit('messageSent', tempId, id);
       socket.broadcast.to(user.key).emit('imageGet', sendername, imagefile, user.avatar, id);
     }
   });
