@@ -57,7 +57,7 @@
 </head>
 <body>
     <div class="container">
-        <form action="/chat" method="post" autocomplete="on" id="form" onsubmit="return check();">
+        <form action="/chat" method="post" autocomplete="off" id="form" onsubmit="return check();">
             <div class="form-1" style="display: block;">
                 <div class="form-field">
                     <div class="h3">Join a Chat <img src="/images/pokeball.png" alt="" srcset=""></div>
@@ -65,7 +65,7 @@
                 </div>
                 <div class="form-field">
                     <label for="key" id="key-label">Enter Join Key</label>
-                    <input type="text" name="key" id="key" minlength="5">
+                    <input type="text" name="key" id="key" minlength="10" maxlength="10">
                 </div>
                 <div class="form-field">
                     <input type="button" value="Next" id="next">

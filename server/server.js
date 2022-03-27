@@ -56,7 +56,7 @@ app.get('*', (req, res) => {
 app.post('/chat', (req, res) => {
   //console.log(req.body);
   //res.sendFile(publicPath + `/chat.html`);
-  res.render('chat', {myname: req.body.name, mykey: req.body.key, myavatar: req.body.avatar, maxuser: req.body.maxuser});
+  res.render('chat', {myname: req.body.name, mykey: req.body.key, myavatar: req.body.avatar, maxuser: req.body.maxuser || users.getMaxUser(req.body.key)});
   //res.redirect(`/chat.html?key=${req.body.key}&name=${req.body.name}&avatar=${req.body.avatar}`);
 });
 
@@ -65,7 +65,7 @@ app.post('/chat', (req, res) => {
 io.on('connection', (socket) => {
 
   socket.on('join', (params, callback) => {
-    console.log(users);
+    //console.log(users);
     //console.log(users.getMaxUser(params.key));
     //console.log(params.name, params.key, params.maxuser);
     if (!isRealString(params.name) || !isRealString(params.key)) {
@@ -80,20 +80,20 @@ io.on('connection', (socket) => {
       return callback('exists');
     }
 
-    console.log(`New user ${params.name} connected on key ${params.key}`);
     socket.join(params.key);
     users.removeUser(socket.id);
     users.addUser(socket.id, params.name, params.key, params.avatar, params.maxuser || users.getMaxUser(params.key));
     io.to(params.key).emit('updateUserList', users.getUserList(params.key), users.getUserId(params.key), params.key, users.getAvatarList(params.key));
     socket.emit('server_message', generateMessage('', `You joined the chat.🔥`), params.name, socket.id);
     socket.broadcast.to(params.key).emit('server_message', generateMessage(params.name, `${params.name} joined the chat.🔥`));
+    console.log(`New user ${params.name} connected on key ${params.key} with avatar ${params.avatar} and maxuser ${params.maxuser || users.getMaxUser(params.key)}`);
   });
 
   socket.on('createMessage', (message, replaceId, isReply, replyTo, replyText, targetId, callback) => {
     let user = users.getUser(socket.id);
     if (user && isRealString(message.text)) {
       let id = uuid.v4();
-      socket.emit('my__message', replaceId, id);
+      socket.emit('messageSent', replaceId, id);
       socket.broadcast.to(user.key).emit('newMessage', generateMessage(user.name, message.text), user.avatar, isReply, replyTo, replyText, id, targetId);
     }
   });

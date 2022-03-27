@@ -132,7 +132,7 @@ socket.on('updateUserList', function (users, ids, key, avatars) {
 
 socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, id, targetId) {
   elegant.play();
-  let formattedTime = moment(message.createdAt).format('h:mm a');
+  let formattedTime = moment(message.createdAt).format('hh:mm a');
   let template, html;
   if (isReply) {
     if (replyTo == myname) replyTo = 'You';
@@ -176,7 +176,8 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, 
   updateScroll();
 });
 
-socket.on('my__message', function (replaceId, id) {
+
+socket.on('messageSent', function (replaceId, id) {
   pop.play();
   $(`#${replaceId}`).attr('id', id);
   $(`#${id} .sent`).attr('class', 'fa-solid fa-circle-check sent');
@@ -187,7 +188,7 @@ socket.on('server_message', function (message, name = null, id = null) {
   myname = name || myname;
   myid = id || myid;
   juntos.play();
-  let formattedTime = moment(message.createdAt).format('h:mm a');
+  let formattedTime = moment(message.createdAt).format('hh:mm a');
   let template = $('#server-message-template').html();
   let html = Mustache.render(template, {
     text: message.text,
@@ -208,7 +209,7 @@ socket.on('server_message', function (message, name = null, id = null) {
 });
 
 socket.on('newLocationMessage', function (message) {
-  let formattedTime = moment(message.createdAt).format('h:mm a');
+  let formattedTime = moment(message.createdAt).format('hh:mm a');
   let template = $('#location-message-template').html();
   let html = Mustache.render(template, {
     from: message.from,
@@ -249,17 +250,14 @@ socket.on('imageGet', (sendername, imagefile, avatar, id) => {
     id: id,
     attrVal: `images/avatars/${avatar}(custom).png`,
     image: `<img class='image-message' src='${imagefile}'>`,
-    createdAt: moment().format('h:mm a')
+    createdAt: moment().format('hh:mm a')
   });
   pop.play();
   $('#messages').append(html);
+  //on image loadedd
+  $(`#${id}`).find('.image-message').on('load', function () {
   updateScroll();
-});
-
-socket.on('imageSent', (replaceId, id) => {
-  pop.play();
-  $(`#${replaceId}`).attr('id', id);
-  $(`#${id} .sent`).attr('src', './images/sent-s.png');
+  });
 });
 
 $('#message-form').on('submit', function (e) {

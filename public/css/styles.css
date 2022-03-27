@@ -318,6 +318,7 @@ input[type=file] {
   font-size: 1.3rem;
   padding: 5px;
   color: var(--secondary);
+  cursor: pointer;
 }
 
 .image {
@@ -879,7 +880,7 @@ input[type=file] {
   max-height: 100px;
   border-radius: 25px;
   padding: 5px 35px;
-  outline: 2px solid transparent;
+  outline: none;
   resize: none;
   background: var(--focus);
   border: none;
@@ -893,10 +894,10 @@ input[type=file] {
 }
 
 .chat__footer #message-form #textbox:focus {
-  outline: 2px solid var(--secondary);
+  outline: none;
 }
 
-#maxuser {
+.maxuser {
   font-size: 0.7rem;
   position: relative;
   right: 0;

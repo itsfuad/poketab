@@ -273,6 +273,7 @@ input[type=file] {
   font-size: 1.3rem;
   padding: 5px;
   color: var(--secondary);
+  cursor: pointer;
 }
 
 .image {
@@ -645,7 +646,7 @@ scrollbar-width: none;  /* Firefox */
       max-height: 100px;
       border-radius: 25px;
       padding: 5px 35px;
-      outline: 2px solid transparent;
+      outline: none;
       resize: none;
       background: var(--focus);
       border: none;
@@ -655,13 +656,13 @@ scrollbar-width: none;  /* Firefox */
       width: 100%;
       backdrop-filter: blur(2px);
       &:focus{
-        outline: 2px solid var(--secondary);
+        outline: none;
       }
     }
   }
 }
 
-#maxuser{
+.maxuser{
   font-size: 0.7rem;
   position: relative;
   right: 0;
