@@ -32,7 +32,7 @@ $('#messages').scroll(function (event) {
   } else {
     scrolling = true;
   }
-  console.log(scrolling);
+  //console.log(scrolling);
 });
 
 function updateScroll(avatar = null, text = '') {
@@ -284,7 +284,7 @@ socket.on('imageGet', (sendername, imagefile, avatar, id) => {
   $('#messages').append(html);
   //on image loadedd
   $(`#${id}`).find('.image-message').on('load', function () {
-  updateScroll();
+  updateScroll(avatar, 'Photo');
   });
 });
 
