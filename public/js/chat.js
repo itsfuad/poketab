@@ -39,7 +39,7 @@ function updateScroll(avatar = null, text = '') {
   if (scrolling) {
     if (text.length > 0) {
       $('.newmessagepopup img').attr('src', `./../images/avatars/${avatar}(custom).png`);
-      $('.newmessagepopup .msg').text(text.substring(0, 10));
+      $('.newmessagepopup .msg').text(text.substring(0, 20));
       $('.newmessagepopup').fadeIn(200);
     }
     return;
@@ -120,18 +120,9 @@ socket.on('connect', function () {
   };
   //console.log(params);
   //params = $.deparam(window.location.search);
-  console.log("Connected to server");
+  //console.log("Connected to server");
   socket.emit('join', params, function (err) {
     if (err) {
-      /*
-      if (err == 'empty') {
-        window.location.href = '/?NR_0';
-      } else if (err == 'exists') {
-        window.location.href = '/?UE_1';
-      } else if (err == 'avatar') {
-        window.location.href = '/?NA_0';
-      }
-      */
      console.log(err);
     } else {
       console.log('No error');
@@ -353,6 +344,7 @@ $('#message-form').on('submit', function (e) {
   
   scrolling = false;
   closePopup();
+  clickOptionHide();
   updateScroll();
 });
 
@@ -397,10 +389,10 @@ $('#textbox').on('keydown', function () {
 $('.menu').on('click', function () {
   $('.menuwrapper').addClass('active');
 });
-$('.chat').on('click', function () {
-  $('.menuwrapper').removeClass('active');
-  $('.about').fadeOut(200);
-});
+
+//remove all popup on click
+
+
 $('#textbox').on('focus', function () {
   updateScroll();
 });
@@ -418,6 +410,8 @@ function closePopup() {
   $('.toast-popup').hide();
   $('.toast-popup-name').text('');
   $('.toast-popup-message').text('');
+  $('.about').hide();
+  $('.menuwrapper').removeClass('active');
 }
 
 $('.toast-popup-close').on('click', () => {
@@ -428,22 +422,100 @@ let isReply = false;
 let replyTo, replyText;
 let targetId;
 
+function clickOptionShow(type, evt)
+{
+  $('.click-option').show();
+  if(type === 'text'){
+    $('.view-action').hide();
+    $('.store-action').hide();
+    $('.copy-action').show();
+    $('.reply-action').on('click', () => {
+      textReply(evt);
+      clickOptionHide();
+    });
+    $('.copy-action').on('click', ()=>{
+      copyText(evt.target.innerText);
+      clickOptionHide();
+    });
+  }
+  else if (type === 'image'){
+    $('.view-action').show();
+    $('.store-action').show();
+    $('.copy-action').hide();
+    $('.reply-action').on('click', () => {
+      imageReply(evt);
+      clickOptionHide();
+    });
+    $('.view-action').on('click', () => {
+      openImageView(evt);
+      clickOptionHide();
+    });
+    $('.store-action').on('click', () => {
+      $('.lightbox__image').html('');
+      $('.lightbox__image').append(`<img src="${evt.target.src}" alt="">`);
+      saveImage();
+      clickOptionHide();
+    });
+  }
+}
+
+function clickOptionHide()
+{
+  //console.log('hide');
+  $('.click-option').hide();
+  $('.view-action').hide();
+  $('.store-action').hide();
+  $('.copy-action').hide();
+}
+
+function textReply(evt)
+{
+  let target = evt.target;
+  targetId = target.parentElement.parentElement.parentElement.id;
+  replyText = `${target.innerText.substring(0, 200)} ...`;
+  replyTo = evt.target.parentElement.previousElementSibling.previousElementSibling.innerText;
+  replyTo = replyTo.replace(/ replied to [a-zA-Z]+/g, '');
+  let replyToPop = replyTo;
+  if (replyToPop == myname) replyToPop = 'You';
+  if (replyTo == 'You') replyTo = myname;
+  isReply = true;
+  $('.toast-popup').show();
+  $('.toast-popup-name').html(`<i class="fa-solid fa-reply"></i> Replying to ${replyToPop}`);
+  $('.toast-popup-message').text(`${target.innerText.substring(0, 50)} ...`);
+  $('#textbox').focus();
+}
+
+function imageReply(evt)
+{
+  //console.log(evt);
+  let target = evt.target;
+  targetId = target.parentElement.parentElement.parentElement.parentElement.id;
+  replyText = `Image`;
+  replyTo = target.parentElement.parentElement.previousElementSibling.innerText;
+  replyTo = replyTo.replace(/ replied to [a-zA-Z]+/g, '');
+  let replyToPop = replyTo;
+  if (replyToPop == myname) replyToPop = 'You';
+  if (replyTo == 'You') replyTo = myname;
+  isReply = true;
+  $('.toast-popup').show();
+  $('.toast-popup-name').html(`<i class="fa-solid fa-reply"></i> Replying to ${replyToPop}`);
+  $('.toast-popup-message').text(`Image`);
+  $('#textbox').focus();
+}
+
+function openImageView(evt)
+{
+  let target = evt.target;
+  $('.lightbox__image').html('');
+  $('.lightbox__image').append(`<img src="${target.src}" alt="">`);
+  $('.lightbox').fadeIn(100);
+}
+
 $('#messages').on('click', function (evt) {
   let target = evt.target;
   //console.log(target);
   if (target.className === 'textMessage') {
-    targetId = target.parentElement.parentElement.parentElement.id;
-    replyText = `${target.innerText.substring(0, 200)} ...`;
-    replyTo = evt.target.parentElement.previousElementSibling.previousElementSibling.innerText;
-    replyTo = replyTo.replace(/ replied to [a-zA-Z]+/g, '');
-    let replyToPop = replyTo;
-    if (replyToPop == myname) replyToPop = 'You';
-    if (replyTo == 'You') replyTo = myname;
-    isReply = true;
-    $('.toast-popup').show();
-    $('.toast-popup-name').html(`<i class="fa-solid fa-reply"></i> Replying to ${replyToPop}`);
-    $('.toast-popup-message').text(`${target.innerText.substring(0, 50)} ...`);
-    $('#textbox').focus();
+    clickOptionShow('text', evt);
   } else if (target.className.includes('replyMessage')) {
     const msgId = target.dataset.repid;
     const element = document.getElementById(msgId);
@@ -459,29 +531,28 @@ $('#messages').on('click', function (evt) {
       $(`#${msgId}`).css('filter', '');
     }, 1000);
   }else if(target.className.includes('image-message')){
-    $('.lightbox__image').append(`<img src="${target.src}" alt="">`);
-    $('.lightbox').fadeIn(100);
+    clickOptionShow('image', evt);
   }
 });
 
 $('.key').on('click', () => {
-  console.log('clicked');
+  //console.log('clicked');
   let text = $('.keyname1').text();
-  //copy text to clipboard
-  //copyToClipboard(text);
-  //show toast
+  copyText(text);
+});
+
+function copyText(text){
   navigator.clipboard.writeText(text);
   $('.popup-message').text(`Copied to clipboard`);
   $('.popup-message').fadeIn(500);
   setTimeout(function () {
     $('.popup-message').fadeOut(500);
   }, 1000);
-});
-
+}
 
 $('.users').on('click', function (evt) {
   evt.preventDefault();
-  console.log('clicked on users');
+  //console.log('clicked on users');
   let target = evt.target;
   if (target.className === 'user') {
     let targetId = target.id;
@@ -495,6 +566,32 @@ $('.users').on('click', function (evt) {
     }
   }
 });
+
+$('.chat').on('click', function (evt) {
+    $('.menuwrapper').removeClass('active');
+    $('.about').fadeOut(200);
+});
+
+$('.close-action').on('click', function (evt) {
+  $('.click-option').hide();
+});
+
+function hideOnClickOutside(element) {
+  const outsideClickListener = event => {
+      if (!element.contains(event.target) && isVisible(element)) { // or use: event.target.closest(selector) === null
+        element.style.display = 'none'
+        removeClickListener()
+      }
+  }
+
+  const removeClickListener = () => {
+      document.removeEventListener('click', outsideClickListener)
+  }
+
+  document.addEventListener('click', outsideClickListener)
+}
+
+const isVisible = elem => !!elem && !!( elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length ) 
 
 
 window.addEventListener('resize', () => {
@@ -515,7 +612,7 @@ $("textarea").each(function () {
 
 
 $('#photo').on('change', ()=>{
-  console.log('Photo selected');
+  //console.log('Photo selected');
   
   var file = $('#photo')[0].files[0];
   var reader = new FileReader();
@@ -533,7 +630,7 @@ $('.previewimage__close').on('click', () => {
 });
 
 $('.sendimage').on('click', () => {
-  console.log('Sending image');
+  //console.log('Sending image');
 
   var file = $('#photo')[0].files[0];
   var reader = new FileReader();
@@ -554,6 +651,7 @@ $('.sendimage').on('click', () => {
   }
   $('.previewimage').hide();
   $('.previewimage__image').html("");
+  clickOptionHide();
 });
 
 $('.lightbox__close').on('click', ()=>{
@@ -568,14 +666,19 @@ function lightboxClose()
 }
 
 $('.lightbox__save').on('click', ()=>{
-  console.log('Saving image');
+  saveImage();
+});
+
+function saveImage()
+{
+  //console.log('Saving image');
   let a = document.createElement('a');
   a.href = $('.lightbox__image img').attr('src');
   a.download = `${makeid(15)}.png`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-});
+}
 
 $('.lightbox').on('click', e => { 
   if (e.target.className === 'lightbox__image'){

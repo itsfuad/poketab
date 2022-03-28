@@ -66,9 +66,11 @@ socket.on('createResponse', (keyExists, users, avatars) => {
     else{
         e_users = users;
         e_avatars = avatars;
-        e_avatars.forEach(avatar => {
-            $(`label[for='${avatar}']`).hide();
-        });
+        if (e_avatars){
+            e_avatars.forEach(avatar => {
+                $(`label[for='${avatar}']`).hide();
+            });
+        }
         $('.form-1').hide(100);
         $('.howtouse').hide(100);
         $('.form-2').show(100);

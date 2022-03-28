@@ -25,6 +25,7 @@
   --primary: #111d2a;
   --foreground: #ffffff;
   --focus: #ffffff17;
+  --option-color: #253c52;
   --topbarsize: 50px;
   --app-height: 100vh;
   --pattern-image: url("./../images/avatars/ball\(custom\).png");
@@ -45,6 +46,20 @@ body {
   user-select: none;
   overscroll-behavior-y: contain;
 }
+
+.copy-action{
+  color: lime;
+}
+
+.close-action{
+  color: orangered;
+}
+
+.reply-action, .store-action, .view-action{
+  color: var(--secondary);
+}
+
+
 
 .intro{
   display: flex;
@@ -88,7 +103,7 @@ h3 {
 button,
 button:hover {
   border: none;
-  color: white;
+  color: var(--foreground);
   font-size: 0.8rem;
 }
 
@@ -184,14 +199,14 @@ button:disabled {
 .chat__sidebar li {
   //background: var(--focus);
   padding: 7px 0 5px 0;
-  color: white;
+  color: var(--foreground);
   font-size: 0.7rem;
   //border-radius: 5px;
   margin: 5px;
 }
 
 .chat__sidebar h3 {
-  color: white;
+  color: var(--foreground);
   margin: 10px 20px;
   text-align: left;
   color: var(--secondary);
@@ -230,7 +245,7 @@ input[type=file] {
   left: 0;
   width: 100%;
   height: 40%;
-  background: #192431;
+  background: var(--option-color);
   z-index: 100;
   .previewimage__image{
     display: flex;
@@ -434,7 +449,7 @@ scrollbar-width: none;  /* Firefox */
   position: fixed;
   top: 0;
   left: -100%;
-  background: rgba(29, 47, 66, 0.7);
+  background: var(--option-color);
   backdrop-filter: blur(10px);
   width: 60%;
   transition: 200ms;
@@ -665,7 +680,7 @@ scrollbar-width: none;  /* Firefox */
   position: absolute;
   bottom: 100px;
   left: 50%;
-  background: #00000072;
+  background: var(--option-color);
   padding: 10px;
   border-radius: 15px;
   backdrop-filter: blur(2px);
@@ -680,15 +695,17 @@ scrollbar-width: none;  /* Firefox */
   align-items: center;
   justify-content: center;
   position: absolute;
-  bottom: 100px;
+  bottom: 80px;
   left: 50%;
-  background: #00000072;
+  background: var(--option-color);
   padding: 10px;
   border-radius: 25px;
   backdrop-filter: blur(2px);
   font-size: 0.6rem;
   transform: translateX(-50%);
   z-index: 100;
+  gap: 10px;
+  width: max-content;
   img{
     height: 15px;
     width: 15px;
@@ -731,7 +748,7 @@ scrollbar-width: none;  /* Firefox */
       border: none;
       margin: 10px;
       transition: 200ms;
-      color: white;
+      color: var(--foreground);
       width: 100%;
       backdrop-filter: blur(2px);
       &:focus{
@@ -758,6 +775,32 @@ scrollbar-width: none;  /* Firefox */
   }
 }
 
+.click-option{
+  background: var(--option-color);
+  padding: 20px;
+  border-radius: 10px;
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.7rem;
+  z-index: 99;
+  ul{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    list-style-type: none;
+    gap: 20px;
+    width: max-content;
+    li{
+      &:hover{
+        cursor: pointer;
+      }
+    }
+  }
+}
+
 .about{
   display: -webkit-box;
   display: -ms-flexbox;
@@ -770,7 +813,7 @@ scrollbar-width: none;  /* Firefox */
   padding: 30px;
   border-radius: 10px;
   width: max-content;
-  background: #1d2f42;
+  background: var(--option-color);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
