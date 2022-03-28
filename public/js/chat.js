@@ -19,19 +19,45 @@ window.addEventListener('resize', appHeight);
 appHeight();
 
 let scrolling = false;
-window.onscroll = (e) => {
-  scrolling = true;
-  setTimeout(() => {
-    scrolling = false;
-  }, 2000);
-}
+let lastPageLength = $('#messages').scrollTop();;
+let scroll = 0;
 
-function updateScroll() {
+$('#messages').scroll(function (event) {
+  scroll = $('#messages').scrollTop();
+
+  if (scroll >= lastPageLength) {
+    lastPageLength = scroll;
+    removeNewMessagePopup();
+    scrolling = false;
+  } else {
+    scrolling = true;
+  }
+  console.log(scrolling);
+});
+
+function updateScroll(avatar = null, text = '') {
   if (scrolling) {
+    if (text.length > 0) {
+      $('.newmessagepopup img').attr('src', `./../images/avatars/${avatar}(custom).png`);
+      $('.newmessagepopup .msg').text(text.substring(0, 10));
+      $('.newmessagepopup').fadeIn(200);
+    }
     return;
   }
   let element = document.getElementById("messages");
   element.scrollTop = element.scrollHeight;
+  lastPageLength = $('#messages').scrollTop();
+  removeNewMessagePopup();
+}
+
+$('.newmessagepopup').click(function () {
+  scrolling = false;
+  updateScroll();
+  removeNewMessagePopup();
+});
+
+function removeNewMessagePopup() {
+  $('.newmessagepopup').fadeOut(200);
 }
 
 function scrollToBottom() {
@@ -173,7 +199,7 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, 
     });
   }
   //closePopup();
-  updateScroll();
+  updateScroll(avatar, message.text);
 });
 
 
@@ -227,7 +253,6 @@ socket.on('typing', (user, id) => {
   typingsound.play();
   let li = $(`<li id="${id}"></li>`).text(user + ' is typing...');
   $('#typingindicator').append(li);
-  updateScroll();
 });
 
 socket.on('stoptyping', (id) => {
@@ -326,6 +351,7 @@ $('#message-form').on('submit', function (e) {
     });
   $('#textbox').css('height', 'auto');
   
+  scrolling = false;
   closePopup();
   updateScroll();
 });

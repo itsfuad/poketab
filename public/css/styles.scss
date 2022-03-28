@@ -434,7 +434,7 @@ scrollbar-width: none;  /* Firefox */
   position: fixed;
   top: 0;
   left: -100%;
-  background: rgba(0, 0, 0, 0.254);
+  background: rgba(29, 47, 66, 0.7);
   backdrop-filter: blur(10px);
   width: 60%;
   transition: 200ms;
@@ -672,6 +672,34 @@ scrollbar-width: none;  /* Firefox */
   transform: translateX(-50%);
   z-index: 100;
 }
+
+.newmessagepopup{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  background: #00000072;
+  padding: 10px;
+  border-radius: 25px;
+  backdrop-filter: blur(2px);
+  font-size: 0.6rem;
+  transform: translateX(-50%);
+  z-index: 100;
+  img{
+    height: 15px;
+    width: 15px;
+  }
+  .msg{
+    font-size: 0.7rem;
+  }
+  &:hover{
+    cursor: pointer;
+  }
+}
+
 .key{
   &:hover{
     cursor: pointer;

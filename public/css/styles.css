@@ -566,7 +566,7 @@ input[type=file] {
   position: fixed;
   top: 0;
   left: -100%;
-  background: rgba(0, 0, 0, 0.254);
+  background: rgba(29, 47, 66, 0.7);
   -webkit-backdrop-filter: blur(10px);
           backdrop-filter: blur(10px);
   width: 60%;
@@ -915,6 +915,47 @@ input[type=file] {
   -webkit-transform: translateX(-50%);
           transform: translateX(-50%);
   z-index: 100;
+}
+
+.newmessagepopup {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  background: #00000072;
+  padding: 10px;
+  border-radius: 25px;
+  -webkit-backdrop-filter: blur(2px);
+          backdrop-filter: blur(2px);
+  font-size: 0.6rem;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  z-index: 100;
+}
+
+.newmessagepopup img {
+  height: 15px;
+  width: 15px;
+}
+
+.newmessagepopup .msg {
+  font-size: 0.7rem;
+}
+
+.newmessagepopup:hover {
+  cursor: pointer;
 }
 
 .key:hover {
