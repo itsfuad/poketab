@@ -605,8 +605,6 @@ input[type=file] {
   height: var(--topbarsize);
   width: 100%;
   background: transparent;
-  -webkit-backdrop-filter: blur(2px);
-          backdrop-filter: blur(2px);
   z-index: 10;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
@@ -695,6 +693,7 @@ input[type=file] {
   scroll-behavior: smooth;
   list-style-type: none;
   gap: 2px;
+  margin-top: 50px;
 }
 
 #messages .message, #messages .my__message {

@@ -464,7 +464,7 @@ scrollbar-width: none;  /* Firefox */
   height: var(--topbarsize);
   width: 100%;
   background: transparent;
-  backdrop-filter: blur(2px);
+  //backdrop-filter: blur(2px);
   z-index: 10;
   //margin: 10px 0;
   justify-content: center;
@@ -525,6 +525,7 @@ scrollbar-width: none;  /* Firefox */
     scroll-behavior: smooth;
     list-style-type: none;
     gap: 2px;
+    margin-top: 50px;
     .message, .my__message{
       display: flex;
       flex-direction: row;
