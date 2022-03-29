@@ -445,7 +445,7 @@ input[type=file] {
   width: 100vw;
   height: 100vh;
   position: fixed;
-  background: #00000072;
+  background: transparent;
   -webkit-backdrop-filter: blur(10px);
           backdrop-filter: blur(10px);
   z-index: 100;
@@ -471,8 +471,25 @@ input[type=file] {
   width: 100%;
 }
 
+.lightbox .tool .lightbox__save, .lightbox .tool .lightbox__close {
+  background: #0000004d;
+  height: 35px;
+  width: 35px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-radius: 50%;
+}
+
 .lightbox .tool .lightbox__save:hover, .lightbox .tool .lightbox__close:hover {
   cursor: pointer;
+  background: #4141414d;
 }
 
 .lightbox .lightbox__image {
@@ -489,8 +506,8 @@ input[type=file] {
 }
 
 .lightbox .lightbox__image img {
-  max-width: 80vw;
-  max-height: 60vh;
+  max-width: 90vw;
+  max-height: 90vh;
 }
 
 .avatar {
@@ -1212,7 +1229,7 @@ img {
     max-width: 30vw;
   }
   .lightbox .lightbox__image img {
-    max-width: 40vw;
+    max-width: 80vw;
   }
 }
 /*# sourceMappingURL=styles.css.map */

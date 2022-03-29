@@ -338,7 +338,7 @@ input[type=file] {
   width: 100vw;
   height: 100vh;
   position: fixed;
-  background: #00000072;
+  background: transparent;
   backdrop-filter: blur(10px);
   z-index: 100;
   .tool{
@@ -351,8 +351,16 @@ input[type=file] {
     padding: 20px;
     width: 100%;
     .lightbox__save, .lightbox__close{
+      background: #0000004d;
+      height: 35px;
+      width: 35px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
       &:hover{
         cursor: pointer;
+        background: #4141414d;
       }
     }
   }
@@ -362,8 +370,8 @@ input[type=file] {
     align-items: center;
     justify-content: center;
     img{
-      max-width: 80vw;
-      max-height: 60vh;
+      max-width: 90vw;
+      max-height: 90vh;
     }
   }
 }
@@ -893,6 +901,6 @@ img{
     }    
   }
   .lightbox .lightbox__image img{
-    max-width: 40vw;
+    max-width: 80vw;
   }
 }

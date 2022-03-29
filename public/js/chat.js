@@ -424,10 +424,12 @@ function clickOptionShow(type, evt)
     $('.reply-action').on('click', () => {
       textReply(evt);
       clickOptionHide();
+      $('.reply-action').unbind();
     });
     $('.copy-action').on('click', ()=>{
       copyText(evt.target.innerText);
       clickOptionHide();
+      $('.copy-action').unbind();
     });
   }
   else if (type === 'image'){
@@ -437,16 +439,19 @@ function clickOptionShow(type, evt)
     $('.reply-action').on('click', () => {
       imageReply(evt);
       clickOptionHide();
+      $('.reply-action').unbind();
     });
     $('.view-action').on('click', () => {
       openImageView(evt);
       clickOptionHide();
+      $('.view-action').unbind();
     });
     $('.store-action').on('click', () => {
       $('.lightbox__image').html('');
       $('.lightbox__image').append(`<img src="${evt.target.src}" alt="">`);
       saveImage();
       clickOptionHide();
+      $('.store-action').unbind();
     });
   }
 }
