@@ -252,8 +252,8 @@ socket.on('stoptyping', (id) => {
 
 socket.on('vibrateResponse', (sender_name, id) => {
   if (id == myid) {
-    if (sender_name == myname) sender_name = 'You';
-    popupMessage(`${sender_name} just vibrated your Device`);
+    navigator.vibrate(1000);
+    popupMessage(`${sender_name == myname ? 'You' : sender_name} just vibrated your Device`);
   }
 });
 
@@ -547,7 +547,6 @@ function copyText(text){
 function popupMessage(text){
   $('.popup-message').text(text);
   $('.popup-message').fadeIn(500);
-  navigator.vibrate(1000);
   setTimeout(function () {
     $('.popup-message').fadeOut(500);
   }, 1000);
