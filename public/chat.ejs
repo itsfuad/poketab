@@ -42,11 +42,7 @@
   <link rel="apple-touch-startup-image" href="icons/apple-splash-1334-750.jpg" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
   <link rel="apple-touch-startup-image" href="icons/apple-splash-640-1136.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
   <link rel="apple-touch-startup-image" href="icons/apple-splash-1136-640.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-  <link rel="preload" as="image" type="image/png" href="/images/sending-s.png">
-  <link rel="preload" as="image" type="image/png" href="/images/sent-s.png">
   <link rel="preload" as="image" type="image/png" href="/images/icons8-place-marker.gif">
-  <link rel="preload" as="font" type="font/otf" href="/fonts/Now-Regular.otf">
-  <link rel="preload" as="font" type="font/otf" href="/fonts/Comforter.ttf">
   <link rel="preload" as="font" type="font/ttf" href="/fonts/comic.ttf">
   <meta charset="utf-8">
   <title>Inbox | PokeTab Messanger</title>
@@ -71,7 +67,7 @@
     <div class="topbar">
       <div class="topbar-wrapper">
         <div class="menu"></div>
-        <div class="info"><i class="fa-solid fa-ellipsis-vertical"></i></div>
+        <!--div class="mode"><i class="fa-solid fa-sun"></i></div-->
       </div>
     </div>
     <div class="menuwrapper">
@@ -85,8 +81,10 @@
       <div class="chat__main">
         <ol id="messages" class="chat__messages">
           <div class="intro">
-            <h2>Welcome To PokeTab Messanger</h2>
-            <div class="credit">Developed by <a href="http://itsfuad.netlify.app">Fuad Hasan</a> 🐸</div>
+            <h2><img src="./images/avatars/pikachu(custom).png" alt="" srcset="">  PokeTab Messanger <img src="./images/avatars/squirtle(custom).png" alt="" srcset=""> </h2>
+              <p><i class="fa-solid fa-code"></i> <a href="http://itsfuad.netlify.app">Fuad Hasan</a></p>
+              <p><i class="fa-solid fa-user-astronaut"></i> <a href="https://flaticon.com">https://flaticon.com</a></p>
+              <p><i class="fa-solid fa-circle-info"></i> <a href="http://fontawesome.com">http://fontawesome.com</a></p>
           </div>
         </ol>
         <ul id="typingindicator"></ul>
@@ -136,14 +134,6 @@
           <li class="copy-action" style="display: none;">Copy <i class="fa-regular fa-clone"></i></li>
           <li class="close-action"> Close <i class="fa-solid fa-xmark"></i></li>
         </ul>
-      </div>
-
-      <div class="about" style="display: none;">
-        <p style="font-size: 1.2rem;">Poketab Messanger</p>
-        <p>Developed by <a href="http://itsfuad.netlify.app">Fuad Hasan</a> 🐸</p>
-        <p>Avatars: <a href="https://flaticon.com">https://flaticon.com</a></p>
-        <p>Icons: <a href="http://fontawesome.com">Font Awesome</a></p>
-        <div class="close">Close</div>
       </div>
     
       <template id="message-template" type="text/template">

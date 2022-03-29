@@ -1,33 +1,20 @@
 @font-face {
-  font-family: 'Comforter';
-  src: url("./../fonts/Comforter-Regular.ttf");
-}
-
-@font-face {
-  font-family: 'Now';
-  src: url("./../fonts/Now-Regular.otf");
-}
-
-@font-face {
-  font-family: 'James';
-  src: url("./../fonts/James.ttf");
-}
-
-@font-face {
   font-family: 'Comic';
   src: url("./../fonts/comic.ttf");
 }
 
 :root {
-  --secondary: #6aa4db;
-  --hoverblue: #0575e6;
-  --primary: #111d2a;
-  --foreground: #ffffff;
-  --focus: #ffffff17;
-  --option-color: #253c52;
+  --primary-dark: #111d2a;
+  --foreground-dark: #ffffff;
+  --secondary-dark: #6aa4db;
+  --focus--dark: #192838;
+  --secondary: var(--secondary-dark);
+  --primary: var(--primary-dark);
+  --foreground: var(--foreground-dark);
+  --focus: var(--focus--dark);
+  --option-color: var(--focus--dark);
   --topbarsize: 50px;
   --app-height: 100vh;
-  --pattern-image: url("./../images/avatars/ball\(custom\).png");
 }
 
 html {
@@ -53,15 +40,11 @@ body {
   overscroll-behavior-y: contain;
 }
 
-.copy-action {
-  color: lime;
-}
-
 .close-action {
-  color: orangered;
+  color: #f28860;
 }
 
-.reply-action, .store-action, .view-action {
+.reply-action, .store-action, .view-action, .copy-action {
   color: var(--secondary);
 }
 
@@ -84,12 +67,24 @@ body {
 
 .intro h2 {
   font-size: 1.5rem;
-  font-family: 'Comforter';
   text-align: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
-.intro .credit {
-  font-size: 0.7rem;
+.intro p, .intro a {
+  font-size: 0.8rem;
 }
 
 .wrapper {
@@ -113,6 +108,10 @@ h3 {
 
 .send:hover {
   background: transparent;
+}
+
+.user {
+  cursor: pointer;
 }
 
 button,
@@ -256,8 +255,6 @@ button:disabled {
       -ms-flex-direction: column;
           flex-direction: column;
   width: 100%;
-  background: var(--primary) var(--pattern-image) center;
-  background-attachment: fixed;
 }
 
 #send-location:hover {
@@ -428,6 +425,7 @@ input[type=file] {
   max-width: 50vw;
   border-radius: 10px;
   max-height: 300px;
+  color: white;
 }
 
 .lightbox {
@@ -918,11 +916,9 @@ input[type=file] {
   position: absolute;
   bottom: 100px;
   left: 50%;
-  background: var(--option-color);
+  background: #00000078;
   padding: 10px;
   border-radius: 15px;
-  -webkit-backdrop-filter: blur(2px);
-          backdrop-filter: blur(2px);
   font-size: 0.6rem;
   -webkit-transform: translateX(-50%);
           transform: translateX(-50%);
@@ -1042,11 +1038,11 @@ input[type=file] {
   color: var(--secondary);
 }
 
-.info {
+.mode {
   padding: 10px;
 }
 
-.info:hover {
+.mode:hover {
   cursor: pointer;
 }
 
@@ -1085,48 +1081,6 @@ input[type=file] {
 }
 
 .click-option ul li:hover {
-  cursor: pointer;
-}
-
-.about {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: flex-start;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  position: fixed;
-  font-size: 0.7rem;
-  padding: 30px;
-  border-radius: 10px;
-  width: -webkit-max-content;
-  width: -moz-max-content;
-  width: max-content;
-  background: var(--option-color);
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
-  z-index: 99;
-}
-
-.about .close {
-  color: orangered;
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
-}
-
-.about .close:hover {
   cursor: pointer;
 }
 
