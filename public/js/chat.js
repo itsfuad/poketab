@@ -295,7 +295,7 @@ $('#message-form').on('submit', function (e) {
   text = censorBadWords(text);
   text = text.replace(/\n/g, '¶');
   let replaceId = makeid(10);
-  let formattedTime = moment(moment().valueOf()).format('hh:mm a');
+  let formattedTime = moment().format('hh:mm a');
   let template, html;
   if (isReply) {
     template = $('#my-message-template').html();
@@ -674,7 +674,7 @@ function saveImage()
   //console.log('Saving image');
   let a = document.createElement('a');
   a.href = $('.lightbox__image img').attr('src');
-  a.download = `${makeid(15)}.png`;
+  a.download = `PT-${makeid(5)}-${moment().valueOf()}.png`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
