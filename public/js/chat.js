@@ -128,8 +128,6 @@ socket.on('connect', function () {
       console.log('No error');
     }
   });
-  $('#main-screen').css('visibility', 'visible');
-  $('#preloader').css('visibility', 'hidden');
 });
 
 socket.on('disconnect', function () {
@@ -397,12 +395,20 @@ $('#textbox').on('focus', function () {
   updateScroll();
 });
 
+$('.info').on('click', ()=> {
+  $('.about').fadeIn(200);
+});
+
+$('.close').on('click', ()=> {
+  $('.about').fadeOut(200);
+});
 
 function closePopup() {
   isReply = false;
   $('.toast-popup').hide();
   $('.toast-popup-name').text('');
   $('.toast-popup-message').text('');
+  $('.about').hide();
   $('.menuwrapper').removeClass('active');
 }
 
@@ -424,12 +430,10 @@ function clickOptionShow(type, evt)
     $('.reply-action').on('click', () => {
       textReply(evt);
       clickOptionHide();
-      $('.reply-action').unbind();
     });
     $('.copy-action').on('click', ()=>{
       copyText(evt.target.innerText);
       clickOptionHide();
-      $('.copy-action').unbind();
     });
   }
   else if (type === 'image'){
@@ -439,19 +443,16 @@ function clickOptionShow(type, evt)
     $('.reply-action').on('click', () => {
       imageReply(evt);
       clickOptionHide();
-      $('.reply-action').unbind();
     });
     $('.view-action').on('click', () => {
       openImageView(evt);
       clickOptionHide();
-      $('.view-action').unbind();
     });
     $('.store-action').on('click', () => {
       $('.lightbox__image').html('');
       $('.lightbox__image').append(`<img src="${evt.target.src}" alt="">`);
       saveImage();
       clickOptionHide();
-      $('.store-action').unbind();
     });
   }
 }
@@ -566,6 +567,7 @@ $('.users').on('click', function (evt) {
 
 $('.chat').on('click', function (evt) {
     $('.menuwrapper').removeClass('active');
+    $('.about').fadeOut(200);
 });
 
 $('.close-action').on('click', function (evt) {
@@ -670,7 +672,7 @@ function saveImage()
   //console.log('Saving image');
   let a = document.createElement('a');
   a.href = $('.lightbox__image img').attr('src');
-  a.download = `IMG-POKETAB-${moment().valueOf()}-${makeid(5)}.png`;
+  a.download = `PT-${makeid(5)}-${moment().valueOf()}.png`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -681,31 +683,6 @@ $('.lightbox').on('click', e => {
     lightboxClose();
   }
 });
-
-/*
-$('.mode').on('click', ()=>{
-  //console.log('clicked', $('.mode').hasClass('active'));
-  if($('.mode').hasClass('active')){
-    //console.log('Removing active');
-    //Darkmode
-
-
-
-    $('.mode').removeClass('active');
-    $('.mode').html(`<i class="fa-solid fa-sun"></i>`);
-  }
-  else{
-    //console.log('Adding class');
-    //Light Mode
-
-
-
-
-    $('.mode').addClass('active');
-    $('.mode').html(`<i class="fa-solid fa-moon"></i>`);
-  }
-});
-*/
 
 function linkify(inputText) {
   let replacedText, replacePattern1, replacePattern2, replacePattern3;
@@ -729,5 +706,9 @@ $('#textbox').on('keydown', (evt) => {
     $('.send').click();
   }
 });
-
 document.addEventListener('contextmenu', event => event.preventDefault());
+
+jQuery.ready(()=>{
+    $('#main-screen').css('visibility', 'visible');
+    $('#preloader').css('visibility', 'hidden');
+})
