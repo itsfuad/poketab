@@ -126,6 +126,8 @@ socket.on('connect', function () {
      console.log(err);
     } else {
       console.log('No error');
+      $('#main-screen').css('visibility', 'visible');
+      $('#preloader').css('visibility', 'hidden');
     }
   });
 });
@@ -707,8 +709,3 @@ $('#textbox').on('keydown', (evt) => {
   }
 });
 document.addEventListener('contextmenu', event => event.preventDefault());
-
-jQuery.ready(()=>{
-    $('#main-screen').css('visibility', 'visible');
-    $('#preloader').css('visibility', 'hidden');
-})

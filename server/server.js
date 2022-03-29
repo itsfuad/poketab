@@ -79,7 +79,7 @@ io.on('connection', (socket) => {
     if (user) {
       return callback('exists');
     }
-
+    callback();
     socket.join(params.key);
     users.removeUser(socket.id);
     users.addUser(socket.id, params.name, params.key, params.avatar, params.maxuser || users.getMaxUser(params.key));
