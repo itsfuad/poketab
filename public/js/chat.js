@@ -39,7 +39,7 @@ function updateScroll(avatar = null, text = '') {
   if (scrolling) {
     if (text.length > 0) {
       $('.newmessagepopup img').attr('src', `./../images/avatars/${avatar}(custom).png`);
-      $('.newmessagepopup .msg').text(text.substring(0, 20));
+      $('.newmessagepopup .msg').text(text.length > 20 ? `${text.substring(0, 20)} ...` : text);
       $('.newmessagepopup').fadeIn(200);
     }
     return;
@@ -253,12 +253,7 @@ socket.on('stoptyping', (id) => {
 socket.on('vibrateResponse', (sender_name, id) => {
   if (id == myid) {
     if (sender_name == myname) sender_name = 'You';
-    $('.popup-message').text(`${sender_name} just vibrated your Device`);
-    $('.popup-message').fadeIn(500);
-    navigator.vibrate(1000);
-    setTimeout(function () {
-      $('.popup-message').fadeOut(500);
-    }, 1000);
+    popupMessage(`${sender_name} just vibrated your Device`);
   }
 });
 
@@ -351,7 +346,8 @@ $('#message-form').on('submit', function (e) {
 let locationButton = $('#send-location');
 locationButton.on('click', function () {
   if (!navigator.geolocation) {
-    return alert('Geolocation not supported by your browser.');
+    popupMessage('Geolocation not supported by your browser.');
+    return;
   }
 
   locationButton.attr('disabled', 'disabled').html(`<i class="fa-solid fa-location-crosshairs"></i>`);
@@ -364,7 +360,7 @@ locationButton.on('click', function () {
     });
   }, function () {
     locationButton.removeAttr('disabled').html(`<i class="fa-solid fa-location-crosshairs"></i>`);
-    alert('Unable to fetch location.');
+    popupMessage('Unable to fetch location.');
   });
 });
 
@@ -472,7 +468,7 @@ function textReply(evt)
 {
   let target = evt.target;
   targetId = target.parentElement.parentElement.parentElement.id;
-  replyText = `${target.innerText.substring(0, 200)} ...`;
+  replyText = target.innerText.length > 200 ? `${target.innerText.substring(0, 200)} ...` : target.innerText;
   replyTo = evt.target.parentElement.previousElementSibling.previousElementSibling.innerText;
   replyTo = replyTo.replace(/ replied to [a-zA-Z]+/g, '');
   let replyToPop = replyTo;
@@ -481,7 +477,7 @@ function textReply(evt)
   isReply = true;
   $('.toast-popup').show();
   $('.toast-popup-name').html(`<i class="fa-solid fa-reply"></i> Replying to ${replyToPop}`);
-  $('.toast-popup-message').text(`${target.innerText.substring(0, 50)} ...`);
+  $('.toast-popup-message').text(target.innerText.length > 50 ? `${target.innerText.substring(0, 50)} ...` : target.innerText);
   $('#textbox').focus();
 }
 
@@ -520,7 +516,9 @@ $('#messages').on('click', function (evt) {
     const msgId = target.dataset.repid;
     const element = document.getElementById(msgId);
     element.scrollIntoView({
-      block: "center"
+      block: "center",
+      behavior: "smooth",
+      inline: "nearest"
     });
     $('#messages .my__message').css('filter', 'brightness(0.5)');
     $('#messages .message').css('filter', 'brightness(0.5)');
@@ -543,8 +541,13 @@ $('.key').on('click', () => {
 
 function copyText(text){
   navigator.clipboard.writeText(text);
-  $('.popup-message').text(`Copied to clipboard`);
+  popupMessage(`Copied to clipboard`);
+}
+
+function popupMessage(text){
+  $('.popup-message').text(text);
   $('.popup-message').fadeIn(500);
+  navigator.vibrate(1000);
   setTimeout(function () {
     $('.popup-message').fadeOut(500);
   }, 1000);

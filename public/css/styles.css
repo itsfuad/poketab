@@ -334,6 +334,12 @@ input[type=file] {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  border-radius: 10px;
+}
+
+.imageMessage:hover {
+  background: #00000029;
+  cursor: pointer;
 }
 
 .imageMessage:hover, .textMessage:hover {

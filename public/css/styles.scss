@@ -273,6 +273,11 @@ input[type=file] {
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 10px;
+  &:hover{
+    background: #00000029;
+    cursor: pointer;
+  }
 }
 
 .imageMessage, .textMessage{

@@ -32,6 +32,7 @@ $('#key').on('click', ()=>{
     let text = $('#key').val();
     console.log(text);
     navigator.clipboard.writeText(text);
+    alert('Copied to clipboard');
     $('#key-label').css('color', 'limegreen');
     $('#key-label').text('Key copied!');
     setTimeout(()=>{
