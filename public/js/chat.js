@@ -386,8 +386,6 @@ $('.menu').on('click', function () {
   $('.menuwrapper').addClass('active');
 });
 
-//remove all popup on click
-
 
 $('#textbox').on('focus', function () {
   updateScroll();
@@ -428,10 +426,12 @@ function clickOptionShow(type, evt)
     $('.reply-action').on('click', () => {
       textReply(evt);
       clickOptionHide();
+      $('.reply-action').unbind();
     });
     $('.copy-action').on('click', ()=>{
       copyText(evt.target.innerText);
       clickOptionHide();
+      $('.copy-action').unbind();
     });
   }
   else if (type === 'image'){
@@ -441,16 +441,19 @@ function clickOptionShow(type, evt)
     $('.reply-action').on('click', () => {
       imageReply(evt);
       clickOptionHide();
+      $('.reply-action').unbind();
     });
     $('.view-action').on('click', () => {
       openImageView(evt);
       clickOptionHide();
+      $('.view-action').unbind();
     });
     $('.store-action').on('click', () => {
-      $('.lightbox__image').html('');
-      $('.lightbox__image').append(`<img src="${evt.target.src}" alt="">`);
+      //$('.lightbox__image').html('');
+      //$('.lightbox__image').append(`<img src="${evt.target.src}" alt="">`);
       saveImage();
       clickOptionHide();
+      $('.store-action').unbind();
     });
   }
 }
@@ -578,23 +581,6 @@ $('.close-action').on('click', function (evt) {
   $('.click-option').hide();
 });
 
-function hideOnClickOutside(element) {
-  const outsideClickListener = event => {
-      if (!element.contains(event.target) && isVisible(element)) { // or use: event.target.closest(selector) === null
-        element.style.display = 'none'
-        removeClickListener()
-      }
-  }
-
-  const removeClickListener = () => {
-      document.removeEventListener('click', outsideClickListener)
-  }
-
-  document.addEventListener('click', outsideClickListener)
-}
-
-const isVisible = elem => !!elem && !!( elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length ) 
-
 
 window.addEventListener('resize', () => {
   updateScroll();
@@ -616,15 +602,14 @@ $("textarea").each(function () {
 $('#photo').on('change', ()=>{
   //console.log('Photo selected');
   
-  var file = $('#photo')[0].files[0];
-  var reader = new FileReader();
+  let file = $('#photo')[0].files[0];
+  let reader = new FileReader();
   reader.readAsDataURL(file);
   reader.onload = function(e)
   {
     $('.previewimage__image').html("<img src='"+e.target.result+"' alt='image'/>");
   }
   $('.previewimage').show();
-
 });
 
 $('.previewimage__close').on('click', () => {
@@ -633,27 +618,42 @@ $('.previewimage__close').on('click', () => {
 
 $('.sendimage').on('click', () => {
   //console.log('Sending image');
+  let file = $('#photo')[0].files[0];
+  let reader = new FileReader();
+  //reader.readAsDataURL(file);
+  reader.readAsArrayBuffer(file);
+  reader.onload = function(e){
+    let blob = new Blob([e.target.result]);
+    window.URL = window.URL || window.webkitURL;
+    let blobURL = window.URL.createObjectURL(blob);
+    // helper Image object
+    let image = new Image();
+    image.src = blobURL;
 
-  var file = $('#photo')[0].files[0];
-  var reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onload = function(e)
-  {
-    let tempId = makeid(10);
-    let template = $('#my-image-message-template').html();
-    let html = Mustache.render(template, {
-      from: myname,
-      id: tempId,
-      image: `<img class='image-message' src='${e.target.result}'>`,
-      createdAt: moment(moment().valueOf()).format('hh:mm a')
-    });
-    $('#messages').append(html);
-    updateScroll();
-    socket.emit('image', myname, tempId, e.target.result);
-  }
-  $('.previewimage').hide();
-  $('.previewimage__image').html("");
-  clickOptionHide();
+    image.onload = function() {
+      // have to wait till it's loaded
+      let resized = resizeImage(image, file.mimetype); // send it to canvas
+
+      let tempId = makeid(10);
+      let template = $('#my-image-message-template').html();
+      //let image = e.target.result;
+      //console.log(mimetype);
+      //image = resizeMe(image, mimetype);
+      let html = Mustache.render(template, {
+        from: myname,
+        id: tempId,
+        image: `<img class='image-message' src='${resized}'>`,
+        createdAt: moment(moment().valueOf()).format('hh:mm a')
+      });
+      $('#messages').append(html);
+      updateScroll();
+      socket.emit('image', myname, tempId, resized);
+    }
+    $('.previewimage').hide();
+    $('.previewimage__image').html("");
+    clickOptionHide();
+    }
+
 });
 
 $('.lightbox__close').on('click', ()=>{
@@ -676,18 +676,45 @@ function saveImage()
   //console.log('Saving image');
   let a = document.createElement('a');
   a.href = $('.lightbox__image img').attr('src');
-  a.download = `PT-${makeid(5)}-${moment().valueOf()}.png`;
+  a.download = `save-${moment().valueOf()}.png`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
 }
 
+function resizeImage(img, mimetype) {
+  let canvas = document.createElement('canvas');
+  let width = img.width;
+  let height = img.height;
+  let max_height = 720;
+  let max_width = 720;
+  // calculate the width and height, constraining the proportions
+  if (width > height) {
+    if (width > max_width) {
+      //height *= max_width / width;
+      height = Math.round(height *= max_width / width);
+      width = max_width;
+    }
+  } else {
+    if (height > max_height) {
+      //width *= max_height / height;
+      width = Math.round(width *= max_height / height);
+      height = max_height;
+    }
+  }
+  canvas.width = width;
+  canvas.height = height;
+  let ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0, width, height);
+  return canvas.toDataURL(mimetype, 0.7); 
+}
+/*
 $('.lightbox').on('click', e => { 
   if (e.target.className === 'lightbox__image'){
     lightboxClose();
   }
 });
-
+*/
 function linkify(inputText) {
   let replacedText, replacePattern1, replacePattern2, replacePattern3;
   replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
