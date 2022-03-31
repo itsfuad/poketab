@@ -92,7 +92,7 @@ function check(){
         $('#name-label').css('color','red');
     }
     if (allow && checked){
-        $('#join').val('Please wait...');
+        $('#join').val('Joining...');
         setTimeout(()=>{
             $('#join').val('Join');
         }, 2000);

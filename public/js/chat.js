@@ -124,8 +124,10 @@ socket.on('connect', function () {
   socket.emit('join', params, function (err) {
     if (err) {
      console.log(err);
+     popupMessage(err);
     } else {
       console.log('No error');
+      popupMessage(`Connected to server`);
       $('#main-screen').css('visibility', 'visible');
       $('#preloader').css('visibility', 'hidden');
     }
@@ -134,6 +136,7 @@ socket.on('connect', function () {
 
 socket.on('disconnect', function () {
   console.log('Disconnected from server');
+  popupMessage(`Disconnected from server`);
 });
 
 socket.on('updateUserList', function (users, ids, key, avatars) {
@@ -258,6 +261,7 @@ socket.on('vibrateResponse', (sender_name, id) => {
 });
 
 socket.on('imageGet', (sendername, imagefile, avatar, id) => {
+  //imagefile = LZString.decompress(imagefile);
   let template = $('#image-message-template').html();
   let html = Mustache.render(template, {
     from: sendername,
@@ -424,14 +428,22 @@ function clickOptionShow(type, evt)
     $('.store-action').hide();
     $('.copy-action').show();
     $('.reply-action').on('click', () => {
+      //console.log('Click on reply');
       textReply(evt);
       clickOptionHide();
-      $('.reply-action').unbind();
+      $('.reply-action').unbind('click');
+      $('.view-action').unbind('click');
+      $('.store-action').unbind('click');
+      $('.copy-action').unbind('click');
     });
     $('.copy-action').on('click', ()=>{
+      //console.log('Click on Copy');
       copyText(evt.target.innerText);
       clickOptionHide();
-      $('.copy-action').unbind();
+      $('.reply-action').unbind('click');
+      $('.view-action').unbind('click');
+      $('.store-action').unbind('click');
+      $('.copy-action').unbind('click');
     });
   }
   else if (type === 'image'){
@@ -439,21 +451,33 @@ function clickOptionShow(type, evt)
     $('.store-action').show();
     $('.copy-action').hide();
     $('.reply-action').on('click', () => {
+      //console.log('Click on reply image');
       imageReply(evt);
       clickOptionHide();
-      $('.reply-action').unbind();
+      $('.reply-action').unbind('click');
+      $('.view-action').unbind('click');
+      $('.store-action').unbind('click');
+      $('.copy-action').unbind('click');
     });
     $('.view-action').on('click', () => {
+      //console.log('Click on view image');
       openImageView(evt);
       clickOptionHide();
-      $('.view-action').unbind();
+      $('.reply-action').unbind('click');
+      $('.view-action').unbind('click');
+      $('.store-action').unbind('click');
+      $('.copy-action').unbind('click');
     });
     $('.store-action').on('click', () => {
+      //console.log('Click on store image');
       //$('.lightbox__image').html('');
       //$('.lightbox__image').append(`<img src="${evt.target.src}" alt="">`);
       saveImage();
       clickOptionHide();
-      $('.store-action').unbind();
+      $('.reply-action').unbind('click');
+      $('.view-action').unbind('click');
+      $('.store-action').unbind('click');
+      $('.copy-action').unbind('click');
     });
   }
 }
@@ -519,9 +543,7 @@ $('#messages').on('click', function (evt) {
     const msgId = target.dataset.repid;
     const element = document.getElementById(msgId);
     element.scrollIntoView({
-      block: "center",
-      behavior: "smooth",
-      inline: "nearest"
+      block: "center"
     });
     $('#messages .my__message').css('filter', 'brightness(0.5)');
     $('#messages .message').css('filter', 'brightness(0.5)');
@@ -616,6 +638,7 @@ $('.previewimage__close').on('click', () => {
   $('.previewimage').hide(100);
 });
 
+
 $('.sendimage').on('click', () => {
   //console.log('Sending image');
   let file = $('#photo')[0].files[0];
@@ -633,7 +656,7 @@ $('.sendimage').on('click', () => {
     image.onload = function() {
       // have to wait till it's loaded
       let resized = resizeImage(image, file.mimetype); // send it to canvas
-
+      //resized = LZString.compress(resized);
       let tempId = makeid(10);
       let template = $('#my-image-message-template').html();
       //let image = e.target.result;
@@ -645,16 +668,19 @@ $('.sendimage').on('click', () => {
         image: `<img class='image-message' src='${resized}'>`,
         createdAt: moment(moment().valueOf()).format('hh:mm a')
       });
-      $('#messages').append(html);
-      updateScroll();
+      $('#messages').append(html).ready(()=>{
+        scrolling = false;
+        updateScroll();
+      });
       socket.emit('image', myname, tempId, resized);
     }
     $('.previewimage').hide();
     $('.previewimage__image').html("");
     clickOptionHide();
-    }
-
+  }  
 });
+
+
 
 $('.lightbox__close').on('click', ()=>{
   lightboxClose();
@@ -686,8 +712,8 @@ function resizeImage(img, mimetype) {
   let canvas = document.createElement('canvas');
   let width = img.width;
   let height = img.height;
-  let max_height = 720;
-  let max_width = 720;
+  let max_height = 480;
+  let max_width = 480;
   // calculate the width and height, constraining the proportions
   if (width > height) {
     if (width > max_width) {
