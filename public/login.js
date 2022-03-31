@@ -136,10 +136,10 @@ window.addEventListener('offline', function(e) {
 });
 
 window.addEventListener('online', function(e) {
+  console.log('Back to online');
+  $('.offline').text('Back to online!');
+  $('.offline').css('background', 'limegreen');
   setTimeout(() => {
-    console.log('Back to online');
-    $('.offline').text('Back to online!');
-    $('.offline').css('background', 'limegreen');
     $('.offline').fadeOut(400);
   }, 1500);
 });
