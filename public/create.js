@@ -137,4 +137,31 @@ if ('serviceWorker' in navigator){
         .catch(err => console.log(`Service Worker: Error ${err}`));
     });
 }
+
+if (navigator.onLine) {
+  console.log('online');
+  $('.offline').fadeOut(400);
+} else {
+  console.log('offline');
+  $('.offline').text('You are offline!');
+  $('.offline').css('background', 'orangered');
+  $('.offline').fadeIn(400);
+}
+
+
+window.addEventListener('offline', function(e) { 
+  console.log('offline'); 
+  $('.offline').text('You are offline!');
+  $('.offline').css('background', 'orangered');
+  $('.offline').fadeIn(400);
+});
+
+window.addEventListener('online', function(e) { 
+  console.log('Back to online'); 
+  $('.offline').text('Back to online!');
+  $('.offline').css('background', 'limegreen');
+  $('.offline').fadeOut(400);
+});
+
+
 document.addEventListener('contextmenu', event => event.preventDefault());
