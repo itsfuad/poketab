@@ -157,11 +157,12 @@ window.addEventListener('offline', function(e) {
 });
 
 window.addEventListener('online', function(e) { 
+  setTimeout(()=>{
   console.log('Back to online'); 
   $('.offline').text('Back to online!');
   $('.offline').css('background', 'limegreen');
   $('.offline').fadeOut(400);
+ }, 1500);
 });
-
 
 document.addEventListener('contextmenu', event => event.preventDefault());

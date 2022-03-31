@@ -135,12 +135,13 @@ window.addEventListener('offline', function(e) {
   $('.offline').fadeIn(400);
 });
 
-window.addEventListener('online', function(e) { 
-  console.log('Back to online'); 
-  $('.offline').text('Back to online!');
-  $('.offline').css('background', 'limegreen');
-  $('.offline').fadeOut(400);
+window.addEventListener('online', function(e) {
+  setTimeout(() => {
+    console.log('Back to online');
+    $('.offline').text('Back to online!');
+    $('.offline').css('background', 'limegreen');
+    $('.offline').fadeOut(400);
+  }, 1500);
 });
-
 
 document.addEventListener('contextmenu', event => event.preventDefault());
