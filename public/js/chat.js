@@ -244,35 +244,53 @@ socket.on('newLocationMessage', function (message) {
 });
 
 let userMap = new Map();
+const maxTypeShow = 2;
 
 socket.on('typing', (user, id) => {
   typingsound.play();
 
   userMap.set(id, user);
   let _typing = '';
-  userMap.forEach((value, key) => {
-    _typing += `${value}, `;
-  });
+
+  let mapkeys = userMap.values();
+
+  for (let i = 1; i <= userMap.size; i++) {
+    _typing += `${mapkeys.next().value}, `;
+    if (userMap.size > maxTypeShow){
+      if (i == maxTypeShow) { 
+        _typing = _typing.slice(0, -2);
+        _typing += ` and ${userMap.size - maxTypeShow} others  `;
+      }
+      break;
+    }
+  }
   _typing = _typing.slice(0, -2);
   $('#typingindicator').text(`${_typing} ${(userMap.size > 1 ) ? 'are' : 'is'} typing...`);
-  //let li = $(`<li id="${id}"></li>`).text(user + ' is typing...');
-  //$('#typingindicator').append(li);
 });
 
 socket.on('stoptyping', (id) => {
-  //$(`#${id}`).remove();
   userMap.delete(id);
   if (userMap.size == 0) {
     $('#typingindicator').text('');
   }else{
     let _typing = '';
-    userMap.forEach((value, key) => {
-      _typing += `${value}, `;
-    });
+
+    let mapkeys = userMap.values();
+  
+    for (let i = 1; i <= userMap.size; i++) {
+      _typing += `${mapkeys.next().value}, `;
+      //check if last
+      if (userMap.size > maxTypeShow){
+        if (i == maxTypeShow) { 
+          _typing = _typing.slice(0, -2);
+          _typing += ` and ${userMap.size - maxTypeShow} others  `;
+        }
+        break;
+      }
+    }
     _typing = _typing.slice(0, -2);
     $('#typingindicator').text(`${_typing} ${(userMap.size > 1 ) ? 'are' : 'is'} typing...`);
   }
-  //$('#typingindicator').text('');
 });
 
 socket.on('vibrateResponse', (sender_name, id) => {
@@ -283,7 +301,6 @@ socket.on('vibrateResponse', (sender_name, id) => {
 });
 
 socket.on('imageGet', (sendername, imagefile, avatar, id) => {
-  //imagefile = LZString.decompress(imagefile);
   let template = $('#image-message-template').html();
   let html = Mustache.render(template, {
     from: sendername,
@@ -294,7 +311,6 @@ socket.on('imageGet', (sendername, imagefile, avatar, id) => {
   });
   incommingmessage.play();
   $('#messages').append(html);
-  //on image loadedd
   $(`#${id}`).find('.image-message').on('load', function () {
   updateScroll(avatar, 'Photo');
   });
@@ -812,6 +828,9 @@ window.addEventListener('online', function(e) {
     $('.offline').fadeOut(400);
   }, 1500);
 });
+
+let array = [1,2,3,54,7,89];
+//print first 3 elemnts and the remaining element count
 
 
 document.addEventListener('contextmenu', event => event.preventDefault());
