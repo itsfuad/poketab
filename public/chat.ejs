@@ -42,11 +42,8 @@
   <link rel="apple-touch-startup-image" href="icons/apple-splash-1334-750.jpg" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
   <link rel="apple-touch-startup-image" href="icons/apple-splash-640-1136.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
   <link rel="apple-touch-startup-image" href="icons/apple-splash-1136-640.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-  <link rel="preload" as="image" type="image/png" href="/images/sending-s.png">
-  <link rel="preload" as="image" type="image/png" href="/images/sent-s.png">
   <link rel="preload" as="image" type="image/png" href="/images/icons8-place-marker.gif">
-  <link rel="preload" as="font" type="font/otf" href="/fonts/Now-Regular.otf">
-  <link rel="preload" as="font" type="font/otf" href="/fonts/Comforter.ttf">
+  <link rel="preload" as="image" type="image/png" href="/images/a.png">
   <link rel="preload" as="font" type="font/ttf" href="/fonts/comic.ttf">
   <meta charset="utf-8">
   <title>Inbox | PokeTab Messanger</title>
@@ -61,39 +58,34 @@
   <div id="myname" hidden><%=myname%></div>
   <div id="mykey" hidden><%=mykey%></div>
   <div id="myavatar" hidden><%=myavatar%></div>
+  <div id="maxuser" hidden><%=maxuser%></div>
   <div id="preloader" style="z-index: 100; overflow: hidden; visibility: visible; position: absolute;height: 100vh;width: 100vw;display: flex;position: fixed; flex-direction: column; background: #111d2a;justify-content: center;align-items: center;">
     <!--create a preloder screen-->
     <img src="/images/loader.gif" height="100px" width="100px" alt="" srcset="">
     <h3 style="margin: 0; font-size: 1.3rem;">Creating Pokemon World</h3>
   </div>
   <div id="main-screen" style="visibility: hidden;">
+    <div class="offline" style="display: none; background: orange;padding: 2px;width: 100%;text-align: center;position: fixed;top: 0; font-size: 0.7rem"></div>
     <div class="topbar">
       <div class="topbar-wrapper">
         <div class="menu"></div>
-        <div class="info">?</div>
       </div>
     </div>
     <div class="menuwrapper">
       <div class="chat__sidebar">
         <h3>#<span class="keyname1 key"></span></h3>
-        <div id="maxuser">Max User:<%=maxuser%></div>
+        <div class="maxuser"><i class="fa-solid fa-user"></i> Max User: <%=maxuser%></div>
         <div class="users"></div>
       </div>
     </div>
     <div class="chat">
-      <div class="menuwrapper2">
-        <div class="chat__sidebar">
-          <h3>#<span class="keyname2 key"></span></h3>
-          <div id="maxuser">Max User:<%=maxuser%></div>
-          <div class="users"></div>
-        </div>
-      </div>
-      
       <div class="chat__main">
         <ol id="messages" class="chat__messages">
           <div class="intro">
-            <h2>Welcome To PokeTab Messanger</h2>
-            <div class="credit">Developed by <a href="http://itsfuad.netlify.app">Fuad Hasan</a> 🐸</div>
+            <h2><img src="./images/avatars/pikachu(custom).png" alt="" srcset="">  PokeTab Messanger <img src="./images/avatars/squirtle(custom).png" alt="" srcset=""> </h2>
+              <p><i class="fa-solid fa-code"></i> <a href="http://itsfuad.netlify.app">Fuad Hasan</a></p>
+              <p><i class="fa-solid fa-user-astronaut"></i> <a href="https://flaticon.com">https://flaticon.com</a></p>
+              <p><i class="fa-solid fa-circle-info"></i> <a href="http://fontawesome.com">http://fontawesome.com</a></p>
           </div>
         </ol>
         <ul id="typingindicator"></ul>
@@ -102,19 +94,48 @@
             <div class="toast-popup-name"></div>
             <div class="toast-popup-message"></div>
           </div>
-          <div class="toast-popup-close">×</div>
+          <div class="toast-popup-close"><i class="fa-solid fa-xmark"></i></div>
         </div>
         <div class="popup-message" style="display: none;"></div>
         <div class="chat__footer">
           <form id="message-form">
             <!--input name="message" type="text" placeholder="Message" autofocus autocomplete="off" /-->
-            <div class="location" id="send-location"><img id="sendlocation" height='25px' width="25px" src="/images/icons8-gps-48.png" alt="" srcset=""></div>
+            <div class="location" id="send-location"><i class="fa-solid fa-location-crosshairs"></i></div>
+            <div class="upload_image">
+              <label for="photo"><i class="fa-solid fa-image"></i></label>
+              <input type="file" name="photo" id="photo" accept="image/png, image/jpg, image/jpeg, image/gif">
+            </div>
             <textarea name="message" id="textbox" placeholder="Type message..."></textarea>
-            <button class="send"><img src="/images/icons8-send-32.png" alt="" srcset=""></button>
+            <button class="send"><i class="fa-solid fa-paper-plane"></i></button>
           </form>
         </div>
       </div>
-    
+      <div class="newmessagepopup" style="display: none;">
+        <img src="" alt=""><div class="msg"></div>
+      </div>
+      <div class="previewimage" style="display: none;">
+        <div class="previewimage__close"><i class="fa-solid fa-xmark"></i></div>
+        <div class="previewimage__image"></div>
+        <div class="sendimage"><i class="fa-solid fa-paper-plane"></i></div>
+      </div>
+
+      <div class="lightbox" style="display: none;">
+        <div class="tool">
+          <div class="lightbox__save"><i class="fa-solid fa-download"></i></div>
+          <div class="lightbox__close"><i class="fa-solid fa-xmark"></i></div>
+        </div>
+        <div class="lightbox__image"></div>
+      </div>
+
+      <div class="click-option" style="display: none;">
+        <ul>
+          <li class="reply-action">Reply <i class="fa-solid fa-reply"></i></li>
+          <li class="view-action" style="display: none;">View <i class="fa-regular fa-eye"></i></li>
+          <li class="store-action" style="display: none;">Save <i class="fa-solid fa-download"></i></li>
+          <li class="copy-action" style="display: none;">Copy <i class="fa-regular fa-clone"></i></li>
+          <li class="close-action"> Close <i class="fa-solid fa-xmark"></i></li>
+        </ul>
+      </div>
     
       <template id="message-template" type="text/template">
         <li class="message" id="{{id}}">
@@ -140,7 +161,7 @@
             <div class="main-message">
               <span class='time'>{{createdAt}}</span>
               <p class="textMessage">{{{text}}}</p>
-              <img src="/images/sending-s.png" height="10px" width="10px" class="sent">
+              <i class="fa-regular fa-circle-check sent"></i>
             </div>
           </div>
           
@@ -164,13 +185,41 @@
           </div>
         </li>
       </template>
+
+      <template id="image-message-template" type="text/template">
+        <li class="image" id="{{id}}">
+          <div class="avatar"><img id="avatar" src="{{attrVal}}" height="40px" width="40px" alt="" srcset=""></div>
+          <div class="image__body">
+            <div class="image__title title"><h3>{{from}}</h3></div>
+            <div class="main-image">
+              <div class="imageMessage">{{{image}}}</div>
+              <span class='time'>{{createdAt}}</span>
+            </div>
+          </div>
+        </li>
+      </template>
+
+      <template id="my-image-message-template" type="text/template">
+        <li class="my__image" id="{{id}}">
+          <div class="image__body">
+            <div class="image__title title" style="display: none;"><h3>{{from}}</h3></div>
+            <div class="main-image">
+              <span class='time'>{{createdAt}}</span>
+              <div class="imageMessage">{{{image}}}</div>
+              <i class="fa-regular fa-circle-check sent"></i>
+            </div>
+          </div>
+        </li>
+      </template>
+
     </div>
   </div>
+  <script defer src="/js/libs/fontawesome.js" crossorigin="anonymous"></script>
   <script defer src="/socket.io/socket.io.js"></script>
   <script defer src="/js/libs/jquery-3.1.0.min.js"></script>
   <script defer src="/js/libs/moment.min.js"></script>
   <script defer src="/js/libs/mustache.min.js"></script>
   <script defer src="/js/libs/deparam.min.js"></script>
-  <script defer src="/js/chat.js"></script>
+  <script defer src="/js/chat.min.js"></script>
 </body>
 </html>

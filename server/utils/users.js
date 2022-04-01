@@ -16,7 +16,7 @@ class Users {
   }
   addUser (id, name, key, avatar, maxuser) {
     this.MaxUser.set(key, maxuser);
-    console.log(`Maxuser: ${maxuser}`);
+    //console.log(`Maxuser: ${maxuser}`);
     var user = {id, name, key, avatar};
     this.users.push(user);
     return user;

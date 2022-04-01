@@ -56,8 +56,9 @@
     <title>Join | PokeTab Messanger</title>
 </head>
 <body>
+    <div class="offline" style="display: none; background: orange;padding: 2px;width: 100%;text-align: center;position: fixed;top: 0; z-index: 1000; font-size: 0.7rem"></div>
     <div class="container">
-        <form action="/chat" method="post" autocomplete="on" id="form" onsubmit="return check();">
+        <form action="/chat" method="post" autocomplete="off" id="form" onsubmit="return check();">
             <div class="form-1" style="display: block;">
                 <div class="form-field">
                     <div class="h3">Join a Chat <img src="/images/pokeball.png" alt="" srcset=""></div>
@@ -65,7 +66,7 @@
                 </div>
                 <div class="form-field">
                     <label for="key" id="key-label">Enter Join Key</label>
-                    <input type="text" name="key" id="key" minlength="5">
+                    <input type="text" name="key" id="key" minlength="10" maxlength="10">
                 </div>
                 <div class="form-field">
                     <input type="button" value="Next" id="next">
@@ -80,7 +81,7 @@
             <div class="form-2" style="display: none;">
                 <div class="form-field">
                     <label for="name"  id="name-label">Your name</label>
-                    <input type="text" name="name" id="name">
+                    <input type="text" name="name" id="name" maxlength="20">
                 </div>
                 <div class="form-field">
                     <div class="avatars">
@@ -156,18 +157,16 @@
         <legend class="h1">How to use</legend>
         <ul>
             <li>Enter to copied Key to join desired chat.</li>
-            <li>Copy the generated Key to and share with your friends to join your chat.</li>
             <li>Conversation will be deleted from your device after you disconnect/exit.</li>
             <li>You cannot see previous messages after re joining.</li>
             <li>You can vibrate other users phone by tapping ther name from the active online users list.</li>
-            <li>Tap on the message to reply to a specific message.</li>
             <li>On Pc, use can use Ctrl+Enter to send message.</li>
         </ul>
             
     </fieldset>
     <div class="popup-message" style="display: none;"></div>
     <div class="footer">
-        <p>&copy; Copyright Fuad Hasan 2022. All rights reserved.</p>
+        <p>&copy; Copyright Fuad Hasan 2022. All rights reserved. v.4.0.2</p>
     </div>
     <script defer src="/socket.io/socket.io.js"></script>
     <script defer src="/js/libs/jquery-3.1.0.min.js"></script>

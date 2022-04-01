@@ -10,7 +10,6 @@ const error_code = url.substring(url.indexOf('?') + 1);
 
 console.log(error_code);
 
-
 if (error_code !== url){
     error.innerText = '*Please fill up all requirements*';
 }
@@ -25,8 +24,8 @@ $('#next').on('click',()=>{
         $('#key-label').css('color','red');
         return;
     }
-    if (key.length <= 4){
-        $('#key-label').text('Key less than 5 digit');
+    if (key.length !== 10){
+        $('#key-label').text('Key is 10 characters');
         $('#key-label').css('color', 'red');
         return;
     }
@@ -92,7 +91,10 @@ function check(){
         $('#name-label').css('color','red');
     }
     if (allow && checked){
-        $('#join').val('Processing...');
+        $('#join').val('Joining...');
+        setTimeout(()=>{
+            $('#join').val('Join');
+        }, 2000);
     }
     return (allow && checked);
 }
@@ -107,3 +109,31 @@ if ('serviceWorker' in navigator){
         .catch(err => console.log(`Service Worker: Error ${err}`));
     });
 }
+
+if (navigator.onLine) {
+  console.log('online');
+  $('.offline').fadeOut(400);
+} else {
+  console.log('offline');
+  $('.offline').text('You are offline!');
+  $('.offline').css('background', 'orangered');
+  $('.offline').fadeIn(400);
+}
+
+window.addEventListener('offline', function(e) { 
+  console.log('offline'); 
+  $('.offline').text('You are offline!');
+  $('.offline').css('background', 'orangered');
+  $('.offline').fadeIn(400);
+});
+
+window.addEventListener('online', function(e) {
+  console.log('Back to online');
+  $('.offline').text('Back to online!');
+  $('.offline').css('background', 'limegreen');
+  setTimeout(() => {
+    $('.offline').fadeOut(400);
+  }, 1500);
+});
+
+document.addEventListener('contextmenu', event => event.preventDefault());

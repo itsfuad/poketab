@@ -10,7 +10,6 @@ const error_code = url.substring(url.indexOf('?') + 1);
 
 console.log(error_code);
 
-
 if (error_code !== url){
     error.innerText = '*Please fill up all requirements*';
 }
@@ -32,11 +31,13 @@ $('#key').on('click', ()=>{
     let text = $('#key').val();
     console.log(text);
     navigator.clipboard.writeText(text);
-    $('.popup-message').text(`Copied to clipboard`);
-    $('.popup-message').fadeIn(500);
-    setTimeout(function () {
-      $('.popup-message').fadeOut(500);
-    }, 1000);
+    //alert('Copied to clipboard');
+    $('#key-label').css('color', 'limegreen');
+    $('#key-label').text('Key copied!');
+    setTimeout(()=>{
+        $('#key-label').css('color', 'white');
+        $('#key-label').text('Tap to Copy');
+    }, 2000);
 });
 
 $('#next').on('click',()=>{
@@ -65,9 +66,11 @@ socket.on('createResponse', (keyExists, users, avatars) => {
     else{
         e_users = users;
         e_avatars = avatars;
-        e_avatars.forEach(avatar => {
-            $(`label[for='${avatar}']`).hide();
-        });
+        if (e_avatars){
+            e_avatars.forEach(avatar => {
+                $(`label[for='${avatar}']`).hide();
+            });
+        }
         $('.form-1').hide(100);
         $('.howtouse').hide(100);
         $('.form-2').show(100);
@@ -108,7 +111,10 @@ function check(){
         $('#name-label').css('color','red');
     }
     if (allow && checked){
-        $('#join').val('Processing...');
+        $('#join').val('Creating Chat...');
+        setTimeout(()=>{
+            $('#join').val('Join');
+        }, 2000);
     }
     return (allow && checked);
 }
@@ -123,3 +129,33 @@ if ('serviceWorker' in navigator){
         .catch(err => console.log(`Service Worker: Error ${err}`));
     });
 }
+
+if (navigator.onLine) {
+  console.log('online');
+  $('.offline').fadeOut(400);
+} else {
+  console.log('offline');
+  $('.offline').text('You are offline!');
+  $('.offline').css('background', 'orangered');
+  $('.offline').fadeIn(400);
+}
+
+
+window.addEventListener('offline', function(e) { 
+  console.log('offline'); 
+  $('.offline').text('You are offline!');
+  $('.offline').css('background', 'orangered');
+  $('.offline').fadeIn(400);
+});
+
+window.addEventListener('online', function(e) {
+  console.log('Back to online');
+  $('.offline').text('Back to online!');
+  $('.offline').css('background', 'limegreen');
+  setTimeout(() => {
+    $('.offline').fadeOut(400);
+  }, 1500);
+});
+
+
+document.addEventListener('contextmenu', event => event.preventDefault());

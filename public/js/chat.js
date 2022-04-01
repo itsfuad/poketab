@@ -1,9 +1,10 @@
 const socket = io();
 
-let pop = new Audio('./../sounds/pop.wav');
-let juntos = new Audio('./../sounds/juntos.wav');
-let elegant = new Audio('./../sounds/elegant.wav');
-let typing_sound = new Audio('./../sounds/typing.wav');
+let incommingmessage = new Audio('./../sounds/incommingmessage.wav');
+let outgoingmessage = new Audio('./../sounds/outgoingmessage.wav');
+let joinsound = new Audio('./../sounds/join.wav');
+let leavesound = new Audio('./../sounds/leave.wav');
+let typingsound = new Audio('./../sounds/typing.wav');
 
 let myname;
 let myid;
@@ -18,19 +19,45 @@ window.addEventListener('resize', appHeight);
 appHeight();
 
 let scrolling = false;
-window.onscroll = (e) => {
-  scrolling = true;
-  setTimeout(() => {
-    scrolling = false;
-  }, 2000);
-}
+let lastPageLength = $('#messages').scrollTop();;
+let scroll = 0;
 
-function updateScroll() {
+$('#messages').scroll(function (event) {
+  scroll = $('#messages').scrollTop();
+
+  if (scroll >= lastPageLength) {
+    lastPageLength = scroll;
+    removeNewMessagePopup();
+    scrolling = false;
+  } else {
+    scrolling = true;
+  }
+  //console.log(scrolling);
+});
+
+function updateScroll(avatar = null, text = '') {
   if (scrolling) {
+    if (text.length > 0) {
+      $('.newmessagepopup img').attr('src', `./../images/avatars/${avatar}(custom).png`);
+      $('.newmessagepopup .msg').text(text.length > 20 ? `${text.substring(0, 20)} ...` : text);
+      $('.newmessagepopup').fadeIn(200);
+    }
     return;
   }
   let element = document.getElementById("messages");
   element.scrollTop = element.scrollHeight;
+  lastPageLength = $('#messages').scrollTop();
+  removeNewMessagePopup();
+}
+
+$('.newmessagepopup').click(function () {
+  scrolling = false;
+  updateScroll();
+  removeNewMessagePopup();
+});
+
+function removeNewMessagePopup() {
+  $('.newmessagepopup').fadeOut(200);
 }
 
 function scrollToBottom() {
@@ -93,30 +120,23 @@ socket.on('connect', function () {
   };
   //console.log(params);
   //params = $.deparam(window.location.search);
-  console.log("Connected to server");
-  elegant.play();
+  //console.log("Connected to server");
   socket.emit('join', params, function (err) {
     if (err) {
-      /*
-      if (err == 'empty') {
-        window.location.href = '/?NR_0';
-      } else if (err == 'exists') {
-        window.location.href = '/?UE_1';
-      } else if (err == 'avatar') {
-        window.location.href = '/?NA_0';
-      }
-      */
      console.log(err);
+     popupMessage(err);
     } else {
       console.log('No error');
+      popupMessage(`Connected to server`);
+      $('#main-screen').css('visibility', 'visible');
+      $('#preloader').css('visibility', 'hidden');
     }
   });
-  $('#main-screen').css('visibility', 'visible');
-  $('#preloader').css('visibility', 'hidden');
 });
 
 socket.on('disconnect', function () {
   console.log('Disconnected from server');
+  popupMessage(`Disconnected from server`);
 });
 
 socket.on('updateUserList', function (users, ids, key, avatars) {
@@ -124,15 +144,15 @@ socket.on('updateUserList', function (users, ids, key, avatars) {
   for (let i = 0; i < users.length; i++) {
     ol.append($(`<li class='user' id='${ids[i]}'></li>`).html(`<img height='30px' width='30px' src='images/avatars/${avatars[i]}(custom).png'> ${users[i]}`));
   }
-  $('.menu').text(`Online: ${users.length}`);
+  $('.menu').html(`<i class="fa-solid fa-user"></i> ${users.length}`);
   $('.keyname1').text(`${key}`);
   $('.keyname2').text(`${key}`);
   $('.users').html(ol);
 });
 
 socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, id, targetId) {
-  elegant.play();
-  let formattedTime = moment(message.createdAt).format('h:mm a');
+  incommingmessage.play();
+  let formattedTime = moment(message.createdAt).format('hh:mm a');
   let template, html;
   if (isReply) {
     if (replyTo == myname) replyTo = 'You';
@@ -143,7 +163,7 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, 
       reply: replyText,
       id: id,
       repId: targetId,
-      repIcon: `<img src='./../images/reply-blue.png' height='10px' width='10px' class='rep-icon'> `,
+      repIcon: `<i class="fa-solid fa-reply"></i>`,
       createdAt: formattedTime,
       attr: "style",
       replyMessageStyle: `display: block; transform: translateY(20px);`,
@@ -172,22 +192,23 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, 
       "padding": "0px"
     });
   }
-  closePopup();
-  updateScroll();
+  //closePopup();
+  updateScroll(avatar, message.text);
 });
 
-socket.on('my__message', function (replaceId, id) {
-  pop.play();
+
+socket.on('messageSent', function (replaceId, id) {
+  outgoingmessage.play();
   $(`#${replaceId}`).attr('id', id);
-  $(`#${id} .sent`).attr('src', './images/sent-s.png');
+  $(`#${id} .sent`).attr('class', 'fa-solid fa-circle-check sent');
 });
 
 
 socket.on('server_message', function (message, name = null, id = null) {
   myname = name || myname;
   myid = id || myid;
-  juntos.play();
-  let formattedTime = moment(message.createdAt).format('h:mm a');
+
+  let formattedTime = moment(message.createdAt).format('hh:mm a');
   let template = $('#server-message-template').html();
   let html = Mustache.render(template, {
     text: message.text,
@@ -196,9 +217,11 @@ socket.on('server_message', function (message, name = null, id = null) {
   });
   if (message.text.includes('joined')) {
     html = html.replace(/<p>/g, `<p style='color: limegreen;'>`);
+    joinsound.play();
   }
   if (message.text.includes('left')) {
     html = html.replace(/<p>/g, `<p style='color: orangered;'>`);
+    leavesound.play();
   } else {
     html = html.replace(/<p>/g, `<p style='color: var(--blue);'>`);
   }
@@ -208,22 +231,22 @@ socket.on('server_message', function (message, name = null, id = null) {
 });
 
 socket.on('newLocationMessage', function (message) {
-  let formattedTime = moment(message.createdAt).format('h:mm a');
+  let formattedTime = moment(message.createdAt).format('hh:mm a');
   let template = $('#location-message-template').html();
   let html = Mustache.render(template, {
     from: message.from,
     url: message.url,
     createdAt: formattedTime
   });
-  pop.play();
+  incommingmessage.play();
   $('#messages').append(html);
   updateScroll();
 });
 
 socket.on('typing', (user, id) => {
+  typingsound.play();
   let li = $(`<li id="${id}"></li>`).text(user + ' is typing...');
   $('#typingindicator').append(li);
-  updateScroll();
 });
 
 socket.on('stoptyping', (id) => {
@@ -232,14 +255,27 @@ socket.on('stoptyping', (id) => {
 
 socket.on('vibrateResponse', (sender_name, id) => {
   if (id == myid) {
-    if (sender_name == myname) sender_name = 'You';
-    $('.popup-message').text(`${sender_name} just vibrated your Device`);
-    $('.popup-message').fadeIn(500);
     navigator.vibrate(1000);
-    setTimeout(function () {
-      $('.popup-message').fadeOut(500);
-    }, 1000);
+    popupMessage(`${sender_name == myname ? 'You' : sender_name} just vibrated your Device`);
   }
+});
+
+socket.on('imageGet', (sendername, imagefile, avatar, id) => {
+  //imagefile = LZString.decompress(imagefile);
+  let template = $('#image-message-template').html();
+  let html = Mustache.render(template, {
+    from: sendername,
+    id: id,
+    attrVal: `images/avatars/${avatar}(custom).png`,
+    image: `<img class='image-message' src='${imagefile}'>`,
+    createdAt: moment().format('hh:mm a')
+  });
+  incommingmessage.play();
+  $('#messages').append(html);
+  //on image loadedd
+  $(`#${id}`).find('.image-message').on('load', function () {
+  updateScroll(avatar, 'Photo');
+  });
 });
 
 $('#message-form').on('submit', function (e) {
@@ -258,7 +294,7 @@ $('#message-form').on('submit', function (e) {
   text = censorBadWords(text);
   text = text.replace(/\n/g, '¶');
   let replaceId = makeid(10);
-  let formattedTime = moment(moment().valueOf()).format('hh:mm a');
+  let formattedTime = moment().format('hh:mm a');
   let template, html;
   if (isReply) {
     template = $('#my-message-template').html();
@@ -268,7 +304,7 @@ $('#message-form').on('submit', function (e) {
       id: replaceId,
       repId: targetId,
       reply: replyText,
-      repIcon: `<img src='./../images/reply-blue.png' height='10px' width='10px' class='rep-icon'> `,
+      repIcon: `<i class="fa-solid fa-reply"></i>`,
       createdAt: formattedTime,
       attr: "style",
       replyMessageStyle: `display: block; transform: translateY(20px);`,
@@ -304,28 +340,31 @@ $('#message-form').on('submit', function (e) {
       $('#textbox').css('height', 'auto');
     });
   $('#textbox').css('height', 'auto');
-
+  
+  scrolling = false;
   closePopup();
+  clickOptionHide();
   updateScroll();
 });
 
 let locationButton = $('#send-location');
 locationButton.on('click', function () {
   if (!navigator.geolocation) {
-    return alert('Geolocation not supported by your browser.');
+    popupMessage('Geolocation not supported by your browser.');
+    return;
   }
 
-  locationButton.attr('disabled', 'disabled').html(`<img id="sendlocation" height='25px' width="25px" src="./images/icons8-gps-48.png" alt="" srcset="">`);
+  locationButton.attr('disabled', 'disabled').html(`<i class="fa-solid fa-location-crosshairs"></i>`);
 
   navigator.geolocation.getCurrentPosition(function (position) {
-    locationButton.removeAttr('disabled').html(`<img id="sendlocation" height='25px' width="25px" src="./images/icons8-gps-48.png" alt="" srcset="">`);
+    locationButton.removeAttr('disabled').html(`<i class="fa-solid fa-location-crosshairs"></i>`);
     socket.emit('createLocationMessage', {
       latitude: position.coords.latitude,
       longitude: position.coords.longitude
     });
   }, function () {
-    locationButton.removeAttr('disabled').html(`<img id="sendlocation" height='25px' width="25px" src="./images/icons8-gps-48.png" alt="" srcset="">`);
-    alert('Unable to fetch location.');
+    locationButton.removeAttr('disabled').html(`<i class="fa-solid fa-location-crosshairs"></i>`);
+    popupMessage('Unable to fetch location.');
   });
 });
 
@@ -350,11 +389,18 @@ $('#textbox').on('keydown', function () {
 $('.menu').on('click', function () {
   $('.menuwrapper').addClass('active');
 });
-$('.chat').on('click', function () {
-  $('.menuwrapper').removeClass('active');
-});
+
+
 $('#textbox').on('focus', function () {
   updateScroll();
+});
+
+$('.info').on('click', ()=> {
+  $('.about').fadeIn(200);
+});
+
+$('.close').on('click', ()=> {
+  $('.about').fadeOut(200);
 });
 
 function closePopup() {
@@ -362,6 +408,8 @@ function closePopup() {
   $('.toast-popup').hide();
   $('.toast-popup-name').text('');
   $('.toast-popup-message').text('');
+  $('.about').hide();
+  $('.menuwrapper').removeClass('active');
 }
 
 $('.toast-popup-close').on('click', () => {
@@ -372,21 +420,125 @@ let isReply = false;
 let replyTo, replyText;
 let targetId;
 
+function clickOptionShow(type, evt)
+{
+  $('.click-option').show();
+  if(type === 'text'){
+    $('.view-action').hide();
+    $('.store-action').hide();
+    $('.copy-action').show();
+    $('.reply-action').on('click', () => {
+      //console.log('Click on reply');
+      textReply(evt);
+      clickOptionHide();
+      $('.reply-action').unbind('click');
+      $('.view-action').unbind('click');
+      $('.store-action').unbind('click');
+      $('.copy-action').unbind('click');
+    });
+    $('.copy-action').on('click', ()=>{
+      //console.log('Click on Copy');
+      copyText(evt.target.innerText);
+      clickOptionHide();
+      $('.reply-action').unbind('click');
+      $('.view-action').unbind('click');
+      $('.store-action').unbind('click');
+      $('.copy-action').unbind('click');
+    });
+  }
+  else if (type === 'image'){
+    $('.view-action').show();
+    $('.store-action').show();
+    $('.copy-action').hide();
+    $('.reply-action').on('click', () => {
+      //console.log('Click on reply image');
+      imageReply(evt);
+      clickOptionHide();
+      $('.reply-action').unbind('click');
+      $('.view-action').unbind('click');
+      $('.store-action').unbind('click');
+      $('.copy-action').unbind('click');
+    });
+    $('.view-action').on('click', () => {
+      //console.log('Click on view image');
+      openImageView(evt);
+      clickOptionHide();
+      $('.reply-action').unbind('click');
+      $('.view-action').unbind('click');
+      $('.store-action').unbind('click');
+      $('.copy-action').unbind('click');
+    });
+    $('.store-action').on('click', () => {
+      //console.log('Click on store image');
+      //$('.lightbox__image').html('');
+      //$('.lightbox__image').append(`<img src="${evt.target.src}" alt="">`);
+      saveImage();
+      clickOptionHide();
+      $('.reply-action').unbind('click');
+      $('.view-action').unbind('click');
+      $('.store-action').unbind('click');
+      $('.copy-action').unbind('click');
+    });
+  }
+}
+
+function clickOptionHide()
+{
+  //console.log('hide');
+  $('.click-option').hide();
+  $('.view-action').hide();
+  $('.store-action').hide();
+  $('.copy-action').hide();
+}
+
+function textReply(evt)
+{
+  let target = evt.target;
+  targetId = target.parentElement.parentElement.parentElement.id;
+  replyText = target.innerText.length > 200 ? `${target.innerText.substring(0, 200)} ...` : target.innerText;
+  replyTo = evt.target.parentElement.previousElementSibling.previousElementSibling.innerText;
+  replyTo = replyTo.replace(/ replied to [a-zA-Z]+/g, '');
+  let replyToPop = replyTo;
+  if (replyToPop == myname) replyToPop = 'You';
+  if (replyTo == 'You') replyTo = myname;
+  isReply = true;
+  $('.toast-popup').show();
+  $('.toast-popup-name').html(`<i class="fa-solid fa-reply"></i> Replying to ${replyToPop}`);
+  $('.toast-popup-message').text(target.innerText.length > 50 ? `${target.innerText.substring(0, 50)} ...` : target.innerText);
+  $('#textbox').focus();
+}
+
+function imageReply(evt)
+{
+  //console.log(evt);
+  let target = evt.target;
+  targetId = target.parentElement.parentElement.parentElement.parentElement.id;
+  replyText = `Image`;
+  replyTo = target.parentElement.parentElement.previousElementSibling.innerText;
+  replyTo = replyTo.replace(/ replied to [a-zA-Z]+/g, '');
+  let replyToPop = replyTo;
+  if (replyToPop == myname) replyToPop = 'You';
+  if (replyTo == 'You') replyTo = myname;
+  isReply = true;
+  $('.toast-popup').show();
+  $('.toast-popup-name').html(`<i class="fa-solid fa-reply"></i> Replying to ${replyToPop}`);
+  $('.toast-popup-message').text(`Image`);
+  $('#textbox').focus();
+}
+
+function openImageView(evt)
+{
+  let target = evt.target;
+  $('.lightbox__image').html('');
+  $('.lightbox__image').append(`<img src="${target.src}" alt="">`);
+  $('.lightbox').fadeIn(100);
+}
+
 $('#messages').on('click', function (evt) {
   let target = evt.target;
+  //console.log(target);
   if (target.className === 'textMessage') {
-    targetId = target.parentElement.parentElement.parentElement.id;
-    replyText = `${target.innerText.substring(0, 200)} ...`;
-    replyTo = evt.target.parentElement.previousElementSibling.previousElementSibling.innerText;
-    replyTo = replyTo.replace(/ replied to [a-zA-Z]+/g, '');
-    let replyToPop = replyTo;
-    if (replyToPop == myname) replyToPop = 'You';
-    if (replyTo == 'You') replyTo = myname;
-    isReply = true;
-    $('.toast-popup').show();
-    $('.toast-popup-name').text(`Replying to ${replyToPop}`);
-    $('.toast-popup-message').text(`${target.innerText.substring(0, 50)} ...`);
-    $('#textbox').focus();
+    clickOptionShow('text', evt);
   } else if (target.className.includes('replyMessage')) {
     const msgId = target.dataset.repid;
     const element = document.getElementById(msgId);
@@ -401,27 +553,33 @@ $('#messages').on('click', function (evt) {
       $('#messages .message').css('filter', '');
       $(`#${msgId}`).css('filter', '');
     }, 1000);
+  }else if(target.className.includes('image-message')){
+    clickOptionShow('image', evt);
   }
 });
 
 $('.key').on('click', () => {
-  console.log('clicked');
+  //console.log('clicked');
   let text = $('.keyname1').text();
-  //copy text to clipboard
-  //copyToClipboard(text);
-  //show toast
+  copyText(text);
+});
+
+function copyText(text){
   navigator.clipboard.writeText(text);
-  $('.popup-message').text(`Copied to clipboard`);
+  popupMessage(`Copied to clipboard`);
+}
+
+function popupMessage(text){
+  $('.popup-message').text(text);
   $('.popup-message').fadeIn(500);
   setTimeout(function () {
     $('.popup-message').fadeOut(500);
   }, 1000);
-});
-
+}
 
 $('.users').on('click', function (evt) {
   evt.preventDefault();
-  console.log('clicked on users');
+  //console.log('clicked on users');
   let target = evt.target;
   if (target.className === 'user') {
     let targetId = target.id;
@@ -434,6 +592,15 @@ $('.users').on('click', function (evt) {
       }, 1000);
     }
   }
+});
+
+$('.chat').on('click', function (evt) {
+    $('.menuwrapper').removeClass('active');
+    $('.about').fadeOut(200);
+});
+
+$('.close-action').on('click', function (evt) {
+  $('.click-option').hide();
 });
 
 
@@ -454,6 +621,126 @@ $("textarea").each(function () {
 });
 
 
+$('#photo').on('change', ()=>{
+  //console.log('Photo selected');
+  
+  let file = $('#photo')[0].files[0];
+  let reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = function(e)
+  {
+    $('.previewimage__image').html("<img src='"+e.target.result+"' alt='image'/>");
+  }
+  $('.previewimage').show();
+});
+
+$('.previewimage__close').on('click', () => {
+  $('.previewimage').hide(100);
+});
+
+
+$('.sendimage').on('click', () => {
+  //console.log('Sending image');
+  let file = $('#photo')[0].files[0];
+  let reader = new FileReader();
+  //reader.readAsDataURL(file);
+  reader.readAsArrayBuffer(file);
+  reader.onload = function(e){
+    let blob = new Blob([e.target.result]);
+    window.URL = window.URL || window.webkitURL;
+    let blobURL = window.URL.createObjectURL(blob);
+    // helper Image object
+    let image = new Image();
+    image.src = blobURL;
+
+    image.onload = function() {
+      // have to wait till it's loaded
+      let resized = resizeImage(image, file.mimetype); // send it to canvas
+      //resized = LZString.compress(resized);
+      let tempId = makeid(10);
+      let template = $('#my-image-message-template').html();
+      //let image = e.target.result;
+      //console.log(mimetype);
+      //image = resizeMe(image, mimetype);
+      let html = Mustache.render(template, {
+        from: myname,
+        id: tempId,
+        image: `<img class='image-message' src='${resized}'>`,
+        createdAt: moment(moment().valueOf()).format('hh:mm a')
+      });
+      $('#messages').append(html).ready(()=>{
+        scrolling = false;
+        updateScroll();
+      });
+      socket.emit('image', myname, tempId, resized);
+    }
+    $('.previewimage').hide();
+    $('.previewimage__image').html("");
+    clickOptionHide();
+  }  
+});
+
+
+
+$('.lightbox__close').on('click', ()=>{
+  lightboxClose();
+});
+
+function lightboxClose()
+{
+  $('.lightbox').fadeOut(100, ()=>{
+    $('.lightbox__image').html("");
+  });
+}
+
+$('.lightbox__save').on('click', ()=>{
+  saveImage();
+});
+
+function saveImage()
+{
+  //console.log('Saving image');
+  let a = document.createElement('a');
+  a.href = $('.lightbox__image img').attr('src');
+  a.download = `save-${moment().valueOf()}.png`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+function resizeImage(img, mimetype) {
+  let canvas = document.createElement('canvas');
+  let width = img.width;
+  let height = img.height;
+  let max_height = 480;
+  let max_width = 480;
+  // calculate the width and height, constraining the proportions
+  if (width > height) {
+    if (width > max_width) {
+      //height *= max_width / width;
+      height = Math.round(height *= max_width / width);
+      width = max_width;
+    }
+  } else {
+    if (height > max_height) {
+      //width *= max_height / height;
+      width = Math.round(width *= max_height / height);
+      height = max_height;
+    }
+  }
+  canvas.width = width;
+  canvas.height = height;
+  let ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0, width, height);
+  return canvas.toDataURL(mimetype, 0.7); 
+}
+/*
+$('.lightbox').on('click', e => { 
+  if (e.target.className === 'lightbox__image'){
+    lightboxClose();
+  }
+});
+*/
 function linkify(inputText) {
   let replacedText, replacePattern1, replacePattern2, replacePattern3;
   replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
@@ -476,3 +763,33 @@ $('#textbox').on('keydown', (evt) => {
     $('.send').click();
   }
 });
+
+
+if (navigator.onLine) {
+  console.log('online');
+  $('.offline').fadeOut(400);
+} else {
+  console.log('offline');
+  $('.offline').text('You are offline!');
+  $('.offline').css('background', 'orangered');
+  $('.offline').fadeIn(400);
+}
+
+window.addEventListener('offline', function(e) { 
+  console.log('offline'); 
+  $('.offline').text('You are offline!');
+  $('.offline').css('background', 'orangered');
+  $('.offline').fadeIn(400);
+});
+
+window.addEventListener('online', function(e) {
+  console.log('Back to online');
+  $('.offline').text('Back to online!');
+  $('.offline').css('background', 'limegreen');
+  setTimeout(() => {
+    $('.offline').fadeOut(400);
+  }, 1500);
+});
+
+
+document.addEventListener('contextmenu', event => event.preventDefault());

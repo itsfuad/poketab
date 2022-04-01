@@ -56,7 +56,7 @@ app.get('*', (req, res) => {
 app.post('/chat', (req, res) => {
   //console.log(req.body);
   //res.sendFile(publicPath + `/chat.html`);
-  res.render('chat', {myname: req.body.name, mykey: req.body.key, myavatar: req.body.avatar, maxuser: req.body.maxuser});
+  res.render('chat', {myname: req.body.name, mykey: req.body.key, myavatar: req.body.avatar, maxuser: req.body.maxuser || users.getMaxUser(req.body.key)});
   //res.redirect(`/chat.html?key=${req.body.key}&name=${req.body.name}&avatar=${req.body.avatar}`);
 });
 
@@ -65,7 +65,7 @@ app.post('/chat', (req, res) => {
 io.on('connection', (socket) => {
 
   socket.on('join', (params, callback) => {
-    console.log(users);
+    //console.log(users);
     //console.log(users.getMaxUser(params.key));
     //console.log(params.name, params.key, params.maxuser);
     if (!isRealString(params.name) || !isRealString(params.key)) {
@@ -79,33 +79,43 @@ io.on('connection', (socket) => {
     if (user) {
       return callback('exists');
     }
-
-    console.log(`New user ${params.name} connected on key ${params.key}`);
+    callback();
     socket.join(params.key);
     users.removeUser(socket.id);
     users.addUser(socket.id, params.name, params.key, params.avatar, params.maxuser || users.getMaxUser(params.key));
     io.to(params.key).emit('updateUserList', users.getUserList(params.key), users.getUserId(params.key), params.key, users.getAvatarList(params.key));
     socket.emit('server_message', generateMessage('', `You joined the chat.🔥`), params.name, socket.id);
     socket.broadcast.to(params.key).emit('server_message', generateMessage(params.name, `${params.name} joined the chat.🔥`));
+    console.log(`New user ${params.name} connected on key ${params.key} with avatar ${params.avatar} and maxuser ${params.maxuser || users.getMaxUser(params.key)}`);
   });
 
-  socket.on('createMessage', (message, replaceId, isReply, replyTo, replyText, targetId, callback) => {
+  socket.on('createMessage', async (message, replaceId, isReply, replyTo, replyText, targetId, callback) => {
     let user = users.getUser(socket.id);
     if (user && isRealString(message.text)) {
       let id = uuid.v4();
-      socket.emit('my__message', replaceId, id);
+      socket.emit('messageSent', replaceId, id);
       socket.broadcast.to(user.key).emit('newMessage', generateMessage(user.name, message.text), user.avatar, isReply, replyTo, replyText, id, targetId);
     }
   });
 
-  socket.on('createLocationMessage', (coords) => {
+  socket.on('createLocationMessage', async (coords) => {
     let user = users.getUser(socket.id);
     if (user) {
       io.to(user.key).emit('newLocationMessage', generateLocationMessage(user.name, coords.latitude, coords.longitude));
     }
   });
 
-  socket.on('disconnect', () => {
+  socket.on('image', async (sendername, tempId, imagefile) => {
+    let user = users.getUser(socket.id);
+    if (user) {
+      let id = uuid.v4();
+      //console.log(tempId);
+      socket.emit('messageSent', tempId, id);
+      socket.broadcast.to(user.key).emit('imageGet', sendername, imagefile, user.avatar, id);
+    }
+  });
+
+  socket.on('disconnect', async () => {
     let user = users.removeUser(socket.id);
     if (user) {
       io.to(user.key).emit('updateUserList', users.getUserList(user.key), users.getUserId(user.key), user.key, users.getAvatarList(user.key));
@@ -119,19 +129,19 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('typing', () => {
+  socket.on('typing', async () => {
     let user = users.getUser(socket.id);
     if (user) {
       socket.broadcast.to(user.key).emit('typing', user.name, user.id + '-typing');
     }
   });
-  socket.on('stoptyping', () => {
+  socket.on('stoptyping', async () => {
     let user = users.getUser(socket.id);
     if (user) {
       socket.broadcast.to(user.key).emit('stoptyping', user.id + '-typing');
     }
   });
-  socket.on('joinRequest', key => {
+  socket.on('joinRequest', (key) => {
     console.log('Requset for join chat: ' + key);
     let maxuser = users.getMaxUser(key);
     let keyExists = users.getUserList(key).length > 0;
@@ -145,7 +155,7 @@ io.on('connection', (socket) => {
       socket.emit('joinResponse',keyExists, userlist, avatarList, maxuser);
     }
   });
-  socket.on('createRequest', key => {
+  socket.on('createRequest', async (key) => {
     console.log('Requset for create chat: ' + key);
     let keyExists = users.getUserList(key).length > 0;
     if (keyExists){
@@ -160,7 +170,7 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('vibrate', (sender_name, userId) => {
+  socket.on('vibrate', async (sender_name, userId) => {
     let user = users.getUser(userId);
     if (user) {
       io.to(user.key).emit('vibrateResponse', sender_name, userId);
