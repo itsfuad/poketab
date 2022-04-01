@@ -243,14 +243,36 @@ socket.on('newLocationMessage', function (message) {
   updateScroll();
 });
 
+let userMap = new Map();
+
 socket.on('typing', (user, id) => {
   typingsound.play();
-  let li = $(`<li id="${id}"></li>`).text(user + ' is typing...');
-  $('#typingindicator').append(li);
+
+  userMap.set(id, user);
+  let _typing = '';
+  userMap.forEach((value, key) => {
+    _typing += `${value}, `;
+  });
+  _typing = _typing.slice(0, -2);
+  $('#typingindicator').text(`${_typing} ${(userMap.size > 1 ) ? 'are' : 'is'} typing...`);
+  //let li = $(`<li id="${id}"></li>`).text(user + ' is typing...');
+  //$('#typingindicator').append(li);
 });
 
 socket.on('stoptyping', (id) => {
-  $(`#${id}`).remove();
+  //$(`#${id}`).remove();
+  userMap.delete(id);
+  if (userMap.size == 0) {
+    $('#typingindicator').text('');
+  }else{
+    let _typing = '';
+    userMap.forEach((value, key) => {
+      _typing += `${value}, `;
+    });
+    _typing = _typing.slice(0, -2);
+    $('#typingindicator').text(`${_typing} ${(userMap.size > 1 ) ? 'are' : 'is'} typing...`);
+  }
+  //$('#typingindicator').text('');
 });
 
 socket.on('vibrateResponse', (sender_name, id) => {
