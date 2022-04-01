@@ -504,7 +504,7 @@ scrollbar-width: none;  /* Firefox */
   list-style-type: none;
   color: grey;
   font-size: 0.7rem;
-  padding: 0 0 5px 10px;
+  padding: 0 0 0 10px;
   li{
     display: flex;
     flex-direction: row;
@@ -736,6 +736,7 @@ scrollbar-width: none;  /* Firefox */
     justify-content: center;
     width: 100%;
     padding: 0 10px;
+    margin-bottom: 10px;
     background: transparent;
     #textbox{
       max-height: 100px;
@@ -746,7 +747,6 @@ scrollbar-width: none;  /* Firefox */
       resize: none;
       background: var(--focus);
       border: none;
-      margin: 10px;
       transition: 200ms;
       color: var(--foreground);
       width: 100%;
