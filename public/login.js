@@ -10,14 +10,6 @@ const error_code = url.substring(url.indexOf('?') + 1);
 
 console.log(error_code);
 
-let offline = false || localStorage.getItem('offline');
-
-if (offline){
-    $('.offline').fadeIn(400);
-}else{
-    $('.offline').fadeOut(400);
-}
-
 if (error_code !== url){
     error.innerText = '*Please fill up all requirements*';
 }

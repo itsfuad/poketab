@@ -638,7 +638,7 @@ input[type=file] {
       -ms-flex-align: center;
           align-items: center;
   position: absolute;
-  height: var(--topbarsize);
+  padding-top: 20px;
   width: 100%;
   background: transparent;
   z-index: 10;
