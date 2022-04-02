@@ -54,10 +54,7 @@ app.get('*', (req, res) => {
 });
 
 app.post('/chat', (req, res) => {
-  //console.log(req.body);
-  //res.sendFile(publicPath + `/chat.html`);
   res.render('chat', {myname: req.body.name, mykey: req.body.key, myavatar: req.body.avatar, maxuser: req.body.maxuser || users.getMaxUser(req.body.key)});
-  //res.redirect(`/chat.html?key=${req.body.key}&name=${req.body.name}&avatar=${req.body.avatar}`);
 });
 
 
@@ -65,9 +62,6 @@ app.post('/chat', (req, res) => {
 io.on('connection', (socket) => {
 
   socket.on('join', (params, callback) => {
-    //console.log(users);
-    //console.log(users.getMaxUser(params.key));
-    //console.log(params.name, params.key, params.maxuser);
     if (!isRealString(params.name) || !isRealString(params.key)) {
       return callback('empty');
     }
@@ -109,7 +103,6 @@ io.on('connection', (socket) => {
     let user = users.getUser(socket.id);
     if (user) {
       let id = uuid.v4();
-      //console.log(tempId);
       socket.emit('messageSent', tempId, id);
       socket.broadcast.to(user.key).emit('imageGet', sendername, imagefile, user.avatar, id);
     }
@@ -121,7 +114,6 @@ io.on('connection', (socket) => {
       io.to(user.key).emit('updateUserList', users.getUserList(user.key), users.getUserId(user.key), user.key, users.getAvatarList(user.key));
       io.to(user.key).emit('server_message', generateMessage(user.name, `${user.name} left the chat.🐸`));
       console.log(`User ${user.name} disconnected from key ${user.key}`);
-      //console.log(users);
       let usercount = users.users.filter(datauser => datauser.key === user.key);
       if (usercount.length === 0) {
         users.removeMaxUser(user.key);
@@ -177,7 +169,6 @@ io.on('connection', (socket) => {
     }
   });
 });
-
 
 server.listen(port, () => {
   console.log(`Server is up on ${port}`);

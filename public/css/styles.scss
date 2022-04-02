@@ -472,7 +472,6 @@ scrollbar-width: none;  /* Firefox */
   padding: 10px 10px 0px 10px;
 }
 
-
 .topbar{
   display: flex;
   align-items: center;
@@ -480,19 +479,15 @@ scrollbar-width: none;  /* Firefox */
   padding-top: 20px;
   width: 100%;
   background: transparent;
-  //backdrop-filter: blur(2px);
   z-index: 10;
-  //margin: 10px 0;
   justify-content: center;
   .topbar-wrapper{
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    //background: var(--focus);
     padding: 0 20px;
     width: 100%;
-    //backdrop-filter: blur(2px);
   }
 }
 
@@ -505,6 +500,7 @@ scrollbar-width: none;  /* Firefox */
   color: grey;
   font-size: 0.7rem;
   padding: 0 0 0 10px;
+  height: 25px;
   li{
     display: flex;
     flex-direction: row;
@@ -513,7 +509,6 @@ scrollbar-width: none;  /* Firefox */
     gap: 5px;
   }
 }
-
 
 #sendlocation{
   filter: invert(1);
@@ -560,29 +555,6 @@ scrollbar-width: none;  /* Firefox */
             cursor: pointer;
           }
         }
-        /*&:hover::after{
-          content: url('./../images/reply.png');
-          position: absolute;
-          top: 0px;
-          left: -50px;
-          display: flex;
-          border-radius: 25px;
-          color: silver;
-          z-index: 150;
-          opacity: 1;
-          text-align: left;
-          flex-direction: row;
-          height: 100%;
-          width: 62px;
-          transition: 200ms;
-          white-space: pre;
-          align-content: center;
-          justify-content: center;
-          align-items: flex-start;
-          &:hover{
-            cursor: pointer;
-          }
-        }*/
       }
       .message__body{
         display: flex;
@@ -801,7 +773,6 @@ scrollbar-width: none;  /* Firefox */
   }
 }
 
-
 img{
   user-drag: none;
   -webkit-user-drag: none;
@@ -818,7 +789,7 @@ img{
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  margin: 0 20px;
+  margin: 5px 20px;
   background: var(--focus);
   border-radius: 10px;
   backdrop-filter: blur(2px);
@@ -831,6 +802,7 @@ img{
     text-overflow: ellipsis;
     .toast-popup-name{
       color: var(--secondary);
+      font-size: 0.7rem;
     }
     .toast-popup-message{
       font-size: 0.7rem;
@@ -848,46 +820,9 @@ img{
 }
 
 @media (orientation: landscape) and (min-device-aspect-ratio: 1/1) {
-  
   .chat{
     padding-top: 0;
   }
-  /*
-  .menu{
-    display: none;
-  }
-  .keyname{
-    display: none;
-  }
-
-  .info{
-    position: absolute;
-    top: 10px;
-    right: 0;
-    margin: 10px;
-  }
-
-  .menuwrapper2{
-    display: flex;
-    left: 0;
-    background: var(--primary);
-    width: 30vw;
-    .chat__sidebar{
-      width: 25vw;
-      border-right: 2px solid var(--focus);
-    }
-  }
-
-  .topbar{
-    display: flex;
-    height: 0;
-    margin: 0;
-    padding: 0;
-    .topbar-wrapper{
-      background: transparent;
-    }
-  }
-  */
   .topbar{
     padding: 20px 25%;
   }
@@ -898,7 +833,6 @@ img{
     padding: 0 25%;
     position: relative;
   }
-
   #messages{
     .textMessage, .replyMessage{
       max-width: 30vw;
