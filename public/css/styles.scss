@@ -505,6 +505,7 @@ scrollbar-width: none;  /* Firefox */
   color: grey;
   font-size: 0.7rem;
   padding: 0 0 0 10px;
+  height: 25px;
   li{
     display: flex;
     flex-direction: row;
@@ -818,7 +819,7 @@ img{
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  margin: 0 20px;
+  margin: 5px 20px;
   background: var(--focus);
   border-radius: 10px;
   backdrop-filter: blur(2px);
@@ -831,6 +832,7 @@ img{
     text-overflow: ellipsis;
     .toast-popup-name{
       color: var(--secondary);
+      font-size: 0.7rem;
     }
     .toast-popup-message{
       font-size: 0.7rem;

@@ -1,126 +1,36 @@
+//Variables
 const socket = io();
-
 let incommingmessage = new Audio('./../sounds/incommingmessage.wav');
 let outgoingmessage = new Audio('./../sounds/outgoingmessage.wav');
 let joinsound = new Audio('./../sounds/join.wav');
 let leavesound = new Audio('./../sounds/leave.wav');
 let typingsound = new Audio('./../sounds/typing.wav');
-
 let myname;
 let myid;
-
-const appHeight = () => {
-  const doc = document.documentElement
-  doc.style.setProperty('--app-height', `${window.innerHeight}px`)
-}
-
-window.addEventListener('resize', appHeight);
-
-appHeight();
-
 let scrolling = false;
 let lastPageLength = $('#messages').scrollTop();;
 let scroll = 0;
+let userMap = new Map();
+const maxTypeShow = 2;
+let typing = false;
+let timeout = undefined;
+let isReply = false;
+let replyTo, replyText;
+let targetId;
+const emoji_regex = /^(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])+$/;
 
-$('#messages').scroll(function (event) {
-  scroll = $('#messages').scrollTop();
-
-  if (scroll >= lastPageLength) {
-    lastPageLength = scroll;
-    removeNewMessagePopup();
-    scrolling = false;
-  } else {
-    scrolling = true;
-  }
-  //console.log(scrolling);
-});
-
-function updateScroll(avatar = null, text = '') {
-  if (scrolling) {
-    if (text.length > 0) {
-      $('.newmessagepopup img').attr('src', `./../images/avatars/${avatar}(custom).png`);
-      $('.newmessagepopup .msg').text(text.length > 20 ? `${text.substring(0, 20)} ...` : text);
-      $('.newmessagepopup').fadeIn(200);
-    }
-    return;
-  }
-  let element = document.getElementById("messages");
-  element.scrollTop = element.scrollHeight;
-  lastPageLength = $('#messages').scrollTop();
-  removeNewMessagePopup();
-}
-
-$('.newmessagepopup').click(function () {
-  scrolling = false;
-  updateScroll();
-  removeNewMessagePopup();
-});
-
-function removeNewMessagePopup() {
-  $('.newmessagepopup').fadeOut(200);
-}
-
-function scrollToBottom() {
-  let messages = $('#messages');
-  let newMessage = messages.children('li:last-child')
-  let clientHeight = messages.prop('clientHeight');
-  let scrollTop = messages.prop('scrollTop');
-  let scrollHeight = messages.prop('scrollHeight');
-  let newMessageHeight = newMessage.innerHeight();
-  let lastMessageHeight = newMessage.prev().innerHeight();
-  if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
-    messages.scrollTop(scrollHeight);
-  }
-}
-
-function censorBadWords(text) {
-  text = text.replace(/fuck/g, 'f**k');
-  text = text.replace(/shit/g, 's**t');
-  text = text.replace(/bitch/g, 'b**t');
-  text = text.replace(/asshole/g, 'a**hole');
-  text = text.replace(/dick/g, 'd**k');
-  text = text.replace(/pussy/g, 'p**s');
-  text = text.replace(/cock/g, 'c**k');
-  text = text.replace(/baal/g, 'b**l');
-  text = text.replace(/sex/g, 's*x');
-  text = text.replace(/Fuck/g, 'F**k');
-  text = text.replace(/Shit/g, 'S**t');
-  text = text.replace(/Bitch/g, 'B**t');
-  text = text.replace(/Asshole/g, 'A**hole');
-  text = text.replace(/Dick/g, 'D**k');
-  text = text.replace(/Pussy/g, 'P**s');
-  text = text.replace(/Cock/g, 'C**k');
-  text = text.replace(/Baal/g, 'B**l');
-  text = text.replace(/Sex/g, 'S*x');
-  return text;
-}
-
-function makeid(length) {
-  let result = '';
-  let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let charactersLength = characters.length;
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() *
-      charactersLength));
-  }
-  return result;
-}
-
+//Socket Connections
 socket.on('connect', function () {
   let name = $('#myname').text();
   let key = $('#mykey').text();
   let avatar = $('#myavatar').text();
   let maxuser = $('#maxuser').text();
-  //console.log(name, key, avatar, maxuser);
   let params = {
     name: name,
     key: key,
     avatar: avatar,
     maxuser: maxuser
   };
-  //console.log(params);
-  //params = $.deparam(window.location.search);
-  //console.log("Connected to server");
   socket.emit('join', params, function (err) {
     if (err) {
      console.log(err);
@@ -243,9 +153,6 @@ socket.on('newLocationMessage', function (message) {
   updateScroll();
 });
 
-let userMap = new Map();
-const maxTypeShow = 2;
-
 socket.on('typing', (user, id) => {
   typingsound.play();
 
@@ -316,6 +223,330 @@ socket.on('imageGet', (sendername, imagefile, avatar, id) => {
   });
 });
 
+//functions
+function appHeigh () {
+  const doc = document.documentElement;
+  doc.style.setProperty('--app-height', `${window.innerHeight}px`);
+}
+
+function updateScroll(avatar = null, text = '') {
+  if (scrolling) {
+    if (text.length > 0) {
+      $('.newmessagepopup img').attr('src', `./../images/avatars/${avatar}(custom).png`);
+      $('.newmessagepopup .msg').text(text.length > 20 ? `${text.substring(0, 20)} ...` : text);
+      $('.newmessagepopup').fadeIn(200);
+    }
+    return;
+  }
+  let element = document.getElementById("messages");
+  element.scrollTop = element.scrollHeight;
+  lastPageLength = $('#messages').scrollTop();
+  removeNewMessagePopup();
+}
+
+function removeNewMessagePopup() {
+  $('.newmessagepopup').fadeOut(200);
+}
+
+function scrollToBottom() {
+  let messages = $('#messages');
+  let newMessage = messages.children('li:last-child')
+  let clientHeight = messages.prop('clientHeight');
+  let scrollTop = messages.prop('scrollTop');
+  let scrollHeight = messages.prop('scrollHeight');
+  let newMessageHeight = newMessage.innerHeight();
+  let lastMessageHeight = newMessage.prev().innerHeight();
+  if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+    messages.scrollTop(scrollHeight);
+  }
+}
+
+function censorBadWords(text) {
+  text = text.replace(/fuck/g, 'f**k');
+  text = text.replace(/shit/g, 's**t');
+  text = text.replace(/bitch/g, 'b**t');
+  text = text.replace(/asshole/g, 'a**hole');
+  text = text.replace(/dick/g, 'd**k');
+  text = text.replace(/pussy/g, 'p**s');
+  text = text.replace(/cock/g, 'c**k');
+  text = text.replace(/baal/g, 'b**l');
+  text = text.replace(/sex/g, 's*x');
+  text = text.replace(/Fuck/g, 'F**k');
+  text = text.replace(/Shit/g, 'S**t');
+  text = text.replace(/Bitch/g, 'B**t');
+  text = text.replace(/Asshole/g, 'A**hole');
+  text = text.replace(/Dick/g, 'D**k');
+  text = text.replace(/Pussy/g, 'P**s');
+  text = text.replace(/Cock/g, 'C**k');
+  text = text.replace(/Baal/g, 'B**l');
+  text = text.replace(/Sex/g, 'S*x');
+  return text;
+}
+
+function makeid(length) {
+  let result = '';
+  let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() *
+      charactersLength));
+  }
+  return result;
+}
+
+function saveImage()
+{
+  //console.log('Saving image');
+  let a = document.createElement('a');
+  a.href = $('.lightbox__image img').attr('src');
+  a.download = `save-${moment().valueOf()}.png`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+function resizeImage(img, mimetype) {
+  let canvas = document.createElement('canvas');
+  let width = img.width;
+  let height = img.height;
+  let max_height = 480;
+  let max_width = 480;
+  // calculate the width and height, constraining the proportions
+  if (width > height) {
+    if (width > max_width) {
+      //height *= max_width / width;
+      height = Math.round(height *= max_width / width);
+      width = max_width;
+    }
+  } else {
+    if (height > max_height) {
+      //width *= max_height / height;
+      width = Math.round(width *= max_height / height);
+      height = max_height;
+    }
+  }
+  canvas.width = width;
+  canvas.height = height;
+  let ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0, width, height);
+  return canvas.toDataURL(mimetype, 0.7); 
+}
+
+function linkify(inputText) {
+  let replacedText, replacePattern1, replacePattern2, replacePattern3;
+  replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+  replacedText = inputText.replace(replacePattern1, '<a href="$1" target="_blank">$1</a>');
+  replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+  replacedText = replacedText.replace(replacePattern2, '$1<a href="http://$2" target="_blank">$2</a>');
+  replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
+  replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
+  return replacedText;
+}
+
+function emo_test(str) {
+  return emoji_regex.test(str);
+}
+
+function copyText(text){
+  navigator.clipboard.writeText(text);
+  popupMessage(`Copied to clipboard`);
+}
+
+function popupMessage(text){
+  $('.popup-message').text(text);
+  $('.popup-message').fadeIn(500);
+  setTimeout(function () {
+    $('.popup-message').fadeOut(500);
+  }, 1000);
+}
+
+function openImageView(evt)
+{
+  let target = evt.target;
+  $('.lightbox__image').html('');
+  $('.lightbox__image').append(`<img src="${target.src}" alt="">`);
+  $('.lightbox').fadeIn(100);
+}
+
+function imageReply(evt)
+{
+  //console.log(evt);
+  let target = evt.target;
+  targetId = target.parentElement.parentElement.parentElement.parentElement.id;
+  replyText = `Image`;
+  replyTo = target.parentElement.parentElement.previousElementSibling.innerText;
+  replyTo = replyTo.replace(/ replied to [a-zA-Z]+/g, '');
+  let replyToPop = replyTo;
+  if (replyToPop == myname) replyToPop = 'You';
+  if (replyTo == 'You') replyTo = myname;
+  isReply = true;
+  $('.toast-popup').show();
+  $('.toast-popup-name').html(`<i class="fa-solid fa-reply"></i> Replying to ${replyToPop}`);
+  $('.toast-popup-message').text(`Image`);
+  $('#textbox').focus();
+}
+
+function textReply(evt)
+{
+  let target = evt.target;
+  targetId = target.parentElement.parentElement.parentElement.id;
+  replyText = target.innerText.length > 200 ? `${target.innerText.substring(0, 200)} ...` : target.innerText;
+  replyTo = evt.target.parentElement.previousElementSibling.previousElementSibling.innerText;
+  replyTo = replyTo.replace(/ replied to [a-zA-Z]+/g, '');
+  let replyToPop = replyTo;
+  if (replyToPop == myname) replyToPop = 'You';
+  if (replyTo == 'You') replyTo = myname;
+  isReply = true;
+  $('.toast-popup').show();
+  $('.toast-popup-name').html(`<i class="fa-solid fa-reply"></i> Replying to ${replyToPop}`);
+  $('.toast-popup-message').text(target.innerText.length > 50 ? `${target.innerText.substring(0, 50)} ...` : target.innerText);
+  $('#textbox').focus();
+}
+
+function clickOptionHide()
+{
+  //console.log('hide');
+  $('.click-option').hide();
+  $('.view-action').hide();
+  $('.store-action').hide();
+  $('.copy-action').hide();
+}
+
+
+function lightboxClose()
+{
+  $('.lightbox').fadeOut(100, ()=>{
+    $('.lightbox__image').html("");
+  });
+}
+
+function clickOptionShow(type, evt)
+{
+  $('.click-option').show();
+  if(type === 'text'){
+    $('.view-action').hide();
+    $('.store-action').hide();
+    $('.copy-action').show();
+    $('.reply-action').on('click', () => {
+      //console.log('Click on reply');
+      textReply(evt);
+      clickOptionHide();
+      $('.reply-action').unbind('click');
+      $('.view-action').unbind('click');
+      $('.store-action').unbind('click');
+      $('.copy-action').unbind('click');
+    });
+    $('.copy-action').on('click', ()=>{
+      //console.log('Click on Copy');
+      copyText(evt.target.innerText);
+      clickOptionHide();
+      $('.reply-action').unbind('click');
+      $('.view-action').unbind('click');
+      $('.store-action').unbind('click');
+      $('.copy-action').unbind('click');
+    });
+  }
+  else if (type === 'image'){
+    $('.view-action').show();
+    $('.store-action').show();
+    $('.copy-action').hide();
+    $('.reply-action').on('click', () => {
+      //console.log('Click on reply image');
+      imageReply(evt);
+      clickOptionHide();
+      $('.reply-action').unbind('click');
+      $('.view-action').unbind('click');
+      $('.store-action').unbind('click');
+      $('.copy-action').unbind('click');
+    });
+    $('.view-action').on('click', () => {
+      //console.log('Click on view image');
+      openImageView(evt);
+      clickOptionHide();
+      $('.reply-action').unbind('click');
+      $('.view-action').unbind('click');
+      $('.store-action').unbind('click');
+      $('.copy-action').unbind('click');
+    });
+    $('.store-action').on('click', () => {
+      saveImage();
+      clickOptionHide();
+      $('.reply-action').unbind('click');
+      $('.view-action').unbind('click');
+      $('.store-action').unbind('click');
+      $('.copy-action').unbind('click');
+    });
+  }
+}
+
+function closePopup() {
+  isReply = false;
+  $('.toast-popup').hide();
+  $('.toast-popup-name').text('');
+  $('.toast-popup-message').text('');
+  $('.about').hide();
+  $('.menuwrapper').removeClass('active');
+}
+
+//Check online status
+if (navigator.onLine) {
+  console.log('online');
+  $('.offline').fadeOut(400);
+} else {
+  console.log('offline');
+  $('.offline').text('You are offline!');
+  $('.offline').css('background', 'orangered');
+  $('.offline').fadeIn(400);
+}
+
+//Event listeners
+window.addEventListener('offline', function(e) { 
+  console.log('offline'); 
+  $('.offline').text('You are offline!');
+  $('.offline').css('background', 'orangered');
+  $('.offline').fadeIn(400);
+});
+
+window.addEventListener('online', function(e) {
+  console.log('Back to online');
+  $('.offline').text('Back to online!');
+  $('.offline').css('background', 'limegreen');
+  setTimeout(() => {
+    $('.offline').fadeOut(400);
+  }, 1500);
+});
+
+$('#textbox').on('keydown', (evt) => {
+  if (evt.ctrlKey && (evt.key === 'Enter')) {
+    $('.send').click();
+  }
+});
+
+$('.toast-popup-close').on('click', () => {
+  closePopup();
+});
+
+$('#messages').scroll(function (event) {
+  scroll = $('#messages').scrollTop();
+
+  if (scroll >= lastPageLength) {
+    lastPageLength = scroll;
+    removeNewMessagePopup();
+    scrolling = false;
+  } 
+  else {
+    scrolling = true;
+  }
+  //console.log(scrolling);
+});
+
+$('.newmessagepopup').click(function () {
+  scrolling = false;
+  updateScroll();
+  removeNewMessagePopup();
+});
+
+
 $('#message-form').on('submit', function (e) {
   e.preventDefault();
   let messageTextbox = $('[name=message]');
@@ -385,29 +616,26 @@ $('#message-form').on('submit', function (e) {
   updateScroll();
 });
 
-let locationButton = $('#send-location');
-locationButton.on('click', function () {
+$('#send-location').on('click', function () {
   if (!navigator.geolocation) {
     popupMessage('Geolocation not supported by your browser.');
     return;
   }
 
-  locationButton.attr('disabled', 'disabled').html(`<i class="fa-solid fa-location-crosshairs"></i>`);
-
+  $('#send-location').attr('disabled', 'disabled').html(`<i class="fa-solid fa-location-crosshairs"></i>`);
   navigator.geolocation.getCurrentPosition(function (position) {
-    locationButton.removeAttr('disabled').html(`<i class="fa-solid fa-location-crosshairs"></i>`);
+    $('#send-location').removeAttr('disabled').html(`<i class="fa-solid fa-location-crosshairs"></i>`);
     socket.emit('createLocationMessage', {
       latitude: position.coords.latitude,
       longitude: position.coords.longitude
     });
   }, function () {
-    locationButton.removeAttr('disabled').html(`<i class="fa-solid fa-location-crosshairs"></i>`);
+    $('#send-location').removeAttr('disabled').html(`<i class="fa-solid fa-location-crosshairs"></i>`);
     popupMessage('Unable to fetch location.');
   });
 });
 
-let typing = false;
-let timeout = undefined;
+
 $('#textbox').on('keydown', function () {
   if (timeout) {
     clearTimeout(timeout);
@@ -441,179 +669,11 @@ $('.close').on('click', ()=> {
   $('.about').fadeOut(200);
 });
 
-function closePopup() {
-  isReply = false;
-  $('.toast-popup').hide();
-  $('.toast-popup-name').text('');
-  $('.toast-popup-message').text('');
-  $('.about').hide();
-  $('.menuwrapper').removeClass('active');
-}
-
-$('.toast-popup-close').on('click', () => {
-  closePopup();
-});
-
-let isReply = false;
-let replyTo, replyText;
-let targetId;
-
-function clickOptionShow(type, evt)
-{
-  $('.click-option').show();
-  if(type === 'text'){
-    $('.view-action').hide();
-    $('.store-action').hide();
-    $('.copy-action').show();
-    $('.reply-action').on('click', () => {
-      //console.log('Click on reply');
-      textReply(evt);
-      clickOptionHide();
-      $('.reply-action').unbind('click');
-      $('.view-action').unbind('click');
-      $('.store-action').unbind('click');
-      $('.copy-action').unbind('click');
-    });
-    $('.copy-action').on('click', ()=>{
-      //console.log('Click on Copy');
-      copyText(evt.target.innerText);
-      clickOptionHide();
-      $('.reply-action').unbind('click');
-      $('.view-action').unbind('click');
-      $('.store-action').unbind('click');
-      $('.copy-action').unbind('click');
-    });
-  }
-  else if (type === 'image'){
-    $('.view-action').show();
-    $('.store-action').show();
-    $('.copy-action').hide();
-    $('.reply-action').on('click', () => {
-      //console.log('Click on reply image');
-      imageReply(evt);
-      clickOptionHide();
-      $('.reply-action').unbind('click');
-      $('.view-action').unbind('click');
-      $('.store-action').unbind('click');
-      $('.copy-action').unbind('click');
-    });
-    $('.view-action').on('click', () => {
-      //console.log('Click on view image');
-      openImageView(evt);
-      clickOptionHide();
-      $('.reply-action').unbind('click');
-      $('.view-action').unbind('click');
-      $('.store-action').unbind('click');
-      $('.copy-action').unbind('click');
-    });
-    $('.store-action').on('click', () => {
-      //console.log('Click on store image');
-      //$('.lightbox__image').html('');
-      //$('.lightbox__image').append(`<img src="${evt.target.src}" alt="">`);
-      saveImage();
-      clickOptionHide();
-      $('.reply-action').unbind('click');
-      $('.view-action').unbind('click');
-      $('.store-action').unbind('click');
-      $('.copy-action').unbind('click');
-    });
-  }
-}
-
-function clickOptionHide()
-{
-  //console.log('hide');
-  $('.click-option').hide();
-  $('.view-action').hide();
-  $('.store-action').hide();
-  $('.copy-action').hide();
-}
-
-function textReply(evt)
-{
-  let target = evt.target;
-  targetId = target.parentElement.parentElement.parentElement.id;
-  replyText = target.innerText.length > 200 ? `${target.innerText.substring(0, 200)} ...` : target.innerText;
-  replyTo = evt.target.parentElement.previousElementSibling.previousElementSibling.innerText;
-  replyTo = replyTo.replace(/ replied to [a-zA-Z]+/g, '');
-  let replyToPop = replyTo;
-  if (replyToPop == myname) replyToPop = 'You';
-  if (replyTo == 'You') replyTo = myname;
-  isReply = true;
-  $('.toast-popup').show();
-  $('.toast-popup-name').html(`<i class="fa-solid fa-reply"></i> Replying to ${replyToPop}`);
-  $('.toast-popup-message').text(target.innerText.length > 50 ? `${target.innerText.substring(0, 50)} ...` : target.innerText);
-  $('#textbox').focus();
-}
-
-function imageReply(evt)
-{
-  //console.log(evt);
-  let target = evt.target;
-  targetId = target.parentElement.parentElement.parentElement.parentElement.id;
-  replyText = `Image`;
-  replyTo = target.parentElement.parentElement.previousElementSibling.innerText;
-  replyTo = replyTo.replace(/ replied to [a-zA-Z]+/g, '');
-  let replyToPop = replyTo;
-  if (replyToPop == myname) replyToPop = 'You';
-  if (replyTo == 'You') replyTo = myname;
-  isReply = true;
-  $('.toast-popup').show();
-  $('.toast-popup-name').html(`<i class="fa-solid fa-reply"></i> Replying to ${replyToPop}`);
-  $('.toast-popup-message').text(`Image`);
-  $('#textbox').focus();
-}
-
-function openImageView(evt)
-{
-  let target = evt.target;
-  $('.lightbox__image').html('');
-  $('.lightbox__image').append(`<img src="${target.src}" alt="">`);
-  $('.lightbox').fadeIn(100);
-}
-
-$('#messages').on('click', function (evt) {
-  let target = evt.target;
-  //console.log(target);
-  if (target.className === 'textMessage') {
-    clickOptionShow('text', evt);
-  } else if (target.className.includes('replyMessage')) {
-    const msgId = target.dataset.repid;
-    const element = document.getElementById(msgId);
-    element.scrollIntoView({
-      block: "center"
-    });
-    $('#messages .my__message').css('filter', 'brightness(0.5)');
-    $('#messages .message').css('filter', 'brightness(0.5)');
-    $(`#${msgId}`).css('filter', 'initial');
-    setTimeout(function () {
-      $('#messages .my__message').css('filter', '');
-      $('#messages .message').css('filter', '');
-      $(`#${msgId}`).css('filter', '');
-    }, 1000);
-  }else if(target.className.includes('image-message')){
-    clickOptionShow('image', evt);
-  }
-});
-
 $('.key').on('click', () => {
   //console.log('clicked');
   let text = $('.keyname1').text();
   copyText(text);
 });
-
-function copyText(text){
-  navigator.clipboard.writeText(text);
-  popupMessage(`Copied to clipboard`);
-}
-
-function popupMessage(text){
-  $('.popup-message').text(text);
-  $('.popup-message').fadeIn(500);
-  setTimeout(function () {
-    $('.popup-message').fadeOut(500);
-  }, 1000);
-}
 
 $('.users').on('click', function (evt) {
   evt.preventDefault();
@@ -641,7 +701,6 @@ $('.close-action').on('click', function (evt) {
   $('.click-option').hide();
 });
 
-
 window.addEventListener('resize', () => {
   updateScroll();
 });
@@ -650,7 +709,6 @@ $('.send').on('focus', function () {
   $('#textbox').focus();
 });
 
-
 $("textarea").each(function () {
   this.setAttribute("style", "height:" + (this.scrollHeight) + "px;overflow-y:hidden;");
 }).on("input", function () {
@@ -658,10 +716,7 @@ $("textarea").each(function () {
   this.style.height = (this.scrollHeight) + "px";
 });
 
-
 $('#photo').on('change', ()=>{
-  //console.log('Photo selected');
-  
   let file = $('#photo')[0].files[0];
   let reader = new FileReader();
   reader.readAsDataURL(file);
@@ -678,28 +733,19 @@ $('.previewimage__close').on('click', () => {
 
 
 $('.sendimage').on('click', () => {
-  //console.log('Sending image');
   let file = $('#photo')[0].files[0];
   let reader = new FileReader();
-  //reader.readAsDataURL(file);
   reader.readAsArrayBuffer(file);
   reader.onload = function(e){
     let blob = new Blob([e.target.result]);
     window.URL = window.URL || window.webkitURL;
     let blobURL = window.URL.createObjectURL(blob);
-    // helper Image object
     let image = new Image();
     image.src = blobURL;
-
     image.onload = function() {
-      // have to wait till it's loaded
-      let resized = resizeImage(image, file.mimetype); // send it to canvas
-      //resized = LZString.compress(resized);
+      let resized = resizeImage(image, file.mimetype);
       let tempId = makeid(10);
       let template = $('#my-image-message-template').html();
-      //let image = e.target.result;
-      //console.log(mimetype);
-      //image = resizeMe(image, mimetype);
       let html = Mustache.render(template, {
         from: myname,
         id: tempId,
@@ -718,119 +764,36 @@ $('.sendimage').on('click', () => {
   }  
 });
 
-
-
 $('.lightbox__close').on('click', ()=>{
   lightboxClose();
 });
-
-function lightboxClose()
-{
-  $('.lightbox').fadeOut(100, ()=>{
-    $('.lightbox__image').html("");
-  });
-}
 
 $('.lightbox__save').on('click', ()=>{
   saveImage();
 });
 
-function saveImage()
-{
-  //console.log('Saving image');
-  let a = document.createElement('a');
-  a.href = $('.lightbox__image img').attr('src');
-  a.download = `save-${moment().valueOf()}.png`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-}
-
-function resizeImage(img, mimetype) {
-  let canvas = document.createElement('canvas');
-  let width = img.width;
-  let height = img.height;
-  let max_height = 480;
-  let max_width = 480;
-  // calculate the width and height, constraining the proportions
-  if (width > height) {
-    if (width > max_width) {
-      //height *= max_width / width;
-      height = Math.round(height *= max_width / width);
-      width = max_width;
-    }
-  } else {
-    if (height > max_height) {
-      //width *= max_height / height;
-      width = Math.round(width *= max_height / height);
-      height = max_height;
-    }
-  }
-  canvas.width = width;
-  canvas.height = height;
-  let ctx = canvas.getContext("2d");
-  ctx.drawImage(img, 0, 0, width, height);
-  return canvas.toDataURL(mimetype, 0.7); 
-}
-/*
-$('.lightbox').on('click', e => { 
-  if (e.target.className === 'lightbox__image'){
-    lightboxClose();
+$('#messages').on('click', function (evt) {
+  let target = evt.target;
+  if (target.className === 'textMessage') {
+    clickOptionShow('text', evt);
+  } else if (target.className.includes('replyMessage')) {
+    const msgId = target.dataset.repid;
+    const element = document.getElementById(msgId);
+    element.scrollIntoView({
+      block: "center"
+    });
+    $('#messages .my__message').css('filter', 'brightness(0.5)');
+    $('#messages .message').css('filter', 'brightness(0.5)');
+    $(`#${msgId}`).css('filter', 'initial');
+    setTimeout(function () {
+      $('#messages .my__message').css('filter', '');
+      $('#messages .message').css('filter', '');
+      $(`#${msgId}`).css('filter', '');
+    }, 1000);
+  }else if(target.className.includes('image-message')){
+    clickOptionShow('image', evt);
   }
 });
-*/
-function linkify(inputText) {
-  let replacedText, replacePattern1, replacePattern2, replacePattern3;
-  replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
-  replacedText = inputText.replace(replacePattern1, '<a href="$1" target="_blank">$1</a>');
-  replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
-  replacedText = replacedText.replace(replacePattern2, '$1<a href="http://$2" target="_blank">$2</a>');
-  replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
-  replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
-  return replacedText;
-}
-
-const emoji_regex = /^(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])+$/;
-
-function emo_test(str) {
-  return emoji_regex.test(str);
-}
-
-$('#textbox').on('keydown', (evt) => {
-  if (evt.ctrlKey && (evt.key === 'Enter')) {
-    $('.send').click();
-  }
-});
-
-
-if (navigator.onLine) {
-  console.log('online');
-  $('.offline').fadeOut(400);
-} else {
-  console.log('offline');
-  $('.offline').text('You are offline!');
-  $('.offline').css('background', 'orangered');
-  $('.offline').fadeIn(400);
-}
-
-window.addEventListener('offline', function(e) { 
-  console.log('offline'); 
-  $('.offline').text('You are offline!');
-  $('.offline').css('background', 'orangered');
-  $('.offline').fadeIn(400);
-});
-
-window.addEventListener('online', function(e) {
-  console.log('Back to online');
-  $('.offline').text('Back to online!');
-  $('.offline').css('background', 'limegreen');
-  setTimeout(() => {
-    $('.offline').fadeOut(400);
-  }, 1500);
-});
-
-let array = [1,2,3,54,7,89];
-//print first 3 elemnts and the remaining element count
-
-
+window.addEventListener('resize', appHeight);
 document.addEventListener('contextmenu', event => event.preventDefault());
+appHeight();

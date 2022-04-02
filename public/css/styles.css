@@ -674,6 +674,7 @@ input[type=file] {
   color: grey;
   font-size: 0.7rem;
   padding: 0 0 0 10px;
+  height: 25px;
 }
 
 #typingindicator li {
@@ -1136,7 +1137,7 @@ img {
       -ms-flex-align: center;
           align-items: center;
   padding: 10px;
-  margin: 0 20px;
+  margin: 5px 20px;
   background: var(--focus);
   border-radius: 10px;
   -webkit-backdrop-filter: blur(2px);
@@ -1163,6 +1164,7 @@ img {
 
 .toast-popup .toast-popup-replying-to .toast-popup-name {
   color: var(--secondary);
+  font-size: 0.7rem;
 }
 
 .toast-popup .toast-popup-replying-to .toast-popup-message {
