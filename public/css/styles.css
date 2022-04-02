@@ -755,29 +755,6 @@ input[type=file] {
   position: relative;
   -webkit-transition: ease-in-out 300ms;
   transition: ease-in-out 300ms;
-  /*&:hover::after{
-          content: url('./../images/reply.png');
-          position: absolute;
-          top: 0px;
-          left: -50px;
-          display: flex;
-          border-radius: 25px;
-          color: silver;
-          z-index: 150;
-          opacity: 1;
-          text-align: left;
-          flex-direction: row;
-          height: 100%;
-          width: 62px;
-          transition: 200ms;
-          white-space: pre;
-          align-content: center;
-          justify-content: center;
-          align-items: flex-start;
-          &:hover{
-            cursor: pointer;
-          }
-        }*/
 }
 
 #messages .message .textMessage a, #messages .my__message .textMessage a {
@@ -1186,42 +1163,6 @@ img {
   .chat {
     padding-top: 0;
   }
-  /*
-  .menu{
-    display: none;
-  }
-  .keyname{
-    display: none;
-  }
-
-  .info{
-    position: absolute;
-    top: 10px;
-    right: 0;
-    margin: 10px;
-  }
-
-  .menuwrapper2{
-    display: flex;
-    left: 0;
-    background: var(--primary);
-    width: 30vw;
-    .chat__sidebar{
-      width: 25vw;
-      border-right: 2px solid var(--focus);
-    }
-  }
-
-  .topbar{
-    display: flex;
-    height: 0;
-    margin: 0;
-    padding: 0;
-    .topbar-wrapper{
-      background: transparent;
-    }
-  }
-  */
   .topbar {
     padding: 20px 25%;
   }
