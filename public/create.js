@@ -111,9 +111,9 @@ function check(){
         $('#name-label').css('color','red');
     }
     if (allow && checked){
-        $('#join').val('Creating Chat...');
+        $('#join').val('Creating...');
         setTimeout(()=>{
-            $('#join').val('Join');
+            $('#join').val('Create');
         }, 2000);
     }
     return (allow && checked);
