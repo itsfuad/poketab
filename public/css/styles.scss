@@ -9,6 +9,7 @@
   --foreground-dark: #ffffff;
   --secondary-dark: #6aa4db;
   --focus--dark: #192838bd;
+  --red: #cd4040;
   --secondary: var(--secondary-dark);
   --primary: var(--primary-dark);
   --foreground: var(--foreground-dark);
@@ -36,7 +37,7 @@ body {
 }
 
 .close-action, .delete-action{
-  color: #fc6262;
+  color: var(--red);
 }
 
 .reply-action, .store-action, .view-action, .copy-action{
@@ -253,7 +254,7 @@ input[type=file] {
     right: 0;
     padding: 10px;
     cursor: pointer;
-    color: orangered;
+    color: var(--red);
   }
   .sendimage{
     position: absolute;
@@ -421,7 +422,6 @@ input[type=file] {
 }
 
 .server__message__body{
-  padding-bottom: 10px;
   font-size: 0.7rem;
 }
 
@@ -672,7 +672,7 @@ scrollbar-width: none;  /* Firefox */
   bottom: 80px;
   left: 50%;
   background: var(--option-color);
-  padding: 10px;
+  padding: 5px 10px;
   border-radius: 25px;
   backdrop-filter: blur(2px);
   font-size: 0.6rem;
@@ -680,9 +680,10 @@ scrollbar-width: none;  /* Firefox */
   z-index: 100;
   gap: 10px;
   width: max-content;
+  filter: drop-shadow(2px 4px 6px black);
   img{
-    height: 15px;
-    width: 15px;
+    height: 20px;
+    width: 20px;
   }
   .msg{
     font-size: 0.7rem;
@@ -759,6 +760,7 @@ scrollbar-width: none;  /* Firefox */
   transform: translate(-50%, -50%);
   font-size: 0.9rem;
   backdrop-filter: blur(2px);
+  filter: drop-shadow(2px 4px 6px black);
   z-index: 99;
   ul{
     display: flex;
@@ -812,7 +814,7 @@ img{
     }
   }
   .toast-popup-close{
-    color: orangered;
+    color: var(--red);
     font-weight: 100;
     position: absolute;
     right: 10px;

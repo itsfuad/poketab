@@ -433,22 +433,26 @@ function textReply(evt)
 function clickOptionHide()
 {
   //console.log('hide');
-  $('.reply-action').unbind('click');
-  $('.view-action').unbind('click');
-  $('.store-action').unbind('click');
-  $('.copy-action').unbind('click');
-  $('.delete-action').unbind('click');
+  unbindClicks();
   $('.click-option').hide();
   $('.view-action').hide();
   $('.store-action').hide();
   $('.copy-action').hide();
 }
 
+function unbindClicks(){
+  $('.reply-action').unbind('click');
+  $('.view-action').unbind('click');
+  $('.store-action').unbind('click');
+  $('.copy-action').unbind('click');
+  $('.delete-action').unbind('click');
+}
+
 function deleteMessage(evt, type){
 
   if (type == 'text'){
     targetId = evt.target.parentElement.parentElement.parentElement.id;
-    //console.log(targetId);
+    //console.log(evt.target.parentElement.parentElement);
     socket.emit('delete message', targetId, myname);
   }
   else if (type == 'image'){
@@ -467,6 +471,7 @@ function lightboxClose()
 
 function clickOptionShow(type, evt)
 {
+  unbindClicks();
   $('.click-option').show();
   if(type === 'text'){
     $('.view-action').hide();
@@ -474,7 +479,7 @@ function clickOptionShow(type, evt)
     $('.copy-action').show();
     $('.delete-action').show();
     $('.reply-action').on('click', () => {
-      //console.log('Click on reply');
+      console.log('Click on reply');
       textReply(evt);
       clickOptionHide();
     });
@@ -493,6 +498,7 @@ function clickOptionShow(type, evt)
     $('.view-action').show();
     $('.store-action').show();
     $('.copy-action').hide();
+    $('.delete-action').show();
     $('.reply-action').on('click', () => {
       //console.log('Click on reply image');
       imageReply(evt);
@@ -560,6 +566,10 @@ $('#textbox').on('keydown', (evt) => {
 
 $('.toast-popup-close').on('click', () => {
   closePopup();
+});
+
+$('.close-action').on('click', function (evt) {
+  clickOptionHide();
 });
 
 $('#messages').scroll(function (event) {
@@ -731,10 +741,6 @@ $('.users').on('click', function (evt) {
 $('.chat').on('click', function (evt) {
     $('.menuwrapper').removeClass('active');
     $('.about').fadeOut(200);
-});
-
-$('.close-action').on('click', function (evt) {
-  $('.click-option').hide();
 });
 
 window.addEventListener('resize', () => {
