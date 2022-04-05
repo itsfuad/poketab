@@ -116,7 +116,10 @@ io.on('connection', (socket) => {
       console.log(`User ${user.name} disconnected from key ${user.key}`);
       let usercount = users.users.filter(datauser => datauser.key === user.key);
       if (usercount.length === 0) {
+        setTimeout(()=>{
         users.removeMaxUser(user.key);
+        console.log(`Session ended with key: ${user.key}`);
+        }, 10000);
       }
     }
   });
