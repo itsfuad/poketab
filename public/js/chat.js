@@ -40,6 +40,7 @@ socket.on('connect', function () {
       popupMessage(`Connected to server`);
       $('#main-screen').css('visibility', 'visible');
       $('#preloader').css('visibility', 'hidden');
+      $('#preloader').remove();
     }
   });
 });
