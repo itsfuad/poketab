@@ -168,6 +168,20 @@ io.on('connection', (socket) => {
       io.to(user.key).emit('vibrateResponse', sender_name, userId);
     }
   });
+
+  socket.on('delete message', (messageId, userD) => {
+    let user = users.getUser(socket.id);
+    if (user) {
+      io.to(user.key).emit('deleteMessage', messageId, userD);
+    }
+  });
+
+  socket.on('delete image', (messageId, userD) => {
+    let user = users.getUser(socket.id);
+    if (user) {
+      io.to(user.key).emit('deleteImage', messageId, userD);
+    }
+  });
 });
 
 server.listen(port, () => {

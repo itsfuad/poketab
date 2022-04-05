@@ -41,8 +41,8 @@ body {
   overscroll-behavior-y: contain;
 }
 
-.close-action {
-  color: #f28860;
+.close-action, .delete-action {
+  color: #fc6262;
 }
 
 .reply-action, .store-action, .view-action, .copy-action {
@@ -919,13 +919,16 @@ input[type=file] {
   position: absolute;
   bottom: 100px;
   left: 50%;
-  background: #00000078;
+  background: #000000bb;
   padding: 10px;
   border-radius: 15px;
   font-size: 0.6rem;
   -webkit-transform: translateX(-50%);
           transform: translateX(-50%);
   z-index: 100;
+  -webkit-backdrop-filter: blur(2px);
+          backdrop-filter: blur(2px);
+  z-index: 1000;
 }
 
 .newmessagepopup {
@@ -1051,14 +1054,16 @@ input[type=file] {
 
 .click-option {
   background: var(--option-color);
-  padding: 20px;
+  padding: 10px;
   border-radius: 10px;
   position: absolute;
-  bottom: 40px;
+  bottom: 60px;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
   font-size: 0.7rem;
+  -webkit-backdrop-filter: blur(2px);
+          backdrop-filter: blur(2px);
   z-index: 99;
 }
 

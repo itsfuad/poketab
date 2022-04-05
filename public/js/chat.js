@@ -223,6 +223,33 @@ socket.on('imageGet', (sendername, imagefile, avatar, id) => {
   });
 });
 
+socket.on('deleteMessage', (messageId, user) => {
+  $(`#${messageId} .textMessage`).css('background', '#ff0000');
+  setTimeout(() => {
+    $(`#${messageId}`).remove();
+    if (user == myname) {
+      popupMessage(`You deleted a message`);
+    }else{
+      popupMessage(`${user} deleted a message`);
+    }
+    lastPageLength = $('#messages').scrollTop();
+  }, 1000);
+});
+
+socket.on('deleteImage', (messageId, user) => {
+  $(`#${messageId} .imageMessage`).css('outline', '2px solid red');
+  setTimeout(() => {
+    $(`#${messageId}`).remove();
+    if (user == myname) {
+      popupMessage(`You deleted an image`);
+    }else{
+      popupMessage(`${user} deleted an image`);
+    }
+    lastPageLength = $('#messages').scrollTop();
+  }, 1000);
+});
+
+
 //functions
 function appHeigh () {
   const doc = document.documentElement;
@@ -406,12 +433,30 @@ function textReply(evt)
 function clickOptionHide()
 {
   //console.log('hide');
+  $('.reply-action').unbind('click');
+  $('.view-action').unbind('click');
+  $('.store-action').unbind('click');
+  $('.copy-action').unbind('click');
+  $('.delete-action').unbind('click');
   $('.click-option').hide();
   $('.view-action').hide();
   $('.store-action').hide();
   $('.copy-action').hide();
 }
 
+function deleteMessage(evt, type){
+
+  if (type == 'text'){
+    targetId = evt.target.parentElement.parentElement.parentElement.id;
+    //console.log(targetId);
+    socket.emit('delete message', targetId, myname);
+  }
+  else if (type == 'image'){
+    targetId = evt.target.parentElement.parentElement.parentElement.parentElement.id;
+    //console.log(targetId);
+    socket.emit('delete image', targetId, myname);
+  }
+}
 
 function lightboxClose()
 {
@@ -427,23 +472,21 @@ function clickOptionShow(type, evt)
     $('.view-action').hide();
     $('.store-action').hide();
     $('.copy-action').show();
+    $('.delete-action').show();
     $('.reply-action').on('click', () => {
       //console.log('Click on reply');
       textReply(evt);
       clickOptionHide();
-      $('.reply-action').unbind('click');
-      $('.view-action').unbind('click');
-      $('.store-action').unbind('click');
-      $('.copy-action').unbind('click');
     });
     $('.copy-action').on('click', ()=>{
       //console.log('Click on Copy');
       copyText(evt.target.innerText);
       clickOptionHide();
-      $('.reply-action').unbind('click');
-      $('.view-action').unbind('click');
-      $('.store-action').unbind('click');
-      $('.copy-action').unbind('click');
+    });
+    $('.delete-action').on('click', ()=>{
+      console.log('Click on Delete');
+      deleteMessage(evt, 'text');
+      clickOptionHide();
     });
   }
   else if (type === 'image'){
@@ -454,27 +497,20 @@ function clickOptionShow(type, evt)
       //console.log('Click on reply image');
       imageReply(evt);
       clickOptionHide();
-      $('.reply-action').unbind('click');
-      $('.view-action').unbind('click');
-      $('.store-action').unbind('click');
-      $('.copy-action').unbind('click');
     });
     $('.view-action').on('click', () => {
       //console.log('Click on view image');
       openImageView(evt);
       clickOptionHide();
-      $('.reply-action').unbind('click');
-      $('.view-action').unbind('click');
-      $('.store-action').unbind('click');
-      $('.copy-action').unbind('click');
     });
     $('.store-action').on('click', () => {
       saveImage();
       clickOptionHide();
-      $('.reply-action').unbind('click');
-      $('.view-action').unbind('click');
-      $('.store-action').unbind('click');
-      $('.copy-action').unbind('click');
+    });
+    $('.delete-action').on('click', ()=>{
+      console.log('Click on Delete');
+      deleteMessage(evt, 'image');
+      clickOptionHide();
     });
   }
 }

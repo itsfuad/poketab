@@ -35,8 +35,8 @@ body {
   overscroll-behavior-y: contain;
 }
 
-.close-action{
-  color: #f28860;
+.close-action, .delete-action{
+  color: #fc6262;
 }
 
 .reply-action, .store-action, .view-action, .copy-action{
@@ -653,12 +653,14 @@ scrollbar-width: none;  /* Firefox */
   position: absolute;
   bottom: 100px;
   left: 50%;
-  background: #00000078;
+  background: #000000bb;
   padding: 10px;
   border-radius: 15px;
   font-size: 0.6rem;
   transform: translateX(-50%);
   z-index: 100;
+  backdrop-filter: blur(2px);
+  z-index: 1000;
 }
 
 .newmessagepopup{
@@ -749,13 +751,14 @@ scrollbar-width: none;  /* Firefox */
 
 .click-option{
   background: var(--option-color);
-  padding: 20px;
+  padding: 10px;
   border-radius: 10px;
   position: absolute;
-  bottom: 40px;
+  bottom: 60px;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 0.7rem;
+  backdrop-filter: blur(2px);
   z-index: 99;
   ul{
     display: flex;
