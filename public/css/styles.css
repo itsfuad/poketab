@@ -1054,14 +1054,14 @@ input[type=file] {
 
 .click-option {
   background: var(--option-color);
-  padding: 10px;
+  padding: 10px 20px;
   border-radius: 10px;
   position: absolute;
   bottom: 60px;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   -webkit-backdrop-filter: blur(2px);
           backdrop-filter: blur(2px);
   z-index: 99;
@@ -1082,7 +1082,7 @@ input[type=file] {
       -ms-flex-pack: center;
           justify-content: center;
   list-style-type: none;
-  gap: 20px;
+  gap: 40px;
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;

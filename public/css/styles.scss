@@ -751,13 +751,13 @@ scrollbar-width: none;  /* Firefox */
 
 .click-option{
   background: var(--option-color);
-  padding: 10px;
+  padding: 10px 20px;
   border-radius: 10px;
   position: absolute;
   bottom: 60px;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   backdrop-filter: blur(2px);
   z-index: 99;
   ul{
@@ -766,7 +766,7 @@ scrollbar-width: none;  /* Firefox */
     align-items: flex-start;
     justify-content: center;
     list-style-type: none;
-    gap: 20px;
+    gap: 40px;
     width: max-content;
     li{
       &:hover{
