@@ -24,8 +24,8 @@ $('#next').on('click',()=>{
         $('#key-label').css('color','red');
         return;
     }
-    if (key.length !== 10){
-        $('#key-label').text('Key is 10 characters');
+    if (key.length !== 15){
+        $('#key-label').text('Key is 15 characters');
         $('#key-label').css('color', 'red');
         return;
     }
