@@ -65,9 +65,10 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, 
   incommingmessage.play();
   let formattedTime = moment(message.createdAt).format('hh:mm a');
   let template, html;
+  template = $('#message-template').html();
   if (isReply) {
     if (replyTo == myname) replyTo = 'You';
-    template = $('#message-template').html();
+    //template = $('#message-template').html();
     html = Mustache.render(template, {
       text: linkify(message.text),
       from: `${message.from} replied to ${replyTo}`,
@@ -82,7 +83,7 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, 
       attrVal: `images/avatars/${avatar}(custom).png`
     });
   } else {
-    template = $('#message-template').html();
+    //template = $('#message-template').html();
     html = Mustache.render(template, {
       text: linkify(message.text),
       from: message.from,
