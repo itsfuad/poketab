@@ -585,7 +585,7 @@ $('#messages').scroll(function (event) {
   else {
     scrolling = true;
   }
-  console.log(scrolling);
+  //console.log(scrolling);
 });
 
 $('.newmessagepopup').click(function () {
