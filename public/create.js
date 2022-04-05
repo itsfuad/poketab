@@ -25,7 +25,7 @@ function makeid(length) {
     return result;
 }
 
-$('#key').val(makeid(10));
+$('#key').val(makeid(15));
 
 $('#key').on('click', ()=>{
     let text = $('#key').val();

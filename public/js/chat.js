@@ -234,7 +234,7 @@ socket.on('deleteMessage', (messageId, user) => {
     }else{
       popupMessage(`${user} deleted a message`);
     }
-    lastPageLength = $('#messages').scrollTop();
+    updateScroll();
   }, 1000);
 });
 
@@ -247,7 +247,7 @@ socket.on('deleteImage', (messageId, user) => {
     }else{
       popupMessage(`${user} deleted an image`);
     }
-    lastPageLength = $('#messages').scrollTop();
+    updateScroll();
   }, 1000);
 });
 
@@ -585,7 +585,7 @@ $('#messages').scroll(function (event) {
   else {
     scrolling = true;
   }
-  //console.log(scrolling);
+  console.log(scrolling);
 });
 
 $('.newmessagepopup').click(function () {
@@ -838,6 +838,9 @@ $('#messages').on('click', function (evt) {
     clickOptionShow('image', evt);
   }
 });
-window.addEventListener('resize', appHeight);
+window.addEventListener('resize',()=>{ 
+  appHeight();
+  updateScroll();
+});
 document.addEventListener('contextmenu', event => event.preventDefault());
 appHeight();
