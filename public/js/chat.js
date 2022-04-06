@@ -560,6 +560,8 @@ function clickOptionShow(type, evt)
       clickOptionHide();
     });*/
     $('.store-action').on('click', () => {
+      $('.lightbox__image').html('');
+      $('.lightbox__image').append(`<img src="${evt.target.src}" alt="">`);
       saveImage();
       clickOptionHide();
     });
