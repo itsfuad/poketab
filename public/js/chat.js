@@ -869,8 +869,9 @@ Messages.addEventListener('click', (e)=>{
     if (!repPop) {
       openImageView(e);
     }
-  }else if (e.target.className.includes('replyMessage')) {
-    const msgId = target.dataset.repid;
+  }
+  else if (e.target.className.includes('replyMessage')) {
+    const msgId = e.target.dataset.repid;
     const element = document.getElementById(msgId);
     element.scrollIntoView({
       block: "center"
