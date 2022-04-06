@@ -869,16 +869,7 @@ Messages.addEventListener('click', (e)=>{
     if (!repPop) {
       openImageView(e);
     }
-  }
-});
-
-ClickAndHold.applyTo(Messages, 300, function (evt) {
-  //console.log(evt);
-  lightboxClose();
-  let target = evt.target;
-  if (target.className === 'textMessage') {
-    clickOptionShow('text', evt);
-  } else if (target.className.includes('replyMessage')) {
+  }else if (target.className.includes('replyMessage')) {
     const msgId = target.dataset.repid;
     const element = document.getElementById(msgId);
     element.scrollIntoView({
@@ -892,7 +883,16 @@ ClickAndHold.applyTo(Messages, 300, function (evt) {
       $('#messages .message').css('filter', '');
       $(`#${msgId}`).css('filter', '');
     }, 1000);
-  }else if(target.className.includes('image-message')){
+  }
+});
+
+ClickAndHold.applyTo(Messages, 300, function (evt) {
+  //console.log(evt);
+  lightboxClose();
+  let target = evt.target;
+  if (target.className === 'textMessage') {
+    clickOptionShow('text', evt);
+  } else if(target.className.includes('image-message')){
     clickOptionShow('image', evt);
   }
 });
