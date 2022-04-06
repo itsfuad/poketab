@@ -1,16 +1,16 @@
 //Variables
 const socket = io();
-let incommingmessage = new Audio('./../sounds/incommingmessage.wav');
-let outgoingmessage = new Audio('./../sounds/outgoingmessage.wav');
-let joinsound = new Audio('./../sounds/join.wav');
-let leavesound = new Audio('./../sounds/leave.wav');
-let typingsound = new Audio('./../sounds/typing.wav');
+const incommingmessage = new Audio('./../sounds/incommingmessage.wav');
+const outgoingmessage = new Audio('./../sounds/outgoingmessage.wav');
+const joinsound = new Audio('./../sounds/join.wav');
+const leavesound = new Audio('./../sounds/leave.wav');
+const typingsound = new Audio('./../sounds/typing.wav');
 let myname;
 let myid;
 let scrolling = false;
 let lastPageLength = $('#messages').scrollTop();;
 let scroll = 0;
-let userMap = new Map();
+const userMap = new Map();
 const maxTypeShow = 2;
 let typing = false;
 let timeout = undefined;
@@ -18,6 +18,20 @@ let isReply = false;
 let replyTo, replyText;
 let targetId;
 const emoji_regex = /^(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])+$/;
+
+const myMessageTemplate = $('#my-message-template').html();
+const messageTemplate = $('#message-template').html();
+const serverMessageTemplate = $('#server-message-template').html();
+const locationMessageTemplate = $('#location-message-template').html();
+const imageMessageTemplate = $('#image-message-template').html();
+const myImageMessageTemplate = $('#my-image-message-template').html();
+
+$('#my-message-template').remove();
+$('#message-template').remove();
+$('#server-message-template').remove();
+$('#location-message-template').remove();
+$('#image-message-template').remove();
+$('#my-image-message-template').remove();
 
 //Socket Connections
 socket.on('connect', function () {
@@ -64,12 +78,11 @@ socket.on('updateUserList', function (users, ids, key, avatars) {
 socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, id, targetId) {
   incommingmessage.play();
   let formattedTime = moment(message.createdAt).format('hh:mm a');
-  let template, html;
-  template = $('#message-template').html();
+  let html;
   if (isReply) {
     if (replyTo == myname) replyTo = 'You';
     //template = $('#message-template').html();
-    html = Mustache.render(template, {
+    html = Mustache.render(messageTemplate, {
       text: linkify(message.text),
       from: `${message.from} replied to ${replyTo}`,
       reply: replyText,
@@ -84,7 +97,7 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, 
     });
   } else {
     //template = $('#message-template').html();
-    html = Mustache.render(template, {
+    html = Mustache.render(messageTemplate, {
       text: linkify(message.text),
       from: message.from,
       id: id,
@@ -121,8 +134,7 @@ socket.on('server_message', function (message, name = null, id = null) {
   myid = id || myid;
 
   let formattedTime = moment(message.createdAt).format('hh:mm a');
-  let template = $('#server-message-template').html();
-  let html = Mustache.render(template, {
+  let html = Mustache.render(serverMessageTemplate, {
     text: message.text,
     from: message.from,
     createdAt: formattedTime
@@ -144,8 +156,7 @@ socket.on('server_message', function (message, name = null, id = null) {
 
 socket.on('newLocationMessage', function (message) {
   let formattedTime = moment(message.createdAt).format('hh:mm a');
-  let template = $('#location-message-template').html();
-  let html = Mustache.render(template, {
+  let html = Mustache.render(locationMessageTemplate, {
     from: message.from,
     url: message.url,
     createdAt: formattedTime
@@ -210,8 +221,7 @@ socket.on('vibrateResponse', (sender_name, id) => {
 });
 
 socket.on('imageGet', (sendername, imagefile, avatar, id) => {
-  let template = $('#image-message-template').html();
-  let html = Mustache.render(template, {
+  let html = Mustache.render(imageMessageTemplate, {
     from: sendername,
     id: id,
     attrVal: `images/avatars/${avatar}(custom).png`,
@@ -612,10 +622,9 @@ $('#message-form').on('submit', function (e) {
   text = text.replace(/\n/g, '¶');
   let replaceId = makeid(10);
   let formattedTime = moment().format('hh:mm a');
-  let template, html;
+  let html;
   if (isReply) {
-    template = $('#my-message-template').html();
-    html = Mustache.render(template, {
+    html = Mustache.render(myMessageTemplate, {
       text: linkify(text),
       from: `You replied to ${replyTo == myname ? 'You': replyTo}`,
       id: replaceId,
@@ -628,8 +637,7 @@ $('#message-form').on('submit', function (e) {
       messageTitleStyle: `display: block; transform: translateY(20px)`,
     });
   } else {
-    template = $('#my-message-template').html();
-    html = Mustache.render(template, {
+    html = Mustache.render(myMessageTemplate, {
       text: linkify(text),
       id: replaceId,
       from: myname,
@@ -789,8 +797,7 @@ $('.sendimage').on('click', () => {
     image.onload = function() {
       let resized = resizeImage(image, file.mimetype);
       let tempId = makeid(10);
-      let template = $('#my-image-message-template').html();
-      let html = Mustache.render(template, {
+      let html = Mustache.render(myImageMessageTemplate, {
         from: myname,
         id: tempId,
         image: `<img class='image-message' src='${resized}'>`,

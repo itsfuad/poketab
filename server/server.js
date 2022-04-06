@@ -33,23 +33,23 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 
-app.get('/', (req, res) => {
+app.get('/', (_, res) => {
   res.redirect('/login');
 });
 
-app.get('/login', (req, res) => {
+app.get('/login', (_, res) => {
   res.render('login');
 });
 
-app.get('/create', (req, res) => {
+app.get('/create', (_, res) => {
   res.render('create');
 });
 
-app.get('/chat', (req, res) => {
+app.get('/chat', (_, res) => {
   res.redirect('/');
 });
 
-app.get('*', (req, res) => {
+app.get('*', (_, res) => {
   res.render('404');
 });
 
