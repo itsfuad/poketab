@@ -19,6 +19,42 @@ let replyTo, replyText;
 let targetId;
 const emoji_regex = /^(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])+$/;
 
+class ClickAndHold{
+  /**
+   * @param {EventTarget} target The html elemnt to target
+   * @param {TimeOut} timeOut The time out in milliseconds
+   * @param {Function} callback The callback to call when the user clicks and holds
+   */
+  constructor(target, timeOut, callback){
+      this.target = target;
+      this.callback = callback;
+      this.isHeld = false;
+      this.activeHoldTimeoutId = null;
+      this.timeOut = timeOut;
+      ["touchstart", "mousedown"].forEach(eventName => {
+          this.target.addEventListener(eventName, this._onHoldStart.bind(this));
+      });
+      ["mouseup", "touchend", "mouseleave", "mouseout", "touchcancel"].forEach(eventName => {
+          this.target.addEventListener(eventName, this._onHoldEnd.bind(this));
+      });
+  }
+  _onHoldStart(evt){
+      this.isHeld = true;
+      this.activeHoldTimeoutId = setTimeout(() => {
+          if (this.isHeld){
+              this.callback(evt);
+          }
+      }, this.timeOut);
+  }
+  _onHoldEnd(){
+      this.isHeld = false;
+      clearTimeout(this.activeHoldTimeoutId);
+  }
+  static applyTo(target, timeOut, callback){
+      new ClickAndHold(target, timeOut, callback);
+  }
+}
+
 const myMessageTemplate = $('#my-message-template').html();
 const messageTemplate = $('#message-template').html();
 const serverMessageTemplate = $('#server-message-template').html();
@@ -445,16 +481,17 @@ function textReply(evt)
 function clickOptionHide()
 {
   //console.log('hide');
+  repPop = false;
   unbindClicks();
   $('.click-option').hide();
-  $('.view-action').hide();
+  //$('.view-action').hide();
   $('.store-action').hide();
   $('.copy-action').hide();
 }
 
 function unbindClicks(){
   $('.reply-action').unbind('click');
-  $('.view-action').unbind('click');
+  //$('.view-action').unbind('click');
   $('.store-action').unbind('click');
   $('.copy-action').unbind('click');
   $('.delete-action').unbind('click');
@@ -483,15 +520,16 @@ function lightboxClose()
 
 function clickOptionShow(type, evt)
 {
+  repPop = true;
   unbindClicks();
   $('.click-option').show();
   if(type === 'text'){
-    $('.view-action').hide();
+    //$('.view-action').hide();
     $('.store-action').hide();
     $('.copy-action').show();
     $('.delete-action').show();
     $('.reply-action').on('click', () => {
-      console.log('Click on reply');
+      //console.log('Click on reply');
       textReply(evt);
       clickOptionHide();
     });
@@ -501,13 +539,13 @@ function clickOptionShow(type, evt)
       clickOptionHide();
     });
     $('.delete-action').on('click', ()=>{
-      console.log('Click on Delete');
+      //console.log('Click on Delete');
       deleteMessage(evt, 'text');
       clickOptionHide();
     });
   }
   else if (type === 'image'){
-    $('.view-action').show();
+    //$('.view-action').show();
     $('.store-action').show();
     $('.copy-action').hide();
     $('.delete-action').show();
@@ -516,17 +554,17 @@ function clickOptionShow(type, evt)
       imageReply(evt);
       clickOptionHide();
     });
-    $('.view-action').on('click', () => {
+    /*$('.view-action').on('click', () => {
       //console.log('Click on view image');
       openImageView(evt);
       clickOptionHide();
-    });
+    });*/
     $('.store-action').on('click', () => {
       saveImage();
       clickOptionHide();
     });
     $('.delete-action').on('click', ()=>{
-      console.log('Click on Delete');
+      //console.log('Click on Delete');
       deleteMessage(evt, 'image');
       clickOptionHide();
     });
@@ -823,7 +861,20 @@ $('.lightbox__save').on('click', ()=>{
   saveImage();
 });
 
-$('#messages').on('click', function (evt) {
+const Messages = document.querySelector('#messages'); 
+let repPop = false;
+//click on image event
+Messages.addEventListener('click', (e)=>{
+  if(e.target.classList.contains('image-message')){
+    if (!repPop) {
+      openImageView(e);
+    }
+  }
+});
+
+ClickAndHold.applyTo(Messages, 300, function (evt) {
+  //console.log(evt);
+  lightboxClose();
   let target = evt.target;
   if (target.className === 'textMessage') {
     clickOptionShow('text', evt);
@@ -845,6 +896,7 @@ $('#messages').on('click', function (evt) {
     clickOptionShow('image', evt);
   }
 });
+
 window.addEventListener('resize',()=>{ 
   appHeight();
   updateScroll();
