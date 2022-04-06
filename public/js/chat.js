@@ -865,11 +865,11 @@ const Messages = document.querySelector('#messages');
 let repPop = false;
 //click on image event
 Messages.addEventListener('click', (e)=>{
-  if(e.target.classList.contains('image-message')){
+  if(e.target.className.includes('image-message')){
     if (!repPop) {
       openImageView(e);
     }
-  }else if (target.className.includes('replyMessage')) {
+  }else if (e.target.className.includes('replyMessage')) {
     const msgId = target.dataset.repid;
     const element = document.getElementById(msgId);
     element.scrollIntoView({
