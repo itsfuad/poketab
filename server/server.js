@@ -81,6 +81,7 @@ io.on('connection', (socket) => {
     socket.emit('server_message', generateMessage('', `You joined the chat.🔥`), params.name, socket.id);
     socket.broadcast.to(params.key).emit('server_message', generateMessage(params.name, `${params.name} joined the chat.🔥`));
     console.log(`New user ${params.name} connected on key ${params.key} with avatar ${params.avatar} and maxuser ${params.maxuser || users.getMaxUser(params.key)}`);
+    console.log(users.getMaxUser(params.key));
   });
 
   socket.on('createMessage', async (message, replaceId, isReply, replyTo, replyText, targetId, callback) => {
@@ -114,11 +115,13 @@ io.on('connection', (socket) => {
       io.to(user.key).emit('updateUserList', users.getUserList(user.key), users.getUserId(user.key), user.key, users.getAvatarList(user.key));
       io.to(user.key).emit('server_message', generateMessage(user.name, `${user.name} left the chat.🐸`));
       console.log(`User ${user.name} disconnected from key ${user.key}`);
+      console.log(users.getMaxUser(user.key));
       let usercount = users.users.filter(datauser => datauser.key === user.key);
       if (usercount.length === 0) {
         setTimeout(()=>{
         users.removeMaxUser(user.key);
         console.log(`Session ended with key: ${user.key}`);
+        console.log(users.getMaxUser(user.key));
         }, 10000);
       }
     }

@@ -17,15 +17,16 @@ if (error_code !== url){
 
 $('#next').on('click',()=>{
     //alert('sadasd');
-
+    let key_format = /^[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}$/;
     let key = $('#key').val();
     if (key === '') {
         $('#key-label').text('Key is required');
         $('#key-label').css('color','red');
         return;
     }
-    if (key.length !== 15){
-        $('#key-label').text('Key is 15 characters');
+    //check if key is in xxx-xxx-xxx-xxx format
+    if (!key_format.test(key)){
+        $('#key-label').text('Key is xxx-xxx-xxx-xxx format');
         $('#key-label').css('color', 'red');
         return;
     }

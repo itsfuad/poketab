@@ -1068,7 +1068,7 @@ input[type=file] {
           backdrop-filter: blur(2px);
   -webkit-filter: drop-shadow(2px 4px 6px black);
           filter: drop-shadow(2px 4px 6px black);
-  z-index: 99;
+  z-index: 10;
 }
 
 .click-option ul {

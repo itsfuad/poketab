@@ -25,7 +25,8 @@ function makeid(length) {
     return result;
 }
 
-$('#key').val(makeid(15));
+//make id in xxx-xxx-xxx-xxx format
+$('#key').val(`${makeid(3)}-${makeid(3)}-${makeid(3)}-${makeid(3)}`);
 
 $('#key').on('click', ()=>{
     let text = $('#key').val();
@@ -40,6 +41,11 @@ $('#key').on('click', ()=>{
     }, 2000);
 });
 
+//slider on input
+$('#maxuser').on('input', ()=>{
+    $('#rangeValue').text($('#maxuser').val());
+});
+
 $('#next').on('click',()=>{
     //alert('sadasd');
     let key = $('#key').val();
@@ -48,8 +54,8 @@ $('#next').on('click',()=>{
         $('#key-label').css('color','red');
         return;
     }
-    if (key.length <= 4){
-        $('#key-label').text('Key less than 5 digit');
+    if (key.length !== 15){
+        $('#key-label').text('Key is 12 digit');
         $('#key-label').css('color', 'red');
         return;
     }

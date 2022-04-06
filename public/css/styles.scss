@@ -761,7 +761,7 @@ scrollbar-width: none;  /* Firefox */
   font-size: 0.9rem;
   backdrop-filter: blur(2px);
   filter: drop-shadow(2px 4px 6px black);
-  z-index: 99;
+  z-index: 10;
   ul{
     display: flex;
     flex-direction: row;
