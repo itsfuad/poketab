@@ -647,7 +647,7 @@ function clickOptionShow(type, evt1)
 {
   repPop = true;
   unbindClicks();
-  $('.click-option').fadeIn(200);
+  $('.click-option').fadeIn(100);
   if(type === 'text'){
 
     $('.store-action').hide();
@@ -748,7 +748,7 @@ function closePopup() {
 }
 
 function reactOptionShow(){
-  $('.reactionContainer').fadeIn(200);
+  $('.reactionContainer').fadeIn(100);
 }
 
 //Check online status
@@ -1134,16 +1134,18 @@ window.addEventListener('click', ({target}) => {
   }
 });
 
-ClickAndHold.applyTo(Messages, 300, function (evt) {
+ClickAndHold.applyTo(Messages, 100, function (evt) {
   //console.log(evt);
   lightboxClose();
   let target = evt.target;
   if (target.className === 'textMessage') {
     clickOptionShow('text', evt);
     reactOptionShow();
+    navigator.vibrate(100);
   } else if(target.className.includes('image-message')){
     clickOptionShow('image', evt);
     reactOptionShow();
+    navigator.vibrate(100);
   }
 });
 
