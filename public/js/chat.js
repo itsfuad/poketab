@@ -11,6 +11,7 @@ let scrolling = false;
 let lastPageLength = $('#messages').scrollTop();;
 let scroll = 0;
 const userMap = new Map();
+const reactList = new Map();
 const maxTypeShow = 2;
 let typing = false;
 let timeout = undefined;
@@ -189,11 +190,9 @@ socket.on('server_message', function (message, name = null, id = null) {
   myname = name || myname;
   myid = id || myid;
 
-  let formattedTime = moment(message.createdAt).format('hh:mm a');
   let html = Mustache.render(serverMessageTemplate, {
     text: message.text,
-    from: message.from,
-    createdAt: formattedTime
+    from: message.from
   });
   if (message.text.includes('joined')) {
     html = html.replace(/<p>/g, `<p style='color: limegreen;'>`);
@@ -211,11 +210,9 @@ socket.on('server_message', function (message, name = null, id = null) {
 });
 
 socket.on('newLocationMessage', function (message) {
-  let formattedTime = moment(message.createdAt).format('hh:mm a');
   let html = Mustache.render(locationMessageTemplate, {
     from: message.from,
-    url: message.url,
-    createdAt: formattedTime
+    url: message.url
   });
   incommingmessage.play();
   $('#messages').append(html);
@@ -333,6 +330,33 @@ socket.on('deleteImage', (messageId, user) => {
   }catch(e){
     console.log(e);
   }
+});
+
+socket.on('reactionResponse', (target, userName, react)=>{
+  userName = userName == myname ? 'You' : userName;
+  let emoji;
+  switch(react){
+    case 'senti':
+      emoji = '🙂';
+      break;
+    case 'haha':
+      emoji = '😂';
+      break;
+    case 'sad':
+      emoji = '😢';
+      break;
+    case 'love':
+      emoji = '💙';
+      break;
+    case 'angry':
+      emoji = '😡';
+      break;
+  }
+  $(`#${target} .reactor ul`).append(`<li>${emoji} ${userName}</li>`);
+  loadReact(target);
+  $(`#${target} .reactions`).append(`<li class='emo'>${emoji}</li>`);
+  $(`#${target} .textMessage`).css('margin-bottom', '5px');
+  updateScroll();
 });
 
 
@@ -539,21 +563,19 @@ function textReply(evt)
 
 function clickOptionHide()
 {
-  //console.log('hide');
   repPop = false;
   unbindClicks();
   $('.click-option').hide();
+  $('.reactionContainer').hide();
+  $('.reactorContainer').hide();
   //$('.view-action').hide();
   $('.store-action').hide();
   $('.copy-action').hide();
 }
 
 function unbindClicks(){
-  $('.reply-action').unbind('click');
-  //$('.view-action').unbind('click');
-  $('.store-action').unbind('click');
-  $('.copy-action').unbind('click');
-  $('.delete-action').unbind('click');
+  $('.click-option').unbind('click');
+  $('.reactionContainer').unbind('click');
 }
 
 function deleteMessage(evt, type){
@@ -571,6 +593,15 @@ function deleteMessage(evt, type){
   }
 }
 
+function sendReaction(evt, reaction){
+  try{
+    targetId = evt.target.closest('._message').id;
+    socket.emit('reaction', targetId, myname, reaction);
+  }catch(e){
+    console.log(e);
+  }
+}
+
 function lightboxClose()
 {
   $('.lightbox').fadeOut(100, ()=>{
@@ -578,56 +609,90 @@ function lightboxClose()
   });
 }
 
-function clickOptionShow(type, evt)
+function clickOptionShow(type, evt1)
 {
   repPop = true;
   unbindClicks();
-  $('.click-option').show();
+  $('.click-option').fadeIn(200);
   if(type === 'text'){
-    //$('.view-action').hide();
+
     $('.store-action').hide();
     $('.copy-action').show();
     $('.delete-action').show();
-    $('.reply-action').on('click', () => {
-      //console.log('Click on reply');
-      textReply(evt);
-      clickOptionHide();
+    $('.reactorContainer').hide();
+    $('.click-option').on('click', (evt)=>{
+      //console.log(evt.target.classList);
+      if (evt.target.classList.contains('fa-reply')){
+        textReply(evt1);
+        clickOptionHide();
+      }
+      else if (evt.target.classList.contains('fa-clone')){
+        copyText(evt1.target.innerText);
+        clickOptionHide();
+      }
+      else if(evt.target.classList.contains('fa-trash')){
+        deleteMessage(evt1, 'text');
+        clickOptionHide();
+      }
     });
-    $('.copy-action').on('click', ()=>{
-      //console.log('Click on Copy');
-      copyText(evt.target.innerText);
-      clickOptionHide();
-    });
-    $('.delete-action').on('click', ()=>{
-      //console.log('Click on Delete');
-      deleteMessage(evt, 'text');
+    $('.reactionContainer').on('click', evt => {
+      if (evt.target.className.includes('senti')){
+        sendReaction(evt1, 'senti');
+      }
+      else if (evt.target.className.includes('haha')){
+        sendReaction(evt1, 'haha');
+      }
+      else if (evt.target.className.includes('sad')){
+        sendReaction(evt1, 'sad');
+      }
+      else if (evt.target.className.includes('love')){
+        sendReaction(evt1, 'love');
+      }
+      else if (evt.target.className.includes('angry')){
+        sendReaction(evt1, 'angry');
+      }
       clickOptionHide();
     });
   }
   else if (type === 'image'){
-    //$('.view-action').show();
+
     $('.store-action').show();
     $('.copy-action').hide();
     $('.delete-action').show();
-    $('.reply-action').on('click', () => {
-      //console.log('Click on reply image');
-      imageReply(evt);
-      clickOptionHide();
+    $('.reactorContainer').hide();
+    $('.click-option').on('click', (evt)=>{
+      //console.log(evt.target.classList);
+      if (evt.target.classList.contains('fa-reply')){
+        imageReply(evt1);
+        clickOptionHide();
+      }
+      else if (evt.target.classList.contains('fa-download')){
+        $('.lightbox__image').html('');
+        $('.lightbox__image').append(`<img src="${evt1.target.src}" alt="">`);
+        saveImage();
+        clickOptionHide();
+      }
+      else if(evt.target.classList.contains('fa-trash')){
+        deleteMessage(evt1, 'image');
+        clickOptionHide();
+      }
     });
-    /*$('.view-action').on('click', () => {
-      //console.log('Click on view image');
-      openImageView(evt);
-      clickOptionHide();
-    });*/
-    $('.store-action').on('click', () => {
-      $('.lightbox__image').html('');
-      $('.lightbox__image').append(`<img src="${evt.target.src}" alt="">`);
-      saveImage();
-      clickOptionHide();
-    });
-    $('.delete-action').on('click', ()=>{
-      //console.log('Click on Delete');
-      deleteMessage(evt, 'image');
+    $('.reactionContainer').on('click', evt => {
+      if (evt.target.className.includes('senti')){
+        sendReaction(evt1, 'senti');
+      }
+      else if (evt.target.className.includes('haha')){
+        sendReaction(evt1, 'haha');
+      }
+      else if (evt.target.className.includes('sad')){
+        sendReaction(evt1, 'sad');
+      }
+      else if (evt.target.className.includes('love')){
+        sendReaction(evt1, 'love');
+      }
+      else if (evt.target.className.includes('angry')){
+        sendReaction(evt1, 'angry');
+      }
       clickOptionHide();
     });
   }
@@ -642,6 +707,10 @@ function closePopup() {
   $('.menuwrapper').removeClass('active');
 }
 
+function reactOptionShow(){
+  $('.reactionContainer').fadeIn(200);
+}
+
 //Check online status
 if (navigator.onLine) {
   console.log('online');
@@ -652,6 +721,25 @@ if (navigator.onLine) {
   $('.offline').css('background', 'orangered');
   $('.offline').fadeIn(400);
 }
+
+function loadReact(id, show = false){
+  //console.log(id);
+  $('.reactorContainer ul').html('');
+  let elem = $(`#${id} .reactor ul`).html();
+  console.log(elem, elem !=='', show);
+  if (show){
+    if (elem !== ''){
+      $('.reactorContainer ul').append(elem);
+      $('.reactorContainer').show();
+    }
+    else{
+      $('.reactorContainer').hide();
+    }
+  }
+}
+
+
+
 
 //Event listeners
 window.addEventListener('offline', function(e) { 
@@ -927,10 +1015,18 @@ const Messages = document.querySelector('#messages');
 let repPop = false;
 //click on image event
 Messages.addEventListener('click', (e)=>{
+  //console.log(e.target);
   if(e.target.className.includes('image-message')){
     if (!repPop) {
       openImageView(e);
     }
+  }
+  else if(e.target.className.includes('emo')){
+    console.log(e.target);
+    id = e.target.closest('._message').id;
+    console.log(id);
+    clickOptionHide();
+    loadReact(id, true);
   }
   else if (e.target.className.includes('replyMessage')) {
     const msgId = e.target.dataset.repid;
@@ -952,6 +1048,20 @@ Messages.addEventListener('click', (e)=>{
       popupMessage('Deleted message');
     }
   }
+  /*else if(e.target.className.includes('textMessage')){
+    if (!repPop) {
+      id = e.target.closest('._message').id;
+      $(`#${id} .time`).toggle(100, "linear");
+    }
+  }*/
+});
+
+window.addEventListener('click', ({target}) => {
+  console.log(target.className);
+  if (target.className.includes('_message')) {
+    $('.reactorContainer').hide();
+    //$(`.time`).fadeOut(100);
+  }
 });
 
 ClickAndHold.applyTo(Messages, 300, function (evt) {
@@ -960,8 +1070,10 @@ ClickAndHold.applyTo(Messages, 300, function (evt) {
   let target = evt.target;
   if (target.className === 'textMessage') {
     clickOptionShow('text', evt);
+    reactOptionShow();
   } else if(target.className.includes('image-message')){
     clickOptionShow('image', evt);
+    reactOptionShow();
   }
 });
 

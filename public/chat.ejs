@@ -48,7 +48,7 @@
   <meta charset="utf-8">
   <title>Inbox | PokeTab Messanger</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
-  <link rel="stylesheet" href="/css/styles.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
   <link rel="manifest" href="manifest.json" crossorigin="use-credentials">
   <link rel="icon" href="/images/avatars/pikachu.png">
 
@@ -136,6 +136,16 @@
           <li class="close-action"><i class="fa-solid fa-xmark"></i></li>
         </ul>
       </div>
+
+      <div class="reactionContainer" style="display: none;">
+        <div class="senti">🙂</div>
+        <div class="haha">😂</div>
+        <div class="sad">😢</div>
+        <div class="love">💙</div>
+        <div class="angry">😡</div>
+      </div>
+
+      <div class="reactorContainer" style="display: none;"><ul></ul></div>
     
       <template id="message-template" type="text/template">
         <li class="message _message" id="{{id}}">
@@ -145,6 +155,8 @@
             <div class="reply-message replyMessage" {{attr}}="{{replyMessageStyle}}" data-repid="{{repId}}">{{reply}}</div>
             <div class="main-message">
               <p class="textMessage">{{{text}}}</p>
+              <div class="reactor" style="display: none;"><ul></ul></div>
+              <div class="reactions"></div>
               <span class='time'>{{createdAt}}</span>
             </div>
           </div>
@@ -161,6 +173,8 @@
             <div class="main-message">
               <span class='time'>{{createdAt}}</span>
               <p class="textMessage">{{{text}}}</p>
+              <div class="reactor" style="display: none;"><ul></ul></div>
+              <div class="reactions"></div>
               <i class="fa-regular fa-circle-check sent"></i>
             </div>
           </div>
@@ -170,7 +184,6 @@
   
       <template id="server-message-template" type="text/template">
         <li class="server__message">
-            <span class='time'>{{createdAt}}</span>
           <div class="server__message__body">
             <p>{{text}}</p>
           </div>
@@ -179,7 +192,6 @@
     
       <template id="location-message-template" type="text/template">
         <li class="location__message">
-          <span class='time'>{{createdAt}}</span>
           <div class="location__message__title title">
             <a id="retlocflex" class='tenth before after' href="{{url}}" target="_blank"><img id="retlocation" src="/images/icons8-place-marker.gif" alt="" srcset="">{{from}}'s location</a>
           </div>
@@ -193,6 +205,8 @@
             <div class="image__title title"><h3>{{from}}</h3></div>
             <div class="main-image">
               <div class="imageMessage">{{{image}}}</div>
+              <div class="reactor" style="display: none;"><ul></ul></div>
+              <div class="reactions"></div>
               <span class='time'>{{createdAt}}</span>
             </div>
           </div>
@@ -206,12 +220,15 @@
             <div class="main-image">
               <span class='time'>{{createdAt}}</span>
               <div class="imageMessage">{{{image}}}</div>
+              <div class="reactor" style="display: none;"><ul></ul></div>
+              <div class="reactions"></div>
               <i class="fa-regular fa-circle-check sent"></i>
             </div>
           </div>
         </li>
       </template>
 
+      
     </div>
   </div>
   <script defer src="/js/libs/fontawesome.js" crossorigin="anonymous"></script>

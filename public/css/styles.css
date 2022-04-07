@@ -324,6 +324,8 @@ input[type=file] {
 .sent {
   font-size: 0.6rem;
   color: var(--secondary);
+  position: relative;
+  right: 5px;
 }
 
 .imageMessage {
@@ -373,6 +375,26 @@ input[type=file] {
   gap: 5px;
 }
 
+.image .reactions {
+  position: absolute;
+  bottom: 0px;
+  font-size: 0.7rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  background: #111d2aa6;
+  border-radius: 10px;
+  right: 0;
+}
+
+.image .time {
+  left: 110%;
+}
+
 .image__body {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -409,6 +431,11 @@ input[type=file] {
   -webkit-box-pack: start;
       -ms-flex-pack: start;
           justify-content: flex-start;
+  position: relative;
+}
+
+.image__body .main-image .time {
+  right: 110%;
 }
 
 .my__image {
@@ -427,6 +454,26 @@ input[type=file] {
           justify-content: flex-end;
   width: 100%;
   gap: 5px;
+}
+
+.my__image .reactions {
+  position: absolute;
+  bottom: 0px;
+  font-size: 0.7rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  background: #111d2aa6;
+  border-radius: 10px;
+  left: 0;
+}
+
+.my__image .time {
+  right: 110%;
 }
 
 .image-message {
@@ -627,7 +674,7 @@ input[type=file] {
   font-size: 0.6rem;
   text-align: center;
   color: gray;
-  padding: 10px 10px 0px 10px;
+  position: absolute;
 }
 
 .topbar {
@@ -753,8 +800,6 @@ input[type=file] {
 
 #messages .message .textMessage, #messages .my__message .textMessage {
   position: relative;
-  -webkit-transition: ease-in-out 300ms;
-  transition: ease-in-out 300ms;
 }
 
 #messages .message .textMessage a, #messages .my__message .textMessage a {
@@ -805,11 +850,16 @@ input[type=file] {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
+  -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+      -ms-flex-direction: column;
+          flex-direction: column;
   z-index: 2;
+  gap: 2px;
+  position: relative;
+  display: flex;
+  -ms-flex-direction: row;
+      flex-direction: row;
   gap: 5px;
   -webkit-box-align: end;
       -ms-flex-align: end;
@@ -849,6 +899,22 @@ input[type=file] {
   -webkit-box-direction: reverse;
       -ms-flex-direction: row-reverse;
           flex-direction: row-reverse;
+}
+
+#messages .my__message .time {
+  right: 120%;
+}
+
+#messages .my__message .reactions {
+  left: 0;
+}
+
+#messages .message .time {
+  left: 120%;
+}
+
+#messages .message .reactions {
+  right: 0;
 }
 
 #messages .my__message__body {
@@ -900,6 +966,116 @@ input[type=file] {
   max-width: 50vw;
   text-align: justify;
   word-wrap: break-word;
+}
+
+.reactions ul {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.reactions:hover {
+  cursor: pointer;
+}
+
+.reactionContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background: var(--option-color);
+  padding: 10px;
+  position: fixed;
+  bottom: 110px;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  border-radius: 25px;
+  gap: 10px;
+  -webkit-filter: drop-shadow(2px 4px 6px black);
+          filter: drop-shadow(2px 4px 6px black);
+  z-index: 10;
+}
+
+.reactionContainer > div:hover {
+  cursor: pointer;
+  -webkit-transform: scale(1.05);
+          transform: scale(1.05);
+  -webkit-transform-origin: center;
+          transform-origin: center;
+}
+
+.reactorContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  background: var(--focus);
+  padding: 20px;
+  width: 300px;
+  max-height: 300px;
+  overflow-y: scroll;
+  border-radius: 10px;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  z-index: 10;
+}
+
+.reactorContainer ul {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  list-style-type: none;
+}
+
+.message .reactions, .my__message .reactions {
+  position: absolute;
+  bottom: 0px;
+  font-size: 0.7rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  background: #111d2aa6;
+  border-radius: 10px;
 }
 
 .popup-message {
@@ -1094,6 +1270,10 @@ input[type=file] {
 
 .click-option ul li:hover {
   cursor: pointer;
+  -webkit-transform: scale(1.05);
+          transform: scale(1.05);
+  -webkit-transform-origin: center;
+          transform-origin: center;
 }
 
 img {

@@ -10,7 +10,7 @@
     "test-watch": "nodemon --exec 'npm test'"
   },
   "engines": {
-    "node": "14"
+    "node": "16"
   },
   "author": "Fuad Hasan",
   "license": "ISC",
