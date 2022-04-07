@@ -389,7 +389,8 @@ socket.on('reactionResponse', (target, userName, react)=>{
 
 socket.on('removeReactResponse', (u_name, id,)=>{
   console.log(u_name, id);
-  $(`#${id}`).find(`.reactions .${u_name}`).remove();
+  $(`#${id} .reactions .${u_name}`).remove();
+  $(`#${id} .textMessage`).css('margin-bottom', '');
 });
 
 
