@@ -424,7 +424,7 @@ input[type=file] {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  gap: 5px;
+  gap: 8px;
   -webkit-box-align: end;
       -ms-flex-align: end;
           align-items: flex-end;
@@ -474,6 +474,39 @@ input[type=file] {
 
 .my__image .time {
   right: 110%;
+}
+
+.reactions {
+  max-width: 35px;
+}
+
+.reactions .emo {
+  overflow: hidden;
+}
+
+.reactorContainer ul {
+  width: 100%;
+}
+
+.react-or {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.react-or .emoticon {
+  font-size: 1.3rem;
+}
+
+.react-or .emoticon:hover {
+  cursor: pointer;
 }
 
 .image-message {
@@ -855,12 +888,11 @@ input[type=file] {
       -ms-flex-direction: column;
           flex-direction: column;
   z-index: 2;
-  gap: 2px;
   position: relative;
   display: flex;
   -ms-flex-direction: row;
       flex-direction: row;
-  gap: 5px;
+  gap: 8px;
   -webkit-box-align: end;
       -ms-flex-align: end;
           align-items: flex-end;
@@ -1050,6 +1082,8 @@ input[type=file] {
       -ms-flex-pack: center;
           justify-content: center;
   z-index: 10;
+  -webkit-filter: drop-shadow(2px 4px 6px black);
+          filter: drop-shadow(2px 4px 6px black);
 }
 
 .reactorContainer ul {

@@ -141,11 +141,12 @@
         <div class="senti">🙂</div>
         <div class="haha">😂</div>
         <div class="sad">😢</div>
+        <div class="wow">😮</div>
         <div class="love">💙</div>
         <div class="angry">😡</div>
       </div>
 
-      <div class="reactorContainer" style="display: none;"><ul></ul></div>
+      <div class="reactorContainer" style="display: none;">Reactions on this message <ul></ul></div>
     
       <template id="message-template" type="text/template">
         <li class="message _message" id="{{id}}">
@@ -156,7 +157,7 @@
             <div class="main-message">
               <p class="textMessage">{{{text}}}</p>
               <div class="reactor" style="display: none;"><ul></ul></div>
-              <div class="reactions"></div>
+              <ul class="reactions"></ul>
               <span class='time'>{{createdAt}}</span>
             </div>
           </div>
@@ -174,7 +175,7 @@
               <span class='time'>{{createdAt}}</span>
               <p class="textMessage">{{{text}}}</p>
               <div class="reactor" style="display: none;"><ul></ul></div>
-              <div class="reactions"></div>
+              <ul class="reactions"></ul>
               <i class="fa-regular fa-circle-check sent"></i>
             </div>
           </div>
@@ -206,7 +207,7 @@
             <div class="main-image">
               <div class="imageMessage">{{{image}}}</div>
               <div class="reactor" style="display: none;"><ul></ul></div>
-              <div class="reactions"></div>
+              <ul class="reactions"></ul>
               <span class='time'>{{createdAt}}</span>
             </div>
           </div>
@@ -221,7 +222,7 @@
               <span class='time'>{{createdAt}}</span>
               <div class="imageMessage">{{{image}}}</div>
               <div class="reactor" style="display: none;"><ul></ul></div>
-              <div class="reactions"></div>
+              <ul class="reactions"></ul>
               <i class="fa-regular fa-circle-check sent"></i>
             </div>
           </div>

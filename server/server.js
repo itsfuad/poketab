@@ -183,6 +183,13 @@ io.on('connection', (socket) => {
     }
   });
 
+  socket.on('removeReact', (u_name, id)=>{
+    let user = users.getUser(socket.id);
+    if (user) {
+      io.to(user.key).emit('removeReactResponse', u_name, id);
+    }
+  });
+
   socket.on('delete message', (messageId, userD) => {
     let user = users.getUser(socket.id);
     if (user) {

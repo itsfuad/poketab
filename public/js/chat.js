@@ -298,7 +298,7 @@ socket.on('deleteMessage', (messageId, user) => {
     setTimeout(() => {
       $(`#${messageId}`).remove();
       //console.log($(`[data-repid='${messageId}']`));
-      $(`[data-repid='${messageId}']`).text(`${user} deleted this message`);
+      $(`[data-repid='${messageId}']`).text(`${user === myname ? 'You' : user} deleted this message`);
       $(`[data-repid='${messageId}']`).css('background', '#000000b5');
       if (user == myname) {
         popupMessage(`You deleted a message`);
@@ -345,6 +345,9 @@ socket.on('reactionResponse', (target, userName, react)=>{
     case 'sad':
       emoji = '😢';
       break;
+    case 'wow':
+      emoji = '😮';
+      break;
     case 'love':
       emoji = '💙';
       break;
@@ -352,11 +355,41 @@ socket.on('reactionResponse', (target, userName, react)=>{
       emoji = '😡';
       break;
   }
-  $(`#${target} .reactor ul`).append(`<li>${emoji} ${userName}</li>`);
+
+  //check if userName exists in .reactor ul
+  if ($(`#${target} .reactor ul`).find(`li:contains(${userName})`)) {
+    //if userName exists, remove it
+    $(`#${target} .reactor ul`).find(`li:contains(${userName})`).remove();
+    $(`#${target} .reactor ul`).append(`<li class='react-or'><span class='emoticon'>${emoji}</span> <span class='usr'>${userName}</span></li>`);
+  }
   loadReact(target);
-  $(`#${target} .reactions`).append(`<li class='emo'>${emoji}</li>`);
+  // get list count
+  let count = $(`#${target} .reactions`).children().length;
+  //console.log(count);
+
+  if (count >= 3){
+    //delete first li 
+    $(`#${target} .reactions`).children().first().remove();
+  }
+  //$(`#${target} .reactions`).append(`<li class='emo ${userName}'>${emoji}</li>`);
+  
+  //delete if username exists
+  let prev = userName;
+  $(`#${target} .reactions li`).each((index, elem)=>{
+    let now = elem.classList[1];
+    if (now == prev){
+      $(elem).remove();
+    }
+  });
+  $(`#${target} .reactions`).append(`<li class='emo ${userName}'>${emoji}</li>`);
   $(`#${target} .textMessage`).css('margin-bottom', '5px');
   updateScroll();
+});
+
+
+socket.on('removeReactResponse', (u_name, id,)=>{
+  console.log(u_name, id);
+  $(`#${id}`).find(`.reactions .${u_name}`).remove();
 });
 
 
@@ -645,6 +678,9 @@ function clickOptionShow(type, evt1)
       else if (evt.target.className.includes('sad')){
         sendReaction(evt1, 'sad');
       }
+      else if (evt.target.className.includes('wow')){
+        sendReaction(evt1, 'wow');
+      }
       else if (evt.target.className.includes('love')){
         sendReaction(evt1, 'love');
       }
@@ -687,6 +723,9 @@ function clickOptionShow(type, evt1)
       else if (evt.target.className.includes('sad')){
         sendReaction(evt1, 'sad');
       }
+      else if (evt.target.className.includes('wow')){
+        sendReaction(evt1, 'wow');
+      }
       else if (evt.target.className.includes('love')){
         sendReaction(evt1, 'love');
       }
@@ -722,14 +761,14 @@ if (navigator.onLine) {
   $('.offline').fadeIn(400);
 }
 
+
 function loadReact(id, show = false){
   //console.log(id);
   $('.reactorContainer ul').html('');
   let elem = $(`#${id} .reactor ul`).html();
-  console.log(elem, elem !=='', show);
+  $('.reactorContainer ul').append(elem);
   if (show){
     if (elem !== ''){
-      $('.reactorContainer ul').append(elem);
       $('.reactorContainer').show();
     }
     else{
@@ -1056,8 +1095,38 @@ Messages.addEventListener('click', (e)=>{
   }*/
 });
 
+
+function removeReact(evt){
+  console.dir(evt.target);
+  //remove react
+  let id = evt.target.closest('._message').id;
+  console.dir(id);
+  $(`#${id}`).find('.reactions .You').remove();
+  socket.emit('removeReact', myname, id);
+}
+
+
+Messages.addEventListener('dblclick', (e)=>{
+  removeReact(e);
+});
+
+Messages.addEventListener("touchstart", tapHandler);
+
+let tapedTwice = false;
+
+function tapHandler(event) {
+    if(!tapedTwice) {
+        tapedTwice = true;
+        setTimeout( function() { tapedTwice = false; }, 300 );
+        return false;
+    }
+    event.preventDefault();
+    //action on double tap goes below
+    removeReact(event);
+ }
+
 window.addEventListener('click', ({target}) => {
-  console.log(target.className);
+  //console.log(target);
   if (target.className.includes('_message')) {
     $('.reactorContainer').hide();
     //$(`.time`).fadeOut(100);

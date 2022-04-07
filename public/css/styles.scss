@@ -330,7 +330,7 @@ input[type=file] {
   .main-image{
     display: flex;
     flex-direction: row;
-    gap: 5px;
+    gap: 8px;
     align-items: flex-end;
     justify-content: flex-start;
     position: relative;
@@ -359,6 +359,30 @@ input[type=file] {
   }
   .time{
     right: 110%;
+  }
+}
+
+.reactions{
+  max-width: 35px;
+  .emo{
+    overflow: hidden;
+  }
+}
+
+
+.reactorContainer ul{
+  width: 100%;
+}
+
+.react-or{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  .emoticon{
+    font-size: 1.3rem;
+    &:hover{
+      cursor: pointer;
+    }
   }
 }
 
@@ -613,12 +637,11 @@ scrollbar-width: none;  /* Firefox */
       display: flex;
       flex-direction: column;
       z-index: 2;
-      gap: 2px;
       //align-items: flex-end;
       position: relative;
       display: flex;
       flex-direction: row;
-      gap: 5px;
+      gap: 8px;
       align-items: flex-end;
     }
     .replyMessage{
@@ -746,6 +769,7 @@ scrollbar-width: none;  /* Firefox */
   align-items: flex-start;
   justify-content: center;
   z-index: 10;
+  filter: drop-shadow(2px 4px 6px black);
   ul{
     display: flex;
     flex-direction: column;
