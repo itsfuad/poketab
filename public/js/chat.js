@@ -32,10 +32,20 @@ class ClickAndHold{
       this.activeHoldTimeoutId = null;
       this.timeOut = timeOut;
       ["touchstart", "mousedown"].forEach(eventName => {
+        try{
           this.target.addEventListener(eventName, this._onHoldStart.bind(this));
+        }
+        catch(e){
+          console.log(e);
+        }
       });
       ["mouseup", "touchend", "mouseleave", "mouseout", "touchcancel"].forEach(eventName => {
+        try{
           this.target.addEventListener(eventName, this._onHoldEnd.bind(this));
+        }
+        catch(e){
+          console.log(e);
+        }
       });
   }
   _onHoldStart(evt){
@@ -51,7 +61,12 @@ class ClickAndHold{
       clearTimeout(this.activeHoldTimeoutId);
   }
   static applyTo(target, timeOut, callback){
+    try{
       new ClickAndHold(target, timeOut, callback);
+    }
+    catch(e){
+      console.log(e);
+    }
   }
 }
 
@@ -160,8 +175,13 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, 
 
 socket.on('messageSent', function (replaceId, id) {
   outgoingmessage.play();
-  $(`#${replaceId}`).attr('id', id);
-  $(`#${id} .sent`).attr('class', 'fa-solid fa-circle-check sent');
+  try{
+    $(`#${replaceId}`).attr('id', id);
+    $(`#${id} .sent`).attr('class', 'fa-solid fa-circle-check sent');
+  }
+  catch(e){
+    console.log(e);
+  }
 });
 
 
@@ -204,7 +224,6 @@ socket.on('newLocationMessage', function (message) {
 
 socket.on('typing', (user, id) => {
   typingsound.play();
-
   userMap.set(id, user);
   let _typing = '';
 
@@ -250,9 +269,14 @@ socket.on('stoptyping', (id) => {
 });
 
 socket.on('vibrateResponse', (sender_name, id) => {
-  if (id == myid) {
-    navigator.vibrate(1000);
-    popupMessage(`${sender_name == myname ? 'You' : sender_name} just vibrated your Device`);
+  if (navigator.vibrate) {
+    if (id == myid) {
+      navigator.vibrate(1000);
+      popupMessage(`${sender_name == myname ? 'You' : sender_name} just vibrated your Device`);
+    }
+  }
+  else{
+    popupMessage('Device does not support web Vibration');
   }
 });
 
@@ -272,29 +296,43 @@ socket.on('imageGet', (sendername, imagefile, avatar, id) => {
 });
 
 socket.on('deleteMessage', (messageId, user) => {
-  $(`#${messageId} .textMessage`).css('background', '#ff0000');
-  setTimeout(() => {
-    $(`#${messageId}`).remove();
-    if (user == myname) {
-      popupMessage(`You deleted a message`);
-    }else{
-      popupMessage(`${user} deleted a message`);
-    }
-    updateScroll();
-  }, 1000);
+  try{
+    $(`#${messageId} .textMessage`).css('background', '#dd0000');
+    setTimeout(() => {
+      $(`#${messageId}`).remove();
+      //console.log($(`[data-repid='${messageId}']`));
+      $(`[data-repid='${messageId}']`).text(`${user} deleted this message`);
+      $(`[data-repid='${messageId}']`).css('background', '#000000b5');
+      if (user == myname) {
+        popupMessage(`You deleted a message`);
+      }else{
+        popupMessage(`${user} deleted a message`);
+      }
+      updateScroll();
+    }, 1000);
+  }
+  catch(e){
+    console.log(e);
+  }
 });
 
 socket.on('deleteImage', (messageId, user) => {
-  $(`#${messageId} .imageMessage`).css('outline', '2px solid red');
-  setTimeout(() => {
-    $(`#${messageId}`).remove();
-    if (user == myname) {
-      popupMessage(`You deleted an image`);
-    }else{
-      popupMessage(`${user} deleted an image`);
-    }
-    updateScroll();
-  }, 1000);
+  try{
+    $(`#${messageId} .imageMessage`).css('outline', '1px solid orangered');
+    setTimeout(() => {
+      $(`#${messageId}`).remove();
+      $(`[data-repid='${messageId}']`).text(`${user} deleted this message`);
+      $(`[data-repid='${messageId}']`).css('background', '#000000b5');
+      if (user == myname) {
+        popupMessage(`You deleted an image`);
+      }else{
+        popupMessage(`${user} deleted an image`);
+      }
+      updateScroll();
+    }, 1000);
+  }catch(e){
+    console.log(e);
+  }
 });
 
 
@@ -322,7 +360,7 @@ function updateScroll(avatar = null, text = '') {
 function removeNewMessagePopup() {
   $('.newmessagepopup').fadeOut(200);
 }
-
+/*
 function scrollToBottom() {
   let messages = $('#messages');
   let newMessage = messages.children('li:last-child')
@@ -334,7 +372,7 @@ function scrollToBottom() {
   if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
     messages.scrollTop(scrollHeight);
   }
-}
+}*/
 
 function censorBadWords(text) {
   text = text.replace(/fuck/g, 'f**k');
@@ -372,12 +410,16 @@ function makeid(length) {
 function saveImage()
 {
   //console.log('Saving image');
-  let a = document.createElement('a');
-  a.href = $('.lightbox__image img').attr('src');
-  a.download = `save-${moment().valueOf()}.png`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+  try{
+    let a = document.createElement('a');
+    a.href = $('.lightbox__image img').attr('src');
+    a.download = `save-${moment().valueOf()}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }catch(e){
+    console.log(e);
+  }
 }
 
 function resizeImage(img, mimetype) {
@@ -437,19 +479,26 @@ function popupMessage(text){
 
 function openImageView(evt)
 {
+  try{
   let target = evt.target;
   $('.lightbox__image').html('');
   $('.lightbox__image').append(`<img src="${target.src}" alt="">`);
   $('.lightbox').fadeIn(100);
+  }
+  catch(e){
+    console.log(e);
+  }
 }
 
 function imageReply(evt)
 {
-  //console.log(evt);
+  try{
   let target = evt.target;
-  targetId = target.parentElement.parentElement.parentElement.parentElement.id;
-  replyText = `Image`;
-  replyTo = target.parentElement.parentElement.previousElementSibling.innerText;
+  targetId = target.closest('._message').id;
+  //console.log(target.closest('._message').id);
+  replyText = 'Image';
+  replyTo = $(target).closest('._body').find('.title').text();
+  //console.log(replyTo);
   replyTo = replyTo.replace(/ replied to [a-zA-Z]+/g, '');
   let replyToPop = replyTo;
   if (replyToPop == myname) replyToPop = 'You';
@@ -459,14 +508,21 @@ function imageReply(evt)
   $('.toast-popup-name').html(`<i class="fa-solid fa-reply"></i> Replying to ${replyToPop}`);
   $('.toast-popup-message').text(`Image`);
   $('#textbox').focus();
+  }
+  catch(e){
+    console.log(e);
+  }
 }
 
 function textReply(evt)
 {
+  try{
   let target = evt.target;
-  targetId = target.parentElement.parentElement.parentElement.id;
+  targetId = target.closest('._message').id;
+  //console.log(target.closest('._message').id);
   replyText = target.innerText.length > 200 ? `${target.innerText.substring(0, 200)} ...` : target.innerText;
-  replyTo = evt.target.parentElement.previousElementSibling.previousElementSibling.innerText;
+  replyTo = $(target).closest('._body').find('.title').text();
+  //console.log(replyTo);
   replyTo = replyTo.replace(/ replied to [a-zA-Z]+/g, '');
   let replyToPop = replyTo;
   if (replyToPop == myname) replyToPop = 'You';
@@ -476,6 +532,9 @@ function textReply(evt)
   $('.toast-popup-name').html(`<i class="fa-solid fa-reply"></i> Replying to ${replyToPop}`);
   $('.toast-popup-message').text(target.innerText.length > 50 ? `${target.innerText.substring(0, 50)} ...` : target.innerText);
   $('#textbox').focus();
+  }catch(e){
+    console.log(e);
+  }
 }
 
 function clickOptionHide()
@@ -498,16 +557,17 @@ function unbindClicks(){
 }
 
 function deleteMessage(evt, type){
-
-  if (type == 'text'){
-    targetId = evt.target.parentElement.parentElement.parentElement.id;
-    //console.log(evt.target.parentElement.parentElement);
-    socket.emit('delete message', targetId, myname);
-  }
-  else if (type == 'image'){
-    targetId = evt.target.parentElement.parentElement.parentElement.parentElement.id;
-    //console.log(targetId);
-    socket.emit('delete image', targetId, myname);
+  try{
+    if (type == 'text'){
+      targetId = targetId = evt.target.closest('._message').id;
+      socket.emit('delete message', targetId, myname);
+    }
+    else if (type == 'image'){
+      targetId = evt.target.closest('._message').id;
+      socket.emit('delete image', targetId, myname);
+    }
+  }catch(e){
+    console.log(e);
   }
 }
 
@@ -875,17 +935,22 @@ Messages.addEventListener('click', (e)=>{
   else if (e.target.className.includes('replyMessage')) {
     const msgId = e.target.dataset.repid;
     const element = document.getElementById(msgId);
-    element.scrollIntoView({
-      block: "center"
-    });
-    $('#messages .my__message').css('filter', 'brightness(0.5)');
-    $('#messages .message').css('filter', 'brightness(0.5)');
-    $(`#${msgId}`).css('filter', 'initial');
-    setTimeout(function () {
-      $('#messages .my__message').css('filter', '');
-      $('#messages .message').css('filter', '');
-      $(`#${msgId}`).css('filter', '');
-    }, 1000);
+    try{
+      element.scrollIntoView({
+        block: "center"
+      });
+      $('#messages .my__message').css('filter', 'brightness(0.5)');
+      $('#messages .message').css('filter', 'brightness(0.5)');
+      $(`#${msgId}`).css('filter', 'initial');
+      setTimeout(function () {
+        $('#messages .my__message').css('filter', '');
+        $('#messages .message').css('filter', '');
+        $(`#${msgId}`).css('filter', '');
+      }, 1000);
+    }
+    catch(err){
+      popupMessage('Deleted message');
+    }
   }
 });
 

@@ -1,4 +1,4 @@
-const cacheName = 'chatmate-v4.0.2';
+const cacheName = 'chatmate-v4.0.3';
 //Call Install Event
 self.addEventListener('install', (e) => {
 	console.log('Service Worker: Installed');
@@ -33,7 +33,11 @@ self.addEventListener('fetch', e=> {
 			const resClone = res.clone();
 			caches.open(cacheName)
 			.then(cache => {
-				cache.put(e.request, resClone);
+				try{
+					cache.put(e.request, resClone);
+				}catch(err){
+					console.log('Service Worker: Error Caching New Data');
+				}
 			});
 			return res;
 		}).catch(err => caches.match(e.request).then(res => res))

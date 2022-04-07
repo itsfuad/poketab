@@ -138,9 +138,9 @@
       </div>
     
       <template id="message-template" type="text/template">
-        <li class="message" id="{{id}}">
+        <li class="message _message" id="{{id}}">
           <div class="avatar"><img id="avatar" src="{{attrVal}}" height="40px" width="40px" alt="" srcset=""></div>
-          <div class="message__body">
+          <div class="message__body _body">
             <div class="message__title title" {{attr}}="{{messageTitleStyle}}"><h3>{{{repIcon}}}{{from}}</h3></div>
             <div class="reply-message replyMessage" {{attr}}="{{replyMessageStyle}}" data-repid="{{repId}}">{{reply}}</div>
             <div class="main-message">
@@ -153,9 +153,9 @@
       </template>
   
       <template id="my-message-template" type="text/template">
-        <li class="my__message" id="{{id}}">
+        <li class="my__message _message" id="{{id}}">
           <!--div class="avatar"><img id="avatar" {{attr}}="{{attrVal}}" height="40px" width="40px" alt="" srcset=""></-div-->
-          <div class="my__message__body">
+          <div class="my__message__body _body">
             <div class="my__message__title title" {{attr}}="{{messageTitleStyle}}"><h3>{{{repIcon}}}{{from}}</h3></div>
             <div class="my-reply-message replyMessage" {{attr}}="{{replyMessageStyle}}" data-repid="{{repId}}">{{reply}}</div>
             <div class="main-message">
@@ -187,9 +187,9 @@
       </template>
 
       <template id="image-message-template" type="text/template">
-        <li class="image" id="{{id}}">
+        <li class="image _message" id="{{id}}">
           <div class="avatar"><img id="avatar" src="{{attrVal}}" height="40px" width="40px" alt="" srcset=""></div>
-          <div class="image__body">
+          <div class="image__body _body">
             <div class="image__title title"><h3>{{from}}</h3></div>
             <div class="main-image">
               <div class="imageMessage">{{{image}}}</div>
@@ -200,8 +200,8 @@
       </template>
 
       <template id="my-image-message-template" type="text/template">
-        <li class="my__image" id="{{id}}">
-          <div class="image__body">
+        <li class="my__image _message" id="{{id}}">
+          <div class="image__body _body">
             <div class="image__title title" style="display: none;"><h3>{{from}}</h3></div>
             <div class="main-image">
               <span class='time'>{{createdAt}}</span>
