@@ -351,7 +351,7 @@ function addReact(target, userName, react){
   let emoji;
   switch(react){
     case 'senti':
-      emoji = '👍';
+      emoji = '👍🏻';
       break;
     case 'haha':
       emoji = '😂';
