@@ -333,11 +333,25 @@ socket.on('deleteImage', (messageId, user) => {
 });
 
 socket.on('reactionResponse', (target, userName, react)=>{
-  userName = userName == myname ? 'You' : userName;
+  addReact(target, userName, react);
+});
+
+
+socket.on('removeReactResponse', (u_name, id)=>{
+  //console.log(u_name, id);
+  removeReaction(u_name, id);
+});
+
+
+
+
+//functions
+function addReact(target, userName, react){
+  let user = userName == myname ? 'You' : userName;
   let emoji;
   switch(react){
     case 'senti':
-      emoji = '🙂';
+      emoji = '👍';
       break;
     case 'haha':
       emoji = '😂';
@@ -349,18 +363,23 @@ socket.on('reactionResponse', (target, userName, react)=>{
       emoji = '😮';
       break;
     case 'love':
-      emoji = '💙';
+      emoji = '❤️';
       break;
     case 'angry':
-      emoji = '😡';
+      emoji = '😠';
       break;
   }
-
   //check if userName exists in .reactor ul
-  if ($(`#${target} .reactor ul`).find(`li:contains(${userName})`)) {
-    //if userName exists, remove it
-    $(`#${target} .reactor ul`).find(`li:contains(${userName})`).remove();
-    $(`#${target} .reactor ul`).append(`<li class='react-or-${userName}'><span>${userName}</span><span class='emoticon'>${emoji}</span></li>`);
+  if ($(`#${target} .reactor ul`).find(`li:contains(${user})`)) {
+    console.log($(`#${target} .reactor ul .react-or-${user}`).text());
+    if ($(`#${target} .reactor ul .react-or-${user} .emoticon`).text() == emoji){
+      console.log('already reacted');
+      socket.emit('removeReact', userName, target);
+      return;
+    }else{
+      $(`#${target} .reactor ul`).find(`li:contains(${user})`).remove();
+      $(`#${target} .reactor ul`).append(`<li class='react-or-${user}'><span>${user}</span><span class='emoticon'>${emoji}</span></li>`);
+    }
   }
   loadReact(target);
   // get list count
@@ -374,30 +393,27 @@ socket.on('reactionResponse', (target, userName, react)=>{
   //$(`#${target} .reactions`).append(`<li class='emo ${userName}'>${emoji}</li>`);
   
   //delete if username exists
-  let prev = userName;
+  let prev = user;
   $(`#${target} .reactions li`).each((index, elem)=>{
     let now = elem.classList[1];
     if (now == prev){
       $(elem).remove();
     }
   });
-  $(`#${target} .reactions`).append(`<li class='emo ${userName}'>${emoji}</li>`);
+  $(`#${target} .reactions`).append(`<li class='emo ${user}'>${emoji}</li>`);
   $(`#${target} .object`).css('margin-bottom', '10px');
   updateScroll();
-});
+}
 
 
-socket.on('removeReactResponse', (u_name, id,)=>{
-  //console.log(u_name, id);
+function removeReaction(u_name, id){
   $(`#${id} .reactions .${u_name == myname? 'You': u_name}`).remove();
   $(`#${id} .react-or-${u_name == myname? 'You': u_name}`).remove();
   if ($(`#${id} .reactions`).children().length == 0){
     $(`#${id} .object`).css('margin-bottom', '');
   }
-});
+}
 
-
-//functions
 function appHeight () {
   const doc = document.documentElement;
   doc.style.setProperty('--app-height', `${window.innerHeight}px`);
@@ -1099,7 +1115,7 @@ Messages.addEventListener('click', (e)=>{
   }*/
 });
 
-
+/*
 function removeReact(evt){
   //console.dir(evt.target);
   //remove react
@@ -1108,12 +1124,14 @@ function removeReact(evt){
   $(`#${id}`).find('.reactions .You').remove();
   socket.emit('removeReact', myname, id);
 }
+*/
 
-
+/*
 Messages.addEventListener('dblclick', (e)=>{
   removeReact(e);
 });
-
+*/
+/*
 Messages.addEventListener("touchstart", tapHandler);
 
 let tapedTwice = false;
@@ -1128,6 +1146,7 @@ function tapHandler(event) {
     //action on double tap goes below
     removeReact(event);
  }
+ */
 
 window.addEventListener('click', ({target}) => {
   //console.log(target);
