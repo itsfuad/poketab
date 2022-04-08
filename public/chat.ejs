@@ -155,7 +155,7 @@
             <div class="message__title title" {{attr}}="{{messageTitleStyle}}"><h3>{{{repIcon}}}{{from}}</h3></div>
             <div class="reply-message replyMessage" {{attr}}="{{replyMessageStyle}}" data-repid="{{repId}}">{{reply}}</div>
             <div class="main-message">
-              <p class="textMessage">{{{text}}}</p>
+              <p class="textMessage object">{{{text}}}</p>
               <div class="reactor" style="display: none;"><ul></ul></div>
               <ul class="reactions"></ul>
               <span class='time'>{{createdAt}}</span>
@@ -173,7 +173,7 @@
             <div class="my-reply-message replyMessage" {{attr}}="{{replyMessageStyle}}" data-repid="{{repId}}">{{reply}}</div>
             <div class="main-message">
               <span class='time'>{{createdAt}}</span>
-              <p class="textMessage">{{{text}}}</p>
+              <p class="textMessage object">{{{text}}}</p>
               <div class="reactor" style="display: none;"><ul></ul></div>
               <ul class="reactions"></ul>
               <i class="fa-regular fa-circle-check sent"></i>
@@ -205,7 +205,7 @@
           <div class="image__body _body">
             <div class="image__title title"><h3>{{from}}</h3></div>
             <div class="main-image">
-              <div class="imageMessage">{{{image}}}</div>
+              <div class="imageMessage object">{{{image}}}</div>
               <div class="reactor" style="display: none;"><ul></ul></div>
               <ul class="reactions"></ul>
               <span class='time'>{{createdAt}}</span>
@@ -220,7 +220,7 @@
             <div class="image__title title" style="display: none;"><h3>{{from}}</h3></div>
             <div class="main-image">
               <span class='time'>{{createdAt}}</span>
-              <div class="imageMessage">{{{image}}}</div>
+              <div class="imageMessage object">{{{image}}}</div>
               <div class="reactor" style="display: none;"><ul></ul></div>
               <ul class="reactions"></ul>
               <i class="fa-regular fa-circle-check sent"></i>

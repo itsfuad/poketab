@@ -374,7 +374,7 @@ input[type=file] {
   width: 100%;
 }
 
-.react-or{
+[class^="react-or-"]{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -663,24 +663,24 @@ scrollbar-width: none;  /* Firefox */
     .my-reply-message{
       border-radius: 15px 15px 0px 15px;
       position: relative;
-      right: 15px;
+      right: 18px;
     }
     .my__message{
       flex-direction: row-reverse;
       .time{
         right: 120%;
       }
-      .reactions{
-        left: 0;
-      }
+   //   .reactions{
+    //    left: 0;
+   //   }
     }
     .message{
       .time{
         left: 120%;
       }
-      .reactions{
-        right: 0;
-      }
+//.reactions{
+ //       right: 0;
+  //    }
     }
     .my__message__body{
       display: flex;
@@ -736,7 +736,7 @@ scrollbar-width: none;  /* Firefox */
   align-items: center;
   justify-content: center;
   background: var(--option-color);
-  padding: 10px;
+  padding: 5px 10px;
   position: fixed;
   bottom: 110px;
   left: 50%;
@@ -744,6 +744,7 @@ scrollbar-width: none;  /* Firefox */
   transform: translate(-50%, -50%);
   border-radius: 25px;
   gap: 10px;
+  font-size: 1.3rem;
   filter: drop-shadow(2px 4px 6px black);
   z-index: 10;
   & > div:hover{
@@ -899,10 +900,10 @@ scrollbar-width: none;  /* Firefox */
   padding: 10px 20px;
   border-radius: 10px;
   position: absolute;
-  bottom: 60px;
+  bottom: 50px;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 0.9rem;
+  font-size: 1rem;
   backdrop-filter: blur(2px);
   filter: drop-shadow(2px 4px 6px black);
   z-index: 10;

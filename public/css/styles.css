@@ -488,7 +488,7 @@ input[type=file] {
   width: 100%;
 }
 
-.react-or {
+[class^="react-or-"] {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -501,11 +501,11 @@ input[type=file] {
           justify-content: space-between;
 }
 
-.react-or .emoticon {
+[class^="react-or-"] .emoticon {
   font-size: 1.3rem;
 }
 
-.react-or .emoticon:hover {
+[class^="react-or-"] .emoticon:hover {
   cursor: pointer;
 }
 
@@ -923,7 +923,7 @@ input[type=file] {
 #messages .my-reply-message {
   border-radius: 15px 15px 0px 15px;
   position: relative;
-  right: 15px;
+  right: 18px;
 }
 
 #messages .my__message {
@@ -937,16 +937,8 @@ input[type=file] {
   right: 120%;
 }
 
-#messages .my__message .reactions {
-  left: 0;
-}
-
 #messages .message .time {
   left: 120%;
-}
-
-#messages .message .reactions {
-  right: 0;
 }
 
 #messages .my__message__body {
@@ -1035,7 +1027,7 @@ input[type=file] {
       -ms-flex-pack: center;
           justify-content: center;
   background: var(--option-color);
-  padding: 10px;
+  padding: 5px 10px;
   position: fixed;
   bottom: 110px;
   left: 50%;
@@ -1043,6 +1035,7 @@ input[type=file] {
   transform: translate(-50%, -50%);
   border-radius: 25px;
   gap: 10px;
+  font-size: 1.3rem;
   -webkit-filter: drop-shadow(2px 4px 6px black);
           filter: drop-shadow(2px 4px 6px black);
   z-index: 10;
@@ -1269,11 +1262,11 @@ input[type=file] {
   padding: 10px 20px;
   border-radius: 10px;
   position: absolute;
-  bottom: 60px;
+  bottom: 50px;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
-  font-size: 0.9rem;
+  font-size: 1rem;
   -webkit-backdrop-filter: blur(2px);
           backdrop-filter: blur(2px);
   -webkit-filter: drop-shadow(2px 4px 6px black);

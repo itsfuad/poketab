@@ -294,7 +294,7 @@ socket.on('imageGet', (sendername, imagefile, avatar, id) => {
 
 socket.on('deleteMessage', (messageId, user) => {
   try{
-    $(`#${messageId} .textMessage`).css('background', '#dd0000');
+    $(`#${messageId} .object`).css('background', '#dd0000');
     setTimeout(() => {
       $(`#${messageId}`).remove();
       //console.log($(`[data-repid='${messageId}']`));
@@ -315,7 +315,7 @@ socket.on('deleteMessage', (messageId, user) => {
 
 socket.on('deleteImage', (messageId, user) => {
   try{
-    $(`#${messageId} .imageMessage`).css('outline', '1px solid orangered');
+    $(`#${messageId} .object`).css('outline', '1px solid orangered');
     setTimeout(() => {
       $(`#${messageId}`).remove();
       $(`[data-repid='${messageId}']`).text(`${user} deleted this message`);
@@ -360,7 +360,7 @@ socket.on('reactionResponse', (target, userName, react)=>{
   if ($(`#${target} .reactor ul`).find(`li:contains(${userName})`)) {
     //if userName exists, remove it
     $(`#${target} .reactor ul`).find(`li:contains(${userName})`).remove();
-    $(`#${target} .reactor ul`).append(`<li class='react-or'><span class='emoticon'>${emoji}</span> <span class='usr'>${userName}</span></li>`);
+    $(`#${target} .reactor ul`).append(`<li class='react-or-${userName}'><span>${userName}</span><span class='emoticon'>${emoji}</span></li>`);
   }
   loadReact(target);
   // get list count
@@ -382,15 +382,18 @@ socket.on('reactionResponse', (target, userName, react)=>{
     }
   });
   $(`#${target} .reactions`).append(`<li class='emo ${userName}'>${emoji}</li>`);
-  $(`#${target} .textMessage`).css('margin-bottom', '5px');
+  $(`#${target} .object`).css('margin-bottom', '10px');
   updateScroll();
 });
 
 
 socket.on('removeReactResponse', (u_name, id,)=>{
-  console.log(u_name, id);
-  $(`#${id} .reactions .${u_name}`).remove();
-  $(`#${id} .textMessage`).css('margin-bottom', '');
+  //console.log(u_name, id);
+  $(`#${id} .reactions .${u_name == myname? 'You': u_name}`).remove();
+  $(`#${id} .react-or-${u_name == myname? 'You': u_name}`).remove();
+  if ($(`#${id} .reactions`).children().length == 0){
+    $(`#${id} .object`).css('margin-bottom', '');
+  }
 });
 
 
@@ -1062,9 +1065,9 @@ Messages.addEventListener('click', (e)=>{
     }
   }
   else if(e.target.className.includes('emo')){
-    console.log(e.target);
+    //console.log(e.target);
     id = e.target.closest('._message').id;
-    console.log(id);
+    //console.log(id);
     clickOptionHide();
     loadReact(id, true);
   }
@@ -1098,7 +1101,7 @@ Messages.addEventListener('click', (e)=>{
 
 
 function removeReact(evt){
-  console.dir(evt.target);
+  //console.dir(evt.target);
   //remove react
   let id = evt.target.closest('._message').id;
   console.dir(id);
@@ -1138,7 +1141,7 @@ ClickAndHold.applyTo(Messages, 100, function (evt) {
   //console.log(evt);
   lightboxClose();
   let target = evt.target;
-  if (target.className === 'textMessage') {
+  if (target.className.includes('textMessage')) {
     clickOptionShow('text', evt);
     reactOptionShow();
     navigator.vibrate(100);
