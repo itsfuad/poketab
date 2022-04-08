@@ -23,6 +23,7 @@ let server = http.createServer(app);
 let io = socketIO(server);
 let users = new Users();
 
+
 //view engine setup
 app.set('views', path.join(__dirname, '../public'));
 app.set('view engine', 'ejs');
@@ -60,7 +61,6 @@ app.post('/chat', (req, res) => {
 
 
 io.on('connection', (socket) => {
-
   socket.on('join', (params, callback) => {
     if (!isRealString(params.name) || !isRealString(params.key)) {
       return callback('empty');
@@ -118,11 +118,9 @@ io.on('connection', (socket) => {
       console.log(users.getMaxUser(user.key));
       let usercount = users.users.filter(datauser => datauser.key === user.key);
       if (usercount.length === 0) {
-        setTimeout(()=>{
         users.removeMaxUser(user.key);
         console.log(`Session ended with key: ${user.key}`);
         console.log(users.getMaxUser(user.key));
-        }, 10000);
       }
     }
   });
@@ -172,6 +170,23 @@ io.on('connection', (socket) => {
     let user = users.getUser(userId);
     if (user) {
       io.to(user.key).emit('vibrateResponse', sender_name, userId);
+    }
+  });
+
+  socket.on('reaction', (targetId, userName, reaction) => {
+    //console.log('Reaction: ' + reaction);
+    //console.log('TargetId: ' + targetId);
+    //console.log('User: ' + userName);
+    let user = users.getUser(socket.id);
+    if (user) {
+      io.to(user.key).emit('reactionResponse', targetId, userName, reaction);
+    }
+  });
+
+  socket.on('removeReact', (u_name, id)=>{
+    let user = users.getUser(socket.id);
+    if (user) {
+      io.to(user.key).emit('removeReactResponse', u_name, id);
     }
   });
 

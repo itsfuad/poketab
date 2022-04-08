@@ -136,6 +136,17 @@
           <li class="close-action"><i class="fa-solid fa-xmark"></i></li>
         </ul>
       </div>
+
+      <div class="reactionContainer" style="display: none;">
+        <div class="senti">👍🏻</div>
+        <div class="haha">😂</div>
+        <div class="sad">😢</div>
+        <div class="wow">😮</div>
+        <div class="love">❤️</div>
+        <div class="angry">😠</div>
+      </div>
+
+      <div class="reactorContainer" style="display: none;">Reactions on this message <ul></ul></div>
     
       <template id="message-template" type="text/template">
         <li class="message _message" id="{{id}}">
@@ -144,7 +155,9 @@
             <div class="message__title title" {{attr}}="{{messageTitleStyle}}"><h3>{{{repIcon}}}{{from}}</h3></div>
             <div class="reply-message replyMessage" {{attr}}="{{replyMessageStyle}}" data-repid="{{repId}}">{{reply}}</div>
             <div class="main-message">
-              <p class="textMessage">{{{text}}}</p>
+              <p class="textMessage object">{{{text}}}</p>
+              <div class="reactor" style="display: none;"><ul></ul></div>
+              <ul class="reactions"></ul>
               <span class='time'>{{createdAt}}</span>
             </div>
           </div>
@@ -160,7 +173,9 @@
             <div class="my-reply-message replyMessage" {{attr}}="{{replyMessageStyle}}" data-repid="{{repId}}">{{reply}}</div>
             <div class="main-message">
               <span class='time'>{{createdAt}}</span>
-              <p class="textMessage">{{{text}}}</p>
+              <p class="textMessage object">{{{text}}}</p>
+              <div class="reactor" style="display: none;"><ul></ul></div>
+              <ul class="reactions"></ul>
               <i class="fa-regular fa-circle-check sent"></i>
             </div>
           </div>
@@ -170,7 +185,6 @@
   
       <template id="server-message-template" type="text/template">
         <li class="server__message">
-            <span class='time'>{{createdAt}}</span>
           <div class="server__message__body">
             <p>{{text}}</p>
           </div>
@@ -179,7 +193,6 @@
     
       <template id="location-message-template" type="text/template">
         <li class="location__message">
-          <span class='time'>{{createdAt}}</span>
           <div class="location__message__title title">
             <a id="retlocflex" class='tenth before after' href="{{url}}" target="_blank"><img id="retlocation" src="/images/icons8-place-marker.gif" alt="" srcset="">{{from}}'s location</a>
           </div>
@@ -192,7 +205,9 @@
           <div class="image__body _body">
             <div class="image__title title"><h3>{{from}}</h3></div>
             <div class="main-image">
-              <div class="imageMessage">{{{image}}}</div>
+              <div class="imageMessage object">{{{image}}}</div>
+              <div class="reactor" style="display: none;"><ul></ul></div>
+              <ul class="reactions"></ul>
               <span class='time'>{{createdAt}}</span>
             </div>
           </div>
@@ -205,13 +220,16 @@
             <div class="image__title title" style="display: none;"><h3>{{from}}</h3></div>
             <div class="main-image">
               <span class='time'>{{createdAt}}</span>
-              <div class="imageMessage">{{{image}}}</div>
+              <div class="imageMessage object">{{{image}}}</div>
+              <div class="reactor" style="display: none;"><ul></ul></div>
+              <ul class="reactions"></ul>
               <i class="fa-regular fa-circle-check sent"></i>
             </div>
           </div>
         </li>
       </template>
 
+      
     </div>
   </div>
   <script defer src="/js/libs/fontawesome.js" crossorigin="anonymous"></script>
@@ -220,6 +238,6 @@
   <script defer src="/js/libs/moment.min.js"></script>
   <script defer src="/js/libs/mustache.min.js"></script>
   <script defer src="/js/libs/deparam.min.js"></script>
-  <script defer src="/js/chat.js"></script>
+  <script defer src="/js/chat.min.js"></script>
 </body>
 </html>
