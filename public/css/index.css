@@ -1,21 +1,6 @@
 @font-face {
-  font-family: 'Comforter';
-  src: url("./../fonts/Comforter-Regular.ttf");
-}
-
-@font-face {
-  font-family: 'Now';
-  src: url("./../fonts/Now-Regular.otf");
-}
-
-@font-face {
-  font-family: 'James';
-  src: url("./../fonts/James.ttf");
-}
-
-@font-face {
   font-family: 'Comic';
-  src: url("./../fonts/comic.ttf");
+  src: url("./../fonts/font.woff");
 }
 
 :root {
