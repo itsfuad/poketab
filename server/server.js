@@ -30,7 +30,12 @@ app.set('views', path.join(__dirname, '../public'));
 app.set('view engine', 'ejs');
 
 app.use(compression());
-app.use(express.static(publicPath));
+app.use(express.static(publicPath, {
+  maxAge: 604800,
+  setHeaders: (res, path) => {
+    res.setHeader('Cache-Control', 'public, max-age=604800');
+  }
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
