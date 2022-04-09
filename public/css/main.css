@@ -3,6 +3,7 @@
   src: url("./../fonts/comic-webfont.woff2");
 }
 
+
 :root {
   --primary-dark: #111d2a;
   --foreground-dark: #ffffff;
@@ -373,7 +374,7 @@ input[type=file] {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  background: #0000009c;
+  background: #7f7f7fc2;
   min-width: 15px;
   border-radius: 10px;
   right: 0;
@@ -455,7 +456,7 @@ input[type=file] {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  background: #0000009c;
+  background: #7f7f7fc2;
   min-width: 15px;
   border-radius: 10px;
   left: 0;
@@ -1036,7 +1037,7 @@ input[type=file] {
 }
 
 .reactionContainer > div {
-  border-radius: 50%;
+  border-radius: 8px;
   height: 30px;
   width: 30px;
   display: -webkit-box;
@@ -1112,7 +1113,7 @@ input[type=file] {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  background: #0000009c;
+  background: #7f7f7fc2;
   min-width: 15px;
   border-radius: 10px;
 }

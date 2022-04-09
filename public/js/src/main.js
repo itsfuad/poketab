@@ -784,7 +784,7 @@ function reactOptionShow(evt){
   let reactionName = $(`#${target} .react-or-You .emoticon`).data('name');
   $(`.reactionContainer > div`).css('background', '');
   if (reactionName){
-    $(`.reactionContainer .${reactionName}`).css('background', '#00000075');
+    $(`.reactionContainer .${reactionName}`).css('background', '#7f7f7fc2');
   }
   //console.log(reactionName);
   $('.reactionContainer').fadeIn(100);
