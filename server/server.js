@@ -1,5 +1,6 @@
 const path = require('path');
 const http = require('http');
+const compression = require('compression');
 const express = require('express');
 const socketIO = require('socket.io');
 const uuid = require("uuid");
@@ -28,7 +29,13 @@ let users = new Users();
 app.set('views', path.join(__dirname, '../public'));
 app.set('view engine', 'ejs');
 
-app.use(express.static(publicPath));
+app.use(compression());
+app.use(express.static(publicPath, {
+  maxAge: 604800,
+  setHeaders: (res, path) => {
+    res.setHeader('Cache-Control', 'public, max-age=604800');
+  }
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
