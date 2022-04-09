@@ -382,9 +382,9 @@ function addReact(target, userName, react){
   }
   //check if userName exists in .reactor ul
   if ($(`#${target} .reactor ul`).find(`li:contains(${user})`)) {
-    console.log($(`#${target} .reactor ul .react-or-${user}`).text());
+    //console.log($(`#${target} .reactor ul .react-or-${user}`).text());
     if ($(`#${target} .reactor ul .react-or-${user} .emoticon`).text() == emoji){
-      console.log('already reacted');
+      //console.log('already reacted');
       socket.emit('removeReact', userName, target);
       return;
     }else{
@@ -780,13 +780,13 @@ function closePopup() {
 function reactOptionShow(evt){
   let target = evt.target.closest('._message').id;
   let emoji = $(`#${target} .react-or-You .emoticon`).text();
-  console.log(emoji);
+  //console.log(emoji);
   let reactionName = $(`#${target} .react-or-You .emoticon`).data('name');
   $(`.reactionContainer > div`).css('background', '');
   if (reactionName){
     $(`.reactionContainer .${reactionName}`).css('background', '#00000075');
   }
-  console.log(reactionName);
+  //console.log(reactionName);
   $('.reactionContainer').fadeIn(100);
 }
 

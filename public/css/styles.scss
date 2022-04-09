@@ -310,7 +310,8 @@ input[type=file] {
     font-size: 0.7em;
     display: flex;
     flex-direction: row;
-    background: #111d2aa6;
+    background: #0000009c;
+    min-width: 15px;
     border-radius: 10px;
     right: 0;
   }
@@ -353,7 +354,8 @@ input[type=file] {
     font-size: 0.7em;
     display: flex;
     flex-direction: row;
-    background: #111d2aa6;
+    background: #0000009c;
+    min-width: 15px;
     border-radius: 10px;
     left: 0;
   }
@@ -793,7 +795,8 @@ scrollbar-width: none;  /* Firefox */
     font-size: 0.7em;
     display: flex;
     flex-direction: row;
-    background: #111d2aa6;
+    background: #0000009c;
+    min-width: 15px;
     border-radius: 10px;
   }
 }

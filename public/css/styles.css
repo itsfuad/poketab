@@ -386,7 +386,8 @@ input[type=file] {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  background: #111d2aa6;
+  background: #0000009c;
+  min-width: 15px;
   border-radius: 10px;
   right: 0;
 }
@@ -467,7 +468,8 @@ input[type=file] {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  background: #111d2aa6;
+  background: #0000009c;
+  min-width: 15px;
   border-radius: 10px;
   left: 0;
 }
@@ -1116,7 +1118,8 @@ input[type=file] {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  background: #111d2aa6;
+  background: #0000009c;
+  min-width: 15px;
   border-radius: 10px;
 }
 
