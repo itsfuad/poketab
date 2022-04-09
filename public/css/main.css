@@ -334,7 +334,7 @@ input[type=file] {
 }
 
 .fa-paper-plane, .fa-location-crosshairs, .fa-image {
-  font-size: 1.3em;
+  font-size: 1.5em;
   padding: 5px;
   color: var(--secondary);
   cursor: pointer;
@@ -1411,4 +1411,4 @@ img {
     max-width: 80vw;
   }
 }
-/*# sourceMappingURL=styles.css.map */
+/*# sourceMappingURL=main.css.map */
