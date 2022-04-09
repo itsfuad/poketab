@@ -340,6 +340,10 @@ input[type=file] {
   cursor: pointer;
 }
 
+.fa-paper-plane {
+  font-size: 2em;
+}
+
 .image {
   display: -webkit-box;
   display: -ms-flexbox;
