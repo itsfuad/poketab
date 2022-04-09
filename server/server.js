@@ -5,6 +5,7 @@ const express = require('express');
 const socketIO = require('socket.io');
 const uuid = require("uuid");
 const bodyParser = require('body-parser');
+const version = process.env.npm_package_version;
 
 const {
   generateMessage,
@@ -41,11 +42,11 @@ app.get('/', (_, res) => {
 });
 
 app.get('/login', (_, res) => {
-  res.render('login');
+  res.render('login', {version: `v.${version}`});
 });
 
 app.get('/create', (_, res) => {
-  res.render('create');
+  res.render('create', {version: `v.${version}`});
 });
 
 app.get('/chat', (_, res) => {
