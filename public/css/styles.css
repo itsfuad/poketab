@@ -6,7 +6,7 @@
 :root {
   --primary-dark: #111d2a;
   --foreground-dark: #ffffff;
-  --secondary-dark: #6aa4db;
+  --secondary-dark: #4598ff;
   --focus--dark: #192838bd;
   --red: #cd4040;
   --secondary: var(--secondary-dark);
@@ -70,23 +70,6 @@ body {
 .intro h2 {
   font-size: 1.5em;
   text-align: center;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-align: end;
-      -ms-flex-align: end;
-          align-items: flex-end;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-}
-
-.intro p, .intro a {
-  font-size: 0.8em;
 }
 
 .wrapper {
@@ -501,6 +484,7 @@ input[type=file] {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  color: #698ea5;
 }
 
 [class^="react-or-"] .emoticon {
@@ -509,6 +493,10 @@ input[type=file] {
 
 [class^="react-or-"] .emoticon:hover {
   cursor: pointer;
+}
+
+.react-or-You {
+  color: var(--secondary);
 }
 
 .image-message {
@@ -1092,6 +1080,8 @@ input[type=file] {
       -ms-flex-pack: center;
           justify-content: center;
   z-index: 10;
+  -webkit-backdrop-filter: blur(2px);
+          backdrop-filter: blur(2px);
   -webkit-filter: drop-shadow(2px 4px 6px black);
           filter: drop-shadow(2px 4px 6px black);
 }

@@ -7,7 +7,7 @@
 :root{
   --primary-dark: #111d2a;
   --foreground-dark: #ffffff;
-  --secondary-dark: #6aa4db;
+  --secondary-dark: #4598ff;
   --focus--dark: #192838bd;
   --red: #cd4040;
   --secondary: var(--secondary-dark);
@@ -54,13 +54,6 @@ body {
   h2{
     font-size: 1.5em;
     text-align: center;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: center;
-  }
-  p, a{
-    font-size: 0.8em;
   }
 }
 
@@ -380,12 +373,17 @@ input[type=file] {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  color: #698ea5;
   .emoticon{
     font-size: 1.3em;
     &:hover{
       cursor: pointer;
     }
   }
+}
+
+.react-or-You{
+  color: var(--secondary);
 }
 
 .image-message{
@@ -780,6 +778,7 @@ scrollbar-width: none;  /* Firefox */
   align-items: flex-start;
   justify-content: center;
   z-index: 10;
+  backdrop-filter: blur(2px);
   filter: drop-shadow(2px 4px 6px black);
   ul{
     display: flex;
