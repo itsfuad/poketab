@@ -766,13 +766,14 @@ scrollbar-width: none;  /* Firefox */
   }
 }
 
+
 .reactorContainer{
   display: flex;
   flex-direction: column;
   position: fixed;
-  top: 50%;
+  bottom: 80px;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   background: var(--focus);
   padding: 20px;
   width: 300px;

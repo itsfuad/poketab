@@ -1067,10 +1067,10 @@ input[type=file] {
       -ms-flex-direction: column;
           flex-direction: column;
   position: fixed;
-  top: 50%;
+  bottom: 80px;
   left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
   background: var(--focus);
   padding: 20px;
   width: 300px;
