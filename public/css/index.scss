@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Comic';
-  src: url('./../fonts/comic-sans-webfont.woff2');
+  src: url('./../fonts/comic-webfont.woff2');
 }
 
 :root{
@@ -49,6 +49,7 @@ body {
   overflow-x: hidden;
   overflow-y: scroll;
   overscroll-behavior-y: contain;
+  font-size: 16px;
 }
 
 .form2{
@@ -59,7 +60,7 @@ body {
 
 .h3 {
   text-align: center;
-  font-size: 1rem;
+  font-size: 1em;
   //color: var(--blue);
   display: flex;
   flex-direction: row;
@@ -174,7 +175,7 @@ input[type="radio"] {
 
 
 #error-callback{
-  font-size: 0.7rem;
+  font-size: 0.7em;
   color: orangered;
   width: 100%;
   word-wrap: break-word;
@@ -193,7 +194,7 @@ input[type="radio"] {
   padding: 10px;
   border-radius: 15px;
   backdrop-filter: blur(2px);
-  font-size: 0.6rem;
+  font-size: 0.6em;
   transform: translateX(-50%);
   z-index: 100;
 }
@@ -243,7 +244,7 @@ input[type='button'], input[type='submit']{
 width: 100vw;
 padding: 30px;
 text-align: justify;
-font-size: 0.7rem;
+font-size: 0.7em;
 max-width: max-content;
 ul{
   list-style-type: disc;
@@ -260,7 +261,7 @@ ul{
   border-bottom: 0;
   color: rgb(186, 186, 186);
   .h1{
-    font-size: 1rem;
+    font-size: 1em;
     padding: 5px;
     text-align: center;
   }
@@ -272,7 +273,7 @@ ul{
 }
 
 .footer{
-font-size: 0.6rem;
+font-size: 0.6em;
 color: rgb(186, 186, 186);
 padding: 10px;
 }

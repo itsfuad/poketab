@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Comic';
-  src: url("./../fonts/comic-sans-webfont.woff2");
+  src: url("./../fonts/comic-webfont.woff2");
 }
 
 :root {
@@ -68,7 +68,7 @@ body {
 }
 
 .intro h2 {
-  font-size: 1.5rem;
+  font-size: 1.5em;
   text-align: center;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -86,7 +86,7 @@ body {
 }
 
 .intro p, .intro a {
-  font-size: 0.8rem;
+  font-size: 0.8em;
 }
 
 .wrapper {
@@ -96,7 +96,7 @@ body {
 a {
   color: var(--secondary);
   text-decoration: none;
-  font-size: 0.7rem;
+  font-size: 0.7em;
 }
 
 h3 {
@@ -120,7 +120,7 @@ button,
 button:hover {
   border: none;
   color: var(--foreground);
-  font-size: 0.8rem;
+  font-size: 0.8em;
 }
 
 .chat__messages ul {
@@ -164,7 +164,7 @@ button:hover {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  font-size: 1rem;
+  font-size: 1em;
   font-weight: 900;
   gap: 5px;
   overflow-x: scroll;
@@ -187,7 +187,7 @@ ul {
 
 h3 {
   text-align: center;
-  font-size: 0.7rem;
+  font-size: 0.7em;
   color: var(--secondary);
 }
 
@@ -235,7 +235,7 @@ button:disabled {
 .chat__sidebar li {
   padding: 7px 0 5px 0;
   color: var(--foreground);
-  font-size: 0.7rem;
+  font-size: 0.7em;
   margin: 5px;
 }
 
@@ -244,7 +244,7 @@ button:disabled {
   margin: 10px 20px;
   text-align: left;
   color: var(--secondary);
-  font-size: 0.9rem;
+  font-size: 0.9em;
   text-align: center;
 }
 
@@ -322,7 +322,7 @@ input[type=file] {
 }
 
 .sent {
-  font-size: 0.6rem;
+  font-size: 0.6em;
   color: var(--secondary);
   position: relative;
   right: 5px;
@@ -351,7 +351,7 @@ input[type=file] {
 }
 
 .fa-paper-plane, .fa-location-crosshairs, .fa-image {
-  font-size: 1.3rem;
+  font-size: 1.3em;
   padding: 5px;
   color: var(--secondary);
   cursor: pointer;
@@ -378,7 +378,7 @@ input[type=file] {
 .image .reactions {
   position: absolute;
   bottom: 0px;
-  font-size: 0.7rem;
+  font-size: 0.7em;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -459,7 +459,7 @@ input[type=file] {
 .my__image .reactions {
   position: absolute;
   bottom: 0px;
-  font-size: 0.7rem;
+  font-size: 0.7em;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -502,7 +502,7 @@ input[type=file] {
 }
 
 [class^="react-or-"] .emoticon {
-  font-size: 1.3rem;
+  font-size: 1.3em;
 }
 
 [class^="react-or-"] .emoticon:hover {
@@ -652,7 +652,7 @@ input[type=file] {
 }
 
 .server__message__body {
-  font-size: 0.7rem;
+  font-size: 0.7em;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -671,7 +671,7 @@ input[type=file] {
 .menu {
   display: block;
   color: limegreen;
-  font-size: 0.9rem;
+  font-size: 0.9em;
 }
 
 .menu:hover {
@@ -704,7 +704,7 @@ input[type=file] {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
-  font-size: 0.6rem;
+  font-size: 0.6em;
   text-align: center;
   color: gray;
   position: absolute;
@@ -752,7 +752,7 @@ input[type=file] {
 #typingindicator {
   list-style-type: none;
   color: grey;
-  font-size: 0.7rem;
+  font-size: 0.7em;
   padding: 0 0 0 10px;
   height: 25px;
 }
@@ -865,7 +865,7 @@ input[type=file] {
   background: #26313d;
   padding: 10px 15px;
   border-radius: 25px;
-  font-size: 0.7rem;
+  font-size: 0.7em;
 }
 
 #messages .message .textMessage:hover::after {
@@ -876,7 +876,7 @@ input[type=file] {
   background: var(--secondary);
   padding: 10px 15px;
   border-radius: 25px;
-  font-size: 0.7rem;
+  font-size: 0.7em;
 }
 
 #messages .main-message {
@@ -900,7 +900,7 @@ input[type=file] {
 
 #messages .replyMessage {
   padding: 10px 15px 25px 10px;
-  font-size: 0.7rem;
+  font-size: 0.7em;
   background: #3f5266;
   border-radius: 15px 15px 15px 0px;
   z-index: 1;
@@ -963,7 +963,7 @@ input[type=file] {
 }
 
 #messages .title h3 {
-  font-size: 0.7rem;
+  font-size: 0.7em;
 }
 
 #messages .message__title h3 {
@@ -1035,10 +1035,25 @@ input[type=file] {
   transform: translate(-50%, -50%);
   border-radius: 25px;
   gap: 10px;
-  font-size: 1.3rem;
+  font-size: 1.3em;
   -webkit-filter: drop-shadow(2px 4px 6px black);
           filter: drop-shadow(2px 4px 6px black);
   z-index: 10;
+}
+
+.reactionContainer > div {
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .reactionContainer > div:hover {
@@ -1093,7 +1108,7 @@ input[type=file] {
 .message .reactions, .my__message .reactions {
   position: absolute;
   bottom: 0px;
-  font-size: 0.7rem;
+  font-size: 0.7em;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1125,7 +1140,7 @@ input[type=file] {
   background: #000000bb;
   padding: 10px;
   border-radius: 15px;
-  font-size: 0.6rem;
+  font-size: 0.6em;
   -webkit-transform: translateX(-50%);
           transform: translateX(-50%);
   z-index: 100;
@@ -1156,7 +1171,7 @@ input[type=file] {
   border-radius: 25px;
   -webkit-backdrop-filter: blur(2px);
           backdrop-filter: blur(2px);
-  font-size: 0.6rem;
+  font-size: 0.6em;
   -webkit-transform: translateX(-50%);
           transform: translateX(-50%);
   z-index: 100;
@@ -1174,7 +1189,7 @@ input[type=file] {
 }
 
 .newmessagepopup .msg {
-  font-size: 0.7rem;
+  font-size: 0.7em;
 }
 
 .newmessagepopup:hover {
@@ -1240,7 +1255,7 @@ input[type=file] {
 }
 
 .maxuser {
-  font-size: 0.7rem;
+  font-size: 0.7em;
   position: relative;
   right: 0;
   width: 100%;
@@ -1266,7 +1281,7 @@ input[type=file] {
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
-  font-size: 1rem;
+  font-size: 1em;
   -webkit-backdrop-filter: blur(2px);
           backdrop-filter: blur(2px);
   -webkit-filter: drop-shadow(2px 4px 6px black);
@@ -1357,11 +1372,11 @@ img {
 
 .toast-popup .toast-popup-replying-to .toast-popup-name {
   color: var(--secondary);
-  font-size: 0.7rem;
+  font-size: 0.7em;
 }
 
 .toast-popup .toast-popup-replying-to .toast-popup-message {
-  font-size: 0.7rem;
+  font-size: 0.7em;
 }
 
 .toast-popup .toast-popup-close {

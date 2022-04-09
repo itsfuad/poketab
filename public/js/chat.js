@@ -40,6 +40,14 @@ class ClickAndHold{
           console.log(e);
         }
       });
+      ["touchmove", "mousemove"].forEach(eventName => {
+        try{
+          this.target.addEventListener(eventName, this._onHoldMove.bind(this));
+        }
+        catch(e){
+          console.log(e);
+        }
+      });
       ["mouseup", "touchend", "mouseleave", "mouseout", "touchcancel"].forEach(eventName => {
         try{
           this.target.addEventListener(eventName, this._onHoldEnd.bind(this));
@@ -52,10 +60,13 @@ class ClickAndHold{
   _onHoldStart(evt){
       this.isHeld = true;
       this.activeHoldTimeoutId = setTimeout(() => {
-          if (this.isHeld){
+          if (this.isHeld) {
               this.callback(evt);
           }
       }, this.timeOut);
+  }
+  _onHoldMove(){
+    this.isHeld = false;
   }
   _onHoldEnd(){
       this.isHeld = false;
@@ -378,7 +389,7 @@ function addReact(target, userName, react){
       return;
     }else{
       $(`#${target} .reactor ul`).find(`li:contains(${user})`).remove();
-      $(`#${target} .reactor ul`).append(`<li class='react-or-${user}'><span>${user}</span><span class='emoticon'>${emoji}</span></li>`);
+      $(`#${target} .reactor ul`).append(`<li class='react-or-${user}'><span>${user}</span><span class='emoticon' data-name='${react}'>${emoji}</span></li>`);
     }
   }
   loadReact(target);
@@ -766,7 +777,16 @@ function closePopup() {
   $('.menuwrapper').removeClass('active');
 }
 
-function reactOptionShow(){
+function reactOptionShow(evt){
+  let target = evt.target.closest('._message').id;
+  let emoji = $(`#${target} .react-or-You .emoticon`).text();
+  console.log(emoji);
+  let reactionName = $(`#${target} .react-or-You .emoticon`).data('name');
+  $(`.reactionContainer > div`).css('background', '');
+  if (reactionName){
+    $(`.reactionContainer .${reactionName}`).css('background', '#00000075');
+  }
+  console.log(reactionName);
   $('.reactionContainer').fadeIn(100);
 }
 
@@ -1107,46 +1127,7 @@ Messages.addEventListener('click', (e)=>{
       popupMessage('Deleted message');
     }
   }
-  /*else if(e.target.className.includes('textMessage')){
-    if (!repPop) {
-      id = e.target.closest('._message').id;
-      $(`#${id} .time`).toggle(100, "linear");
-    }
-  }*/
 });
-
-/*
-function removeReact(evt){
-  //console.dir(evt.target);
-  //remove react
-  let id = evt.target.closest('._message').id;
-  console.dir(id);
-  $(`#${id}`).find('.reactions .You').remove();
-  socket.emit('removeReact', myname, id);
-}
-*/
-
-/*
-Messages.addEventListener('dblclick', (e)=>{
-  removeReact(e);
-});
-*/
-/*
-Messages.addEventListener("touchstart", tapHandler);
-
-let tapedTwice = false;
-
-function tapHandler(event) {
-    if(!tapedTwice) {
-        tapedTwice = true;
-        setTimeout( function() { tapedTwice = false; }, 300 );
-        return false;
-    }
-    event.preventDefault();
-    //action on double tap goes below
-    removeReact(event);
- }
- */
 
 window.addEventListener('click', ({target}) => {
   //console.log(target);
@@ -1156,17 +1137,20 @@ window.addEventListener('click', ({target}) => {
   }
 });
 
-ClickAndHold.applyTo(Messages, 100, function (evt) {
+
+
+
+ClickAndHold.applyTo(Messages, 200, function (evt) {
   //console.log(evt);
   lightboxClose();
   let target = evt.target;
   if (target.className.includes('textMessage')) {
     clickOptionShow('text', evt);
-    reactOptionShow();
+    reactOptionShow(evt);
     navigator.vibrate(100);
   } else if(target.className.includes('image-message')){
     clickOptionShow('image', evt);
-    reactOptionShow();
+    reactOptionShow(evt);
     navigator.vibrate(100);
   }
 });
