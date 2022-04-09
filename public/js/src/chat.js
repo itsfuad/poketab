@@ -1,3 +1,4 @@
+"use strict";
 //Variables
 const socket = io();
 const incommingmessage = new Audio('./../sounds/incommingmessage.wav');
@@ -11,7 +12,6 @@ let scrolling = false;
 let lastPageLength = $('#messages').scrollTop();;
 let scroll = 0;
 const userMap = new Map();
-const reactList = new Map();
 const maxTypeShow = 2;
 let typing = false;
 let timeout = undefined;
@@ -1025,7 +1025,7 @@ window.addEventListener('resize', () => {
 });
 
 $('.send').on('focus', function () {
-  $('#textbox').focus();
+  $('#textbox').trigger('focus');
 });
 
 $("textarea").each(function () {

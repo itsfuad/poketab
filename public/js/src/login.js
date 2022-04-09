@@ -1,3 +1,5 @@
+"use strict";
+
 let socket = io();
 
 let e_users = [];
@@ -14,73 +16,48 @@ if (error_code !== url){
     error.innerText = '*Please fill up all requirements*';
 }
 
-function makeid(length) {
-    let result = '';
-    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() *
-        charactersLength));
-    }
-    return result;
-}
-
-//make id in xxx-xxx-xxx-xxx format
-$('#key').val(`${makeid(3)}-${makeid(3)}-${makeid(3)}-${makeid(3)}`);
-
-$('#key').on('click', ()=>{
-    let text = $('#key').val();
-    console.log(text);
-    navigator.clipboard.writeText(text);
-    //alert('Copied to clipboard');
-    $('#key-label').css('color', 'limegreen');
-    $('#key-label').text('Key copied!');
-    setTimeout(()=>{
-        $('#key-label').css('color', 'white');
-        $('#key-label').text('Tap to Copy');
-    }, 2000);
-});
-
-//slider on input
-$('#maxuser').on('input', ()=>{
-    $('#rangeValue').text($('#maxuser').val());
-});
 
 $('#next').on('click',()=>{
     //alert('sadasd');
+    let key_format = /^[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}$/;
     let key = $('#key').val();
     if (key === '') {
         $('#key-label').text('Key is required');
         $('#key-label').css('color','red');
         return;
     }
-    if (key.length !== 15){
-        $('#key-label').text('Key is 12 digit');
+    //check if key is in xxx-xxx-xxx-xxx format
+    if (!key_format.test(key)){
+        $('#key-label').text('Key is xxx-xxx-xxx-xxx format');
         $('#key-label').css('color', 'red');
         return;
     }
     else{
-        socket.emit('createRequest', key);
+        socket.emit('joinRequest', key);
     }
 });
 
-socket.on('createResponse', (keyExists, users, avatars) => {
-    if (keyExists){
-       $('#key-label').text('Key already exists');
-       $('#key-label').css('color','red');
-    }
-    else{
-        e_users = users;
-        e_avatars = avatars;
-        if (e_avatars){
-            e_avatars.forEach(avatar => {
-                $(`label[for='${avatar}']`).hide();
-            });
-        }
-        $('.form-1').hide(100);
-        $('.howtouse').hide(100);
-        $('.form-2').show(100);
-    }
+socket.on('joinResponse', (keyExists, users, avatars, maxuser) => {
+    //console.log(maxuser);
+    if (!keyExists){
+        $('#key-label').text('Key does not exists');
+        $('#key-label').css('color','red');
+     }
+     else{
+         e_users = users;
+         e_avatars = avatars;
+         if(e_users.length >= maxuser){
+             $('.form-2').html("<img src='images/sad-cry.gif' loop=infinite height='80px' width='80px'><p>Access denied on this Key</p><a href='/' style='color: var(--blue);'>Back</a>");
+             $('.form-2').css({'text-align':'center','color': 'red', 'display': 'flex','flex-direction': 'column', 'gap': '20px', 'justify-content': 'center', 'align-items': 'center'});
+             $('.form-2 img').css('border-radius','50%');
+         }
+         e_avatars.forEach(avatar => {
+             $(`label[for='${avatar}']`).hide();
+         });
+         $('.form-1').hide(100);
+         $('.howtouse').hide(100);
+         $('.form-2').show(100);
+     }
 });
 
 function check(){
@@ -117,9 +94,9 @@ function check(){
         $('#name-label').css('color','red');
     }
     if (allow && checked){
-        $('#join').val('Creating...');
+        $('#join').val('Joining...');
         setTimeout(()=>{
-            $('#join').val('Create');
+            $('#join').val('Join');
         }, 2000);
     }
     return (allow && checked);
@@ -146,7 +123,6 @@ if (navigator.onLine) {
   $('.offline').fadeIn(400);
 }
 
-
 window.addEventListener('offline', function(e) { 
   console.log('offline'); 
   $('.offline').text('You are offline!');
@@ -162,6 +138,5 @@ window.addEventListener('online', function(e) {
     $('.offline').fadeOut(400);
   }, 1500);
 });
-
 
 document.addEventListener('contextmenu', event => event.preventDefault());
