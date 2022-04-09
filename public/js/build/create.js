@@ -1,78 +1,66 @@
-let socket = io();
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const socket_io_client_1 = require("socket.io-client");
+let socket = socket_io_client_1.io();
 let e_users = [];
 let e_avatars = [];
-
 const error = document.getElementById('error-callback');
-
 const url = window.location.href;
 const error_code = url.substring(url.indexOf('?') + 1);
-
 console.log(error_code);
-
-if (error_code !== url){
+if (error_code !== url) {
     error.innerText = '*Please fill up all requirements*';
 }
-
 function makeid(length) {
     let result = '';
     let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let charactersLength = characters.length;
     for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() *
-        charactersLength));
+        result += characters.charAt(Math.floor(Math.random() *
+            charactersLength));
     }
     return result;
 }
-
-//make id in xxx-xxx-xxx-xxx format
 $('#key').val(`${makeid(3)}-${makeid(3)}-${makeid(3)}-${makeid(3)}`);
-
-$('#key').on('click', ()=>{
-    let text = $('#key').val();
+$('#key').on('click', () => {
+    let text = $('#key').val().toString();
     console.log(text);
     navigator.clipboard.writeText(text);
-    //alert('Copied to clipboard');
     $('#key-label').css('color', 'limegreen');
     $('#key-label').text('Key copied!');
-    setTimeout(()=>{
+    setTimeout(() => {
         $('#key-label').css('color', 'white');
         $('#key-label').text('Tap to Copy');
     }, 2000);
 });
-
-//slider on input
-$('#maxuser').on('input', ()=>{
-    $('#rangeValue').text($('#maxuser').val());
+$('#maxuser').on('input', () => {
+    $('#rangeValue').text($('#maxuser').val().toString());
 });
-
-$('#next').on('click',()=>{
-    //alert('sadasd');
-    let key = $('#key').val();
+$('#next').on('click', () => {
+    let key = $('#key').val().toString();
     if (key === '') {
         $('#key-label').text('Key is required');
-        $('#key-label').css('color','red');
+        $('#key-label').css('color', 'red');
         return;
     }
-    if (key.length !== 15){
+    if (key.length !== 15) {
         $('#key-label').text('Key is 12 digit');
         $('#key-label').css('color', 'red');
         return;
     }
-    else{
+    else {
         socket.emit('createRequest', key);
     }
 });
-
 socket.on('createResponse', (keyExists, users, avatars) => {
-    if (keyExists){
-       $('#key-label').text('Key already exists');
-       $('#key-label').css('color','red');
+    if (keyExists) {
+        $('#key-label').text('Key already exists');
+        $('#key-label').css('color', 'red');
     }
-    else{
+    else {
         e_users = users;
         e_avatars = avatars;
-        if (e_avatars){
+        if (e_avatars) {
             e_avatars.forEach(avatar => {
                 $(`label[for='${avatar}']`).hide();
             });
@@ -82,25 +70,22 @@ socket.on('createResponse', (keyExists, users, avatars) => {
         $('.form-2').show(100);
     }
 });
-
-function check(){
-    //alert("Sen?");
-    //check if any radio button is checked
+function check() {
     let allow = false;
     let name = $('#name').val();
     if (name === '') {
         $('#name-label').text('Name is required');
-        $('#name-label').css('color','red');
+        $('#name-label').css('color', 'red');
         allow = false;
         return allow;
     }
-    else{
+    else {
         allow = true;
     }
     e_users.forEach(user => {
-        if(name === user){
+        if (name === user) {
             $('#name-label').text('Name already exists');
-            $('#name-label').css('color','red');
+            $('#name-label').css('color', 'red');
             allow = false;
         }
     });
@@ -112,56 +97,48 @@ function check(){
             break;
         }
     }
-    if (!checked){
+    if (!checked) {
         $('#name-label').text('Choose avatar');
-        $('#name-label').css('color','red');
+        $('#name-label').css('color', 'red');
     }
-    if (allow && checked){
+    if (allow && checked) {
         $('#join').val('Creating...');
-        setTimeout(()=>{
+        setTimeout(() => {
             $('#join').val('Create');
         }, 2000);
     }
     return (allow && checked);
 }
-
-
-if ('serviceWorker' in navigator){
-    
+if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker
-        .register('sw-poketab.js')
-        .then(reg => console.log("Service Worker Registered"))
-        .catch(err => console.log(`Service Worker: Error ${err}`));
+            .register('sw-poketab.js')
+            .then(reg => console.log("Service Worker Registered"))
+            .catch(err => console.log(`Service Worker: Error ${err}`));
     });
 }
-
 if (navigator.onLine) {
-  console.log('online');
-  $('.offline').fadeOut(400);
-} else {
-  console.log('offline');
-  $('.offline').text('You are offline!');
-  $('.offline').css('background', 'orangered');
-  $('.offline').fadeIn(400);
-}
-
-
-window.addEventListener('offline', function(e) { 
-  console.log('offline'); 
-  $('.offline').text('You are offline!');
-  $('.offline').css('background', 'orangered');
-  $('.offline').fadeIn(400);
-});
-
-window.addEventListener('online', function(e) {
-  console.log('Back to online');
-  $('.offline').text('Back to online!');
-  $('.offline').css('background', 'limegreen');
-  setTimeout(() => {
+    console.log('online');
     $('.offline').fadeOut(400);
-  }, 1500);
+}
+else {
+    console.log('offline');
+    $('.offline').text('You are offline!');
+    $('.offline').css('background', 'orangered');
+    $('.offline').fadeIn(400);
+}
+window.addEventListener('offline', function (e) {
+    console.log('offline');
+    $('.offline').text('You are offline!');
+    $('.offline').css('background', 'orangered');
+    $('.offline').fadeIn(400);
 });
-
-
+window.addEventListener('online', function (e) {
+    console.log('Back to online');
+    $('.offline').text('Back to online!');
+    $('.offline').css('background', 'limegreen');
+    setTimeout(() => {
+        $('.offline').fadeOut(400);
+    }, 1500);
+});
 document.addEventListener('contextmenu', event => event.preventDefault());

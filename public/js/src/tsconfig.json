@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "esnext",
+        "removeComments": true,
+        "outDir": "./../build"
+    },
+    "include": [
+        "./**/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ],
+    "lib": [
+        "esnext",
+        "dom",
+        "jquery",
+        "socket.io"
+    ]
+}

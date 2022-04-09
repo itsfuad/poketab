@@ -1,3 +1,8 @@
+
+import moment = require("moment");
+import Mustache = require("mustache");
+import { io } from "socket.io-client";
+
 //Variables
 const socket = io();
 const incommingmessage = new Audio('./../sounds/incommingmessage.wav');
@@ -21,6 +26,12 @@ let targetId;
 const emoji_regex = /^(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])+$/;
 
 class ClickAndHold{
+  target: any;
+  callback: any;
+  isHeld: boolean;
+  activeHoldTimeoutId: any;
+  timeOut: any;
+  
   /**
    * @param {EventTarget} target The html elemnt to target
    * @param {TimeOut} timeOut The time out in milliseconds
@@ -98,11 +109,11 @@ $('#my-image-message-template').remove();
 
 //Socket Connections
 socket.on('connect', function () {
-  let name = $('#myname').text();
-  let key = $('#mykey').text();
-  let avatar = $('#myavatar').text();
-  let maxuser = $('#maxuser').text();
-  let params = {
+  const name = $('#myname').text();
+  const key = $('#mykey').text();
+  const avatar = $('#myavatar').text();
+  const maxuser = $('#maxuser').text();
+  const params = {
     name: name,
     key: key,
     avatar: avatar,
@@ -128,7 +139,7 @@ socket.on('disconnect', function () {
 });
 
 socket.on('updateUserList', function (users, ids, key, avatars) {
-  let ol = $('<ul></ul>');
+  const ol:any = $('<ul></ul>');
   for (let i = 0; i < users.length; i++) {
     ol.append($(`<li class='user' id='${ids[i]}'></li>`).html(`<img height='30px' width='30px' src='images/avatars/${avatars[i]}(custom).png'> ${users[i]}`));
   }
@@ -140,7 +151,7 @@ socket.on('updateUserList', function (users, ids, key, avatars) {
 
 socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, id, targetId) {
   incommingmessage.play();
-  let formattedTime = moment(message.createdAt).format('hh:mm a');
+  const formattedTime = moment(message.createdAt).format('hh:mm a');
   let html;
   if (isReply) {
     if (replyTo == myname) replyTo = 'You';
@@ -221,7 +232,7 @@ socket.on('server_message', function (message, name = null, id = null) {
 });
 
 socket.on('newLocationMessage', function (message) {
-  let html = Mustache.render(locationMessageTemplate, {
+  const html = Mustache.render(locationMessageTemplate, {
     from: message.from,
     url: message.url
   });
@@ -235,7 +246,7 @@ socket.on('typing', (user, id) => {
   userMap.set(id, user);
   let _typing = '';
 
-  let mapkeys = userMap.values();
+  const mapkeys = userMap.values();
 
   for (let i = 1; i <= userMap.size; i++) {
     _typing += `${mapkeys.next().value}, `;
@@ -258,7 +269,7 @@ socket.on('stoptyping', (id) => {
   }else{
     let _typing = '';
 
-    let mapkeys = userMap.values();
+    const mapkeys = userMap.values();
   
     for (let i = 1; i <= userMap.size; i++) {
       _typing += `${mapkeys.next().value}, `;
@@ -289,7 +300,7 @@ socket.on('vibrateResponse', (sender_name, id) => {
 });
 
 socket.on('imageGet', (sendername, imagefile, avatar, id) => {
-  let html = Mustache.render(imageMessageTemplate, {
+  const html = Mustache.render(imageMessageTemplate, {
     from: sendername,
     id: id,
     attrVal: `images/avatars/${avatar}(custom).png`,
@@ -358,7 +369,7 @@ socket.on('removeReactResponse', (u_name, id)=>{
 
 //functions
 function addReact(target, userName, react){
-  let user = userName == myname ? 'You' : userName;
+  const user = userName == myname ? 'You' : userName;
   let emoji;
   switch(react){
     case 'senti':
@@ -394,7 +405,7 @@ function addReact(target, userName, react){
   }
   loadReact(target);
   // get list count
-  let count = $(`#${target} .reactions`).children().length;
+  const count = $(`#${target} .reactions`).children().length;
   //console.log(count);
 
   if (count >= 3){
@@ -439,7 +450,7 @@ function updateScroll(avatar = null, text = '') {
     }
     return;
   }
-  let element = document.getElementById("messages");
+  const element = document.getElementById("messages");
   element.scrollTop = element.scrollHeight;
   lastPageLength = $('#messages').scrollTop();
   removeNewMessagePopup();
@@ -486,8 +497,8 @@ function censorBadWords(text) {
 
 function makeid(length) {
   let result = '';
-  let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let charactersLength = characters.length;
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
   for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() *
       charactersLength));
@@ -499,7 +510,7 @@ function saveImage()
 {
   //console.log('Saving image');
   try{
-    let a = document.createElement('a');
+    const a = document.createElement('a');
     a.href = $('.lightbox__image img').attr('src');
     a.download = `save-${moment().valueOf()}.png`;
     document.body.appendChild(a);
@@ -511,11 +522,11 @@ function saveImage()
 }
 
 function resizeImage(img, mimetype) {
-  let canvas = document.createElement('canvas');
+  const canvas = document.createElement('canvas');
   let width = img.width;
   let height = img.height;
-  let max_height = 480;
-  let max_width = 480;
+  const max_height = 480;
+  const max_width = 480;
   // calculate the width and height, constraining the proportions
   if (width > height) {
     if (width > max_width) {
@@ -568,7 +579,7 @@ function popupMessage(text){
 function openImageView(evt)
 {
   try{
-  let target = evt.target;
+  const target = evt.target;
   $('.lightbox__image').html('');
   $('.lightbox__image').append(`<img src="${target.src}" alt="">`);
   $('.lightbox').fadeIn(100);
@@ -581,7 +592,7 @@ function openImageView(evt)
 function imageReply(evt)
 {
   try{
-  let target = evt.target;
+  const target = evt.target;
   targetId = target.closest('._message').id;
   //console.log(target.closest('._message').id);
   replyText = 'Image';
@@ -602,10 +613,11 @@ function imageReply(evt)
   }
 }
 
+
 function textReply(evt)
 {
   try{
-  let target = evt.target;
+  const target = evt.target;
   targetId = target.closest('._message').id;
   //console.log(target.closest('._message').id);
   replyText = target.innerText.length > 200 ? `${target.innerText.substring(0, 200)} ...` : target.innerText;
@@ -778,10 +790,10 @@ function closePopup() {
 }
 
 function reactOptionShow(evt){
-  let target = evt.target.closest('._message').id;
-  let emoji = $(`#${target} .react-or-You .emoticon`).text();
+  const target = evt.target.closest('._message').id;
+  //const emoji = $(`#${target} .react-or-You .emoticon`).text();
   //console.log(emoji);
-  let reactionName = $(`#${target} .react-or-You .emoticon`).data('name');
+  const reactionName = $(`#${target} .react-or-You .emoticon`).data('name');
   $(`.reactionContainer > div`).css('background', '');
   if (reactionName){
     $(`.reactionContainer .${reactionName}`).css('background', '#00000075');
@@ -805,7 +817,7 @@ if (navigator.onLine) {
 function loadReact(id, show = false){
   //console.log(id);
   $('.reactorContainer ul').html('');
-  let elem = $(`#${id} .reactor ul`).html();
+  const elem = $(`#${id} .reactor ul`).html();
   $('.reactorContainer ul').append(elem);
   if (show){
     if (elem !== ''){
@@ -874,8 +886,8 @@ $('.newmessagepopup').click(function () {
 
 $('#message-form').on('submit', function (e) {
   e.preventDefault();
-  let messageTextbox = $('[name=message]');
-  let text = messageTextbox.val();
+  const messageTextbox = $('[name=message]');
+  let text:string = messageTextbox.val().toString();
   messageTextbox.val('');
   if (text.length > 10000) {
     text = text.substring(0, 10000);
@@ -887,8 +899,8 @@ $('#message-form').on('submit', function (e) {
   text = text.trim();
   text = censorBadWords(text);
   text = text.replace(/\n/g, '¶');
-  let replaceId = makeid(10);
-  let formattedTime = moment().format('hh:mm a');
+  const replaceId = makeid(10);
+  const formattedTime = moment().format('hh:mm a');
   let html;
   if (isReply) {
     html = Mustache.render(myMessageTemplate, {
@@ -994,16 +1006,16 @@ $('.close').on('click', ()=> {
 
 $('.key').on('click', () => {
   //console.log('clicked');
-  let text = $('.keyname1').text();
+  const text = $('.keyname1').text();
   copyText(text);
 });
 
 $('.users').on('click', function (evt) {
   evt.preventDefault();
   //console.log('clicked on users');
-  let target = evt.target;
+  const target = evt.target;
   if (target.className === 'user') {
-    let targetId = target.id;
+    const targetId = target.id;
     socket.emit('vibrate', myname, targetId);
     if (targetId !== myid) {
       $('.popup-message').text(`You just vibrated ${target.innerText}'s Device`);
@@ -1025,7 +1037,7 @@ window.addEventListener('resize', () => {
 });
 
 $('.send').on('focus', function () {
-  $('#textbox').focus();
+  $('#textbox').trigger('focus');
 });
 
 $("textarea").each(function () {
@@ -1036,8 +1048,9 @@ $("textarea").each(function () {
 });
 
 $('#photo').on('change', ()=>{
-  let file = $('#photo')[0].files[0];
-  let reader = new FileReader();
+  const elem:HTMLInputElement = $('#photo')[0] as HTMLInputElement;
+  const file:File = elem.files[0];
+  const reader = new FileReader();
   reader.readAsDataURL(file);
   reader.onload = function(e)
   {
@@ -1052,19 +1065,20 @@ $('.previewimage__close').on('click', () => {
 
 
 $('.sendimage').on('click', () => {
-  let file = $('#photo')[0].files[0];
-  let reader = new FileReader();
+  const elem:HTMLInputElement = $('#photo')[0] as HTMLInputElement;
+  const file:any = elem.files[0];
+  const reader = new FileReader();
   reader.readAsArrayBuffer(file);
   reader.onload = function(e){
-    let blob = new Blob([e.target.result]);
+    const blob = new Blob([e.target.result]);
     window.URL = window.URL || window.webkitURL;
-    let blobURL = window.URL.createObjectURL(blob);
-    let image = new Image();
+    const blobURL = window.URL.createObjectURL(blob);
+    const image = new Image();
     image.src = blobURL;
     image.onload = function() {
-      let resized = resizeImage(image, file.mimetype);
-      let tempId = makeid(10);
-      let html = Mustache.render(myImageMessageTemplate, {
+      const resized = resizeImage(image, file.mimetype);
+      const tempId = makeid(10);
+      const html = Mustache.render(myImageMessageTemplate, {
         from: myname,
         id: tempId,
         image: `<img class='image-message' src='${resized}'>`,
@@ -1093,22 +1107,23 @@ $('.lightbox__save').on('click', ()=>{
 const Messages = document.querySelector('#messages'); 
 let repPop = false;
 //click on image event
-Messages.addEventListener('click', (e)=>{
+Messages.addEventListener('click', (e:Event)=>{
   //console.log(e.target);
-  if(e.target.className.includes('image-message')){
+  const target = e.target as HTMLElement;
+  if(target.className.includes('image-message')){
     if (!repPop) {
       openImageView(e);
     }
   }
-  else if(e.target.className.includes('emo')){
+  else if(target.className.includes('emo')){
     //console.log(e.target);
-    id = e.target.closest('._message').id;
+    const id = target.closest('._message').id;
     //console.log(id);
     clickOptionHide();
     loadReact(id, true);
   }
-  else if (e.target.className.includes('replyMessage')) {
-    const msgId = e.target.dataset.repid;
+  else if (target.className.includes('replyMessage')) {
+    const msgId = target.dataset.repid;
     const element = document.getElementById(msgId);
     try{
       element.scrollIntoView({
@@ -1131,7 +1146,8 @@ Messages.addEventListener('click', (e)=>{
 
 window.addEventListener('click', ({target}) => {
   //console.log(target);
-  if (target.className.includes('_message')) {
+  const element = target as HTMLElement;
+  if (element.className.includes('_message')) {
     $('.reactorContainer').hide();
     //$(`.time`).fadeOut(100);
   }
@@ -1143,7 +1159,7 @@ window.addEventListener('click', ({target}) => {
 ClickAndHold.applyTo(Messages, 200, function (evt) {
   //console.log(evt);
   lightboxClose();
-  let target = evt.target;
+  const target = evt.target;
   if (target.className.includes('textMessage')) {
     clickOptionShow('text', evt);
     reactOptionShow(evt);
