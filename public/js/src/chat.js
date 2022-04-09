@@ -1102,7 +1102,7 @@ Messages.addEventListener('click', (e)=>{
   }
   else if(e.target.className.includes('emo')){
     //console.log(e.target);
-    id = e.target.closest('._message').id;
+    const id = e.target.closest('._message').id;
     //console.log(id);
     clickOptionHide();
     loadReact(id, true);
