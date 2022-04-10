@@ -877,6 +877,9 @@ $('#message-form').on('submit', function (e) {
   let messageTextbox = $('[name=message]');
   let text = messageTextbox.val();
   messageTextbox.val('');
+
+  text = text.replace(/>/gi, "&gt;").replace(/</gi, "&lt;");
+
   if (text.length > 10000) {
     text = text.substring(0, 10000);
   }
@@ -887,6 +890,7 @@ $('#message-form').on('submit', function (e) {
   text = text.trim();
   text = censorBadWords(text);
   text = text.replace(/\n/g, '¶');
+
   let replaceId = makeid(10);
   let formattedTime = moment().format('hh:mm a');
   let html;

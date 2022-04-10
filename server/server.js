@@ -60,7 +60,7 @@ app.get('*', (_, res) => {
 });
 
 app.post('/chat', (req, res) => {
-  res.render('chat', {myname: req.body.name, mykey: req.body.key, myavatar: req.body.avatar, maxuser: req.body.maxuser || users.getMaxUser(req.body.key)});
+  res.render('chat', {myname: req.body.name.replace(/(<([^>]+)>)/gi, ""), mykey: req.body.key, myavatar: req.body.avatar, maxuser: req.body.maxuser || users.getMaxUser(req.body.key)});
 });
 
 
@@ -93,6 +93,7 @@ io.on('connection', (socket) => {
     let user = users.getUser(socket.id);
     if (user && isRealString(message.text)) {
       let id = uuid.v4();
+      message.text = message.text.replace(/>/gi, "&gt;").replace(/</gi, "&lt;");
       socket.emit('messageSent', replaceId, id);
       socket.broadcast.to(user.key).emit('newMessage', generateMessage(user.name, message.text), user.avatar, isReply, replyTo, replyText, id, targetId);
     }
