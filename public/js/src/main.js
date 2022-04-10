@@ -595,7 +595,7 @@ function imageReply(evt)
   $('.toast-popup').show();
   $('.toast-popup-name').html(`<i class="fa-solid fa-reply"></i> Replying to ${replyToPop}`);
   $('.toast-popup-message').text(`Image`);
-  $('#textbox').focus();
+  $('#textbox').trigger('focus');
   }
   catch(e){
     console.log(e);
@@ -619,7 +619,7 @@ function textReply(evt)
   $('.toast-popup').show();
   $('.toast-popup-name').html(`<i class="fa-solid fa-reply"></i> Replying to ${replyToPop}`);
   $('.toast-popup-message').text(target.innerText.length > 50 ? `${target.innerText.substring(0, 50)} ...` : target.innerText);
-  $('#textbox').focus();
+  $('#textbox').trigger('focus');
   }catch(e){
     console.log(e);
   }
@@ -839,7 +839,7 @@ window.addEventListener('online', function(e) {
 
 $('#textbox').on('keydown', (evt) => {
   if (evt.ctrlKey && (evt.key === 'Enter')) {
-    $('.send').click();
+    $('.send').trigger('click');
   }
 });
 

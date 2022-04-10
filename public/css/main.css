@@ -714,8 +714,11 @@ input[type=file] {
 #typingindicator {
   list-style-type: none;
   color: #adadad;
+  background: rgba(0, 0, 0, 0);
   font-size: 0.8rem;
   padding: 0 0 0 10px;
+  height: 20px;
+  width: 100%;
 }
 
 #typingindicator li {
@@ -760,7 +763,7 @@ input[type=file] {
 #messages {
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
-  padding: 10px;
+  padding: 0 10px;
   display: -ms-grid;
   display: grid;
   grid-auto-flow: row;
@@ -826,7 +829,7 @@ input[type=file] {
 #messages .message .textMessage {
   background: #26313d;
   padding: 10px 15px;
-  border-radius: 25px;
+  border-radius: 15px;
 }
 
 #messages .message .textMessage:hover::after {
@@ -836,7 +839,7 @@ input[type=file] {
 #messages .my__message .textMessage {
   background: var(--secondary);
   padding: 10px 15px;
-  border-radius: 25px;
+  border-radius: 15px;
 }
 
 #messages .main-message {
@@ -1168,10 +1171,10 @@ input[type=file] {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
+  -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+      -ms-flex-direction: column;
+          flex-direction: column;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -1202,6 +1205,7 @@ input[type=file] {
   max-height: 100px;
   border-radius: 25px;
   padding: 5px 35px;
+  height: auto;
   outline: none;
   resize: none;
   background: var(--focus);

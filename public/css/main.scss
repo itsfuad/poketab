@@ -537,9 +537,11 @@ scrollbar-width: none;  /* Firefox */
 #typingindicator{
   list-style-type: none;
   color: rgb(173, 173, 173);
+  background: rgba(0, 0, 0, 0);
   font-size: 0.8rem;
   padding: 0 0 0 10px;
-  //height: 25px;
+  height: 20px;
+  width: 100%;
   li{
     display: flex;
     flex-direction: row;
@@ -565,7 +567,8 @@ scrollbar-width: none;  /* Firefox */
 #messages{
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
-    padding: 10px;
+    padding: 0 10px;
+    //margin-bottom: 20px;
     display: grid;
     grid-auto-flow: row;
     flex-grow: 1;
@@ -602,7 +605,7 @@ scrollbar-width: none;  /* Firefox */
     .message .textMessage{
       background: #26313d;
       padding: 10px 15px;
-      border-radius: 25px;
+      border-radius: 15px;
       &:hover::after{
         left: 90%;
       }
@@ -610,7 +613,7 @@ scrollbar-width: none;  /* Firefox */
     .my__message .textMessage{
       background: var(--secondary);
       padding: 10px 15px;
-      border-radius: 25px;
+      border-radius: 15px;
     }
     .main-message{
       display: flex;
@@ -837,7 +840,7 @@ scrollbar-width: none;  /* Firefox */
 
 .chat__footer{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -854,6 +857,7 @@ scrollbar-width: none;  /* Firefox */
       max-height: 100px;
       border-radius: 25px;
       padding: 5px 35px;
+      height: auto;
       outline: none;
       resize: none;
       background: var(--focus);
