@@ -905,6 +905,10 @@ input[type=file] {
   left: 120%;
 }
 
+#messages .message .reactions {
+  right: 0;
+}
+
 #messages .my__message__body {
   display: -webkit-box;
   display: -ms-flexbox;
