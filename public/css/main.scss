@@ -291,6 +291,15 @@ input[type=file] {
   cursor: pointer;
 }
 
+.back{
+
+  cursor: pointer;
+  .fa-chevron-left{
+    color: var(--secondary);
+  }
+}
+
+
 .fa-location-dot{
   font-size: 2rem;
 }
@@ -311,7 +320,7 @@ input[type=file] {
     background: #7f7f7fc2;
     min-width: 15px;
     border-radius: 10px;
-    right: 0;
+    left: 0;
   }
   .time{
     left: 110%;
@@ -355,7 +364,7 @@ input[type=file] {
     background: #7f7f7fc2;
     min-width: 15px;
     border-radius: 10px;
-    left: 0;
+    right: 20px;
   }
   .time{
     right: 110%;
@@ -513,21 +522,14 @@ scrollbar-width: none;  /* Firefox */
 
 .topbar{
   display: flex;
+  flex-direction: row;
   align-items: center;
   position: absolute;
-  padding-top: 20px;
+  padding: 10px 15px;
   width: 100%;
   background: transparent;
   z-index: 10;
-  justify-content: center;
-  .topbar-wrapper{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    width: 100%;
-  }
+  justify-content: space-between;
 }
 
 .menuwrapper2{
@@ -576,7 +578,6 @@ scrollbar-width: none;  /* Firefox */
     scroll-behavior: smooth;
     list-style-type: none;
     gap: 2px;
-    margin-top: 50px;
     .message, .my__message{
       display: flex;
       flex-direction: row;
@@ -662,7 +663,7 @@ scrollbar-width: none;  /* Firefox */
         left: 120%;
       }
       .reactions{
-        right: 0;
+        left: 0;
        }
     }
     .my__message__body{
@@ -775,9 +776,12 @@ scrollbar-width: none;  /* Firefox */
   .reactions{
     position: absolute;
     bottom: 0px;
+    right: 20px;
     font-size: 0.8rem;
     display: flex;
     flex-direction: row;
+    align-items: center;
+    justify-content: center;
     background: #7f7f7fc2;
     min-width: 15px;
     border-radius: 10px;
@@ -976,7 +980,8 @@ img{
     padding-top: 0;
   }
   .topbar{
-    padding: 20px 25%;
+    background: transparent;
+    padding: 10px 25%;
   }
   .menuwrapper{
     width: 25%;

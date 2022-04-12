@@ -1094,6 +1094,10 @@ $('.lightbox__save').on('click', ()=>{
   saveImage();
 });
 
+$('.back').on('click', ()=>{
+  window.location.href = '/';
+});
+
 const Messages = document.querySelector('#messages'); 
 let repPop = false;
 //click on image event
@@ -1134,18 +1138,13 @@ Messages.addEventListener('click', (e)=>{
 });
 
 window.addEventListener('click', ({target}) => {
-  //console.log(target);
   if (target.className.includes('_message')) {
     $('.reactorContainer').hide();
     //$(`.time`).fadeOut(100);
   }
 });
 
-
-
-
 ClickAndHold.applyTo(Messages, 200, function (evt) {
-  //console.log(evt);
   lightboxClose();
   let target = evt.target;
   if (target.className.includes('textMessage')) {
@@ -1159,7 +1158,11 @@ ClickAndHold.applyTo(Messages, 200, function (evt) {
   }
 });
 
-window.addEventListener('resize',()=>{ 
+$('#textbox').on('blur', ()=>{
+  $('#textbox').trigger('focus');
+});
+
+window.addEventListener('resize',()=>{
   appHeight();
   updateScroll();
 });
