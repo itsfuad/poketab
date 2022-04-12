@@ -239,6 +239,7 @@
     window.location.hash = "inbox";
     setTimeout(function () {
         window.location.hash = "again-inbox";
+        console.log("again-inbox");
     }, 2000);
     window.onhashchange = function(){
         window.location.hash = "inbox";
