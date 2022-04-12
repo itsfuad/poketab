@@ -566,6 +566,10 @@ scrollbar-width: none;  /* Firefox */
   gap: 2px;
 }
 
+.reactions{
+  font-size: 0.8rem;
+}
+
 #messages{
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
@@ -655,9 +659,9 @@ scrollbar-width: none;  /* Firefox */
       .time{
         right: 120%;
       }
-   //   .reactions{
-    //    left: 0;
-   //   }
+    .reactions{
+        right: 20px;
+      }
     }
     .message{
       .time{
@@ -777,8 +781,6 @@ scrollbar-width: none;  /* Firefox */
   .reactions{
     position: absolute;
     bottom: 0px;
-    right: 20px;
-    font-size: 0.8rem;
     display: flex;
     flex-direction: row;
     align-items: center;

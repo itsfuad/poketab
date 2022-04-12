@@ -754,6 +754,10 @@ input[type=file] {
   gap: 2px;
 }
 
+.reactions {
+  font-size: 0.8rem;
+}
+
 #messages {
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
@@ -893,6 +897,10 @@ input[type=file] {
 
 #messages .my__message .time {
   right: 120%;
+}
+
+#messages .my__message .reactions {
+  right: 20px;
 }
 
 #messages .message .time {
@@ -1072,8 +1080,6 @@ input[type=file] {
 .message .reactions, .my__message .reactions {
   position: absolute;
   bottom: 0px;
-  right: 20px;
-  font-size: 0.8rem;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
