@@ -235,5 +235,14 @@
   <script defer src="/js/libs/moment.min.js"></script>
   <script defer src="/js/libs/mustache.min.js"></script>
   <script defer src="/js/src/main.js"></script>
+  <script>
+    window.location.hash = "inbox";
+    setTimeout(function () {
+        window.location.hash = "again-inbox";
+    }, 2000);
+    window.onhashchange = function(){
+        window.location.hash = "inbox";
+    }
+  </script>
 </body>
 </html>

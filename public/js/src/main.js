@@ -1149,14 +1149,3 @@ window.addEventListener('resize',()=>{
 });
 document.addEventListener('contextmenu', event => event.preventDefault());
 appHeight();
-
-
-window.location.hash = "inbox";
-
-setTimeout(function () {
-    window.location.hash = "again-inbox";
-}, 2000);
-
-window.onhashchange = function(){
-    window.location.hash = "inbox";
-}
