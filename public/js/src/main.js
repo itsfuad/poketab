@@ -448,19 +448,6 @@ function updateScroll(avatar = null, text = '') {
 function removeNewMessagePopup() {
   $('.newmessagepopup').fadeOut(200);
 }
-/*
-function scrollToBottom() {
-  let messages = $('#messages');
-  let newMessage = messages.children('li:last-child')
-  let clientHeight = messages.prop('clientHeight');
-  let scrollTop = messages.prop('scrollTop');
-  let scrollHeight = messages.prop('scrollHeight');
-  let newMessageHeight = newMessage.innerHeight();
-  let lastMessageHeight = newMessage.prev().innerHeight();
-  if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
-    messages.scrollTop(scrollHeight);
-  }
-}*/
 
 function censorBadWords(text) {
   text = text.replace(/fuck/g, 'f**k');
@@ -677,7 +664,7 @@ function clickOptionShow(type, evt1)
 {
   repPop = true;
   unbindClicks();
-  $('.click-option').fadeIn(100);
+  $('.click-option').show();
   if(type === 'text'){
 
     $('.store-action').hide();
@@ -787,7 +774,7 @@ function reactOptionShow(evt){
     $(`.reactionContainer .${reactionName}`).css('background', '#7f7f7fc2');
   }
   //console.log(reactionName);
-  $('.reactionContainer').fadeIn(100);
+  $('.reactionContainer').show();
 }
 
 //Check online status
@@ -988,13 +975,6 @@ $('#textbox').on('focus', function () {
   updateScroll();
 });
 
-$('.info').on('click', ()=> {
-  $('.about').fadeIn(200);
-});
-
-$('.close').on('click', ()=> {
-  $('.about').fadeOut(200);
-});
 
 $('.key').on('click', () => {
   //console.log('clicked');
@@ -1169,3 +1149,14 @@ window.addEventListener('resize',()=>{
 });
 document.addEventListener('contextmenu', event => event.preventDefault());
 appHeight();
+
+
+window.location.hash = "inbox";
+
+setTimeout(function () {
+    window.location.hash = "again-inbox";
+}, 2000);
+
+window.onhashchange = function(){
+    window.location.hash = "inbox";
+}
