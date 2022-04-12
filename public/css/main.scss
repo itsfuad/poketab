@@ -320,7 +320,7 @@ input[type=file] {
     background: #7f7f7fc2;
     min-width: 15px;
     border-radius: 10px;
-    left: 0;
+    right: 0;
   }
   .time{
     left: 110%;
@@ -375,6 +375,7 @@ input[type=file] {
   max-width: 35px;
   .emo{
     overflow: hidden;
+    padding: 0 5px;
   }
 }
 
@@ -668,7 +669,7 @@ scrollbar-width: none;  /* Firefox */
         left: 120%;
       }
       .reactions{
-        left: 0;
+        right: 0;
        }
     }
     .my__message__body{
@@ -762,11 +763,11 @@ scrollbar-width: none;  /* Firefox */
   background: var(--focus);
   padding: 20px;
   width: 300px;
-  max-height: 300px;
+  height: 220px;
   overflow-y: scroll;
   border-radius: 10px;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: flex-start;
   z-index: 10;
   backdrop-filter: blur(2px);
   filter: drop-shadow(2px 4px 6px black);

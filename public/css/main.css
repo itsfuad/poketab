@@ -384,7 +384,7 @@ input[type=file] {
   background: #7f7f7fc2;
   min-width: 15px;
   border-radius: 10px;
-  left: 0;
+  right: 0;
 }
 
 .image .time {
@@ -479,6 +479,7 @@ input[type=file] {
 
 .reactions .emo {
   overflow: hidden;
+  padding: 0 5px;
 }
 
 .reactorContainer ul {
@@ -908,7 +909,7 @@ input[type=file] {
 }
 
 #messages .message .reactions {
-  left: 0;
+  right: 0;
 }
 
 #messages .my__message__body {
@@ -1050,15 +1051,15 @@ input[type=file] {
   background: var(--focus);
   padding: 20px;
   width: 300px;
-  max-height: 300px;
+  height: 220px;
   overflow-y: scroll;
   border-radius: 10px;
   -webkit-box-align: start;
       -ms-flex-align: start;
           align-items: flex-start;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
   z-index: 10;
   -webkit-backdrop-filter: blur(2px);
           backdrop-filter: blur(2px);

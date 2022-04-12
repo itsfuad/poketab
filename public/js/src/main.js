@@ -439,10 +439,12 @@ function updateScroll(avatar = null, text = '') {
     }
     return;
   }
-  let element = document.getElementById("messages");
-  element.scrollTop = element.scrollHeight;
-  lastPageLength = $('#messages').scrollTop();
-  removeNewMessagePopup();
+  setTimeout(() => {
+    let element = document.getElementById("messages");
+    element.scrollTop = element.scrollHeight;
+    lastPageLength = $('#messages').scrollTop();
+    removeNewMessagePopup();
+  }, 100);
 }
 
 function removeNewMessagePopup() {
