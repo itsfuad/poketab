@@ -237,12 +237,15 @@
   <script defer src="/js/src/main.js"></script>
   <script>
     window.location.hash = "inbox";
+  
+    console.log(window.location.hash);
     setTimeout(function () {
         window.location.hash = "again-inbox";
-        console.log("again-inbox");
+        console.log(window.location.hash);
     }, 2000);
     window.onhashchange = function(){
         window.location.hash = "inbox";
+        console.log(window.location.hash);
     }
   </script>
 </body>
