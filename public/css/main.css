@@ -758,6 +758,7 @@ input[type=file] {
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
   padding: 0 10px;
+  margin-top: 50px;
   display: -ms-grid;
   display: grid;
   grid-auto-flow: row;
