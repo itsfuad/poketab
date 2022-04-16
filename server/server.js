@@ -1,5 +1,5 @@
 const path = require('path');
-const http = require('http');
+const https = require('https');
 const compression = require('compression');
 const express = require('express');
 const cors = require('cors');
@@ -21,7 +21,7 @@ const {
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
 let app = express();
-let server = http.createServer(app);
+let server = https.createServer(app);
 let io = socketIO(server);
 let users = new Users();
 
