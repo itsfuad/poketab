@@ -50,7 +50,7 @@ app.get('/login/:key', (req, res)=>{
   console.log(req.params);
   let key_format = /^[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}$/;
   if (key_format.test(req.params.key)){
-    res.render('login', {title: "Custom", key_label: "Checking Key..." , version: `v.${version}`, key: req.params.key});
+    res.render('login', {title: "Login", key_label: "Checking Key..." , version: `v.${version}`, key: req.params.key});
   }
   else{
     res.render('404');
