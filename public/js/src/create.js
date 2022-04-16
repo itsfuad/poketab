@@ -31,8 +31,8 @@ function makeid(length) {
 $('#key').val(`${makeid(3)}-${makeid(3)}-${makeid(3)}-${makeid(3)}`);
 
 $('#key').on('click', ()=>{
-    let text = $('#key').val();
-    console.log(text);
+    let text = `${location.origin}/login/${$('#key').val()}`;
+    //console.log(`${location.href}/${text}`);
     navigator.clipboard.writeText(text);
     //alert('Copied to clipboard');
     $('#key-label').css('color', 'limegreen');

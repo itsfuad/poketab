@@ -5,7 +5,6 @@ const express = require('express');
 const cors = require('cors');
 const socketIO = require('socket.io');
 const uuid = require("uuid");
-const bodyParser = require('body-parser');
 const version = process.env.npm_package_version;
 
 const {
@@ -28,14 +27,14 @@ let users = new Users();
 
 
 //view engine setup
-app.set('views', path.join(__dirname, '../public'));
+app.set('views', path.join(__dirname, '../public/views'));
 app.set('view engine', 'ejs');
 
 app.use(cors());
 app.use(compression());
 app.use(express.static(publicPath));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
+app.use(express.json());
+app.use(express.urlencoded({
   extended: false
 }));
 
@@ -44,11 +43,22 @@ app.get('/', (_, res) => {
 });
 
 app.get('/login', (_, res) => {
-  res.render('login', {version: `v.${version}`});
+  res.render('login', {title: "Login", key_label: "Enter join key", version: `v.${version}`, key: null});
+});
+
+app.get('/login/:key', (req, res)=>{
+  console.log(req.params);
+  let key_format = /^[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}$/;
+  if (key_format.test(req.params.key)){
+    res.render('login', {title: "Custom", key_label: "Checking Key..." , version: `v.${version}`, key: req.params.key});
+  }
+  else{
+    res.render('404');
+  }
 });
 
 app.get('/create', (_, res) => {
-  res.render('create', {version: `v.${version}`});
+  res.render('create', {title: "Create", version: `v.${version}`});
 });
 
 app.get('/chat', (_, res) => {

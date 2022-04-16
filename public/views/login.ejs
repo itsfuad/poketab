@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("layout/header") %>
+</head>
+<body>
+    <div class="offline" style="display: none; background: orange;padding: 2px;width: 100%;text-align: center;position: fixed;top: 0; z-index: 1000; font-size: 0.7rem"></div>
+    <div class="container">
+        <form action="/chat" method="post" autocomplete="off" id="form" onsubmit="return check();">
+            <div class="form-1" style="display: block;">
+                <div class="form-field">
+                    <div class="h3">Join a Chat <img src="/images/pokeball.png" alt="" srcset=""></div>
+                    <div id="error-callback"></div>
+                </div>
+                <div class="form-field">
+                    <label for="key" id="key-label"><%= key_label %> </label>
+                    <% if (key) { %>
+                        <input type="text" name="key" id="key" minlength="15" maxlength="15" value=<%= key %> >
+                    <% } else { %>
+                        <input type="text" name="key" id="key" minlength="15" maxlength="15">
+                    <% } %>
+                </div>
+                <div class="form-field">
+                    <input type="button" value="Next" id="next" >
+                </div>
+                <div class="create-chat">
+                    <fieldset class="line">
+                        <legend class="h1">Or</legend>
+                        <a id="create" href="/create">Create chat</a>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="form-2" style="display: none;">
+                <div class="form-field">
+                    <label for="name"  id="name-label">Your name</label>
+                    <input type="text" name="name" id="name" maxlength="20">
+                </div>
+                <div class="form-field">
+                    <%- include("layout/avatars") %> 
+                </div>
+                <div class="form-field">
+                    <input type="submit" value="Join" id="join">
+                </div>
+            </div>
+        </form>
+    </div>
+    <%- include("layout/footer") %>
+    <script defer src="/js/src/login.min.js"></script>
+    <% if (key) { %>
+        <script>
+            document.addEventListener("DOMContentLoaded", ()=>{
+                document.getElementById("next").click();
+            });
+        </script>
+    <% } %>
+</body>
+</html>

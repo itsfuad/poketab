@@ -980,7 +980,7 @@ $('#textbox').on('focus', function () {
 
 $('.key').on('click', () => {
   //console.log('clicked');
-  let text = $('.keyname1').text();
+  let text = `${location.origin}/login/${$('.keyname1').text()}`;
   copyText(text);
 });
 
