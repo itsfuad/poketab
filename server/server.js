@@ -53,7 +53,7 @@ app.get('/login/:key', (req, res)=>{
     res.render('login', {title: "Login", key_label: "Checking Key..." , version: `v.${version}`, key: req.params.key});
   }
   else{
-    res.render('404');
+    res.redirect('/');
   }
 });
 
