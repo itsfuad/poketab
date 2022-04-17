@@ -1,6 +1,6 @@
 {
   "name": "chatmate",
-  "version": "5.2.2",
+  "version": "5.2.3",
   "description": "Temporary chatting application",
   "main": "index.js",
   "scripts": {

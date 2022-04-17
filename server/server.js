@@ -22,7 +22,7 @@ const {
 const apiRequestLimiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minute
   max: 5, // limit each IP to 2 requests per windowMs
-  message: "Too many requests from this IP. Temporarily blocked from PokeTab server. please try again later",
+  message: "Too many requests. Temporarily blocked from PokeTab server. Please try again later",
   //handler: function (req, res, next) {
   //  res.render('block');
   //  next()
@@ -43,6 +43,7 @@ app.disable('x-powered-by');
 //view engine setup
 app.set('views', path.join(__dirname, '../public/views'));
 app.set('view engine', 'ejs');
+app.set('trust proxy', 1);
 
 app.use(cors());
 app.use(compression());
@@ -51,6 +52,7 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: false
 }));
+
 app.use(apiRequestLimiter);
 
 app.get('/', (_, res) => {
