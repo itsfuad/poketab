@@ -959,7 +959,6 @@ input[type=file] {
 
 #messages .textMessage, #messages .replyMessage {
   max-width: 50vw;
-  text-align: justify;
   word-wrap: break-word;
 }
 

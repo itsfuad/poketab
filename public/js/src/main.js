@@ -1121,6 +1121,7 @@ Messages.addEventListener('click', (e)=>{
 
 window.addEventListener('click', ({target}) => {
   //console.log(target, target.className.includes('reactorContainer') == false && target.className.includes('emo') == false && target.className.includes('react-or-') == false);
+  //console.dir(target);
   if (target.className.includes('reactorContainer') == false && target.className.includes('emo') == false && target.className.includes('react-or-') == false) {
     $('.reactorContainer').hide();
     //$(`.time`).fadeOut(100);

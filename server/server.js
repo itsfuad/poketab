@@ -1,7 +1,8 @@
 const path = require('path');
-const https = require('https');
+const http = require('http');
 const compression = require('compression');
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const cors = require('cors');
 const socketIO = require('socket.io');
 const uuid = require("uuid");
@@ -18,13 +19,20 @@ const {
   Users
 } = require('./utils/users');
 
+const apiRequestLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 5, // limit each IP to 2 requests per windowMs
+  message: "Too many requests from this IP, please try again later"
+});
+
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
 let app = express();
-let server = https.createServer(app);
+let server = http.createServer(app);
 let io = socketIO(server);
 let users = new Users();
 
+app.disable('x-powered-by');
 
 //view engine setup
 app.set('views', path.join(__dirname, '../public/views'));
@@ -37,6 +45,7 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: false
 }));
+app.use(apiRequestLimiter);
 
 app.get('/', (_, res) => {
   res.redirect('/login');
@@ -70,7 +79,8 @@ app.get('*', (_, res) => {
 });
 
 app.post('/chat', (req, res) => {
-  res.render('chat', {myname: req.body.name.replace(/(<([^>]+)>)/gi, ""), mykey: req.body.key, myavatar: req.body.avatar, maxuser: req.body.maxuser || users.getMaxUser(req.body.key)});
+  let username = req.body.name.replace(/(<([^>]+)>)/gi, "");
+  res.render('chat', {myname: username, mykey: req.body.key, myavatar: req.body.avatar, maxuser: req.body.maxuser || users.getMaxUser(req.body.key)});
 });
 
 
