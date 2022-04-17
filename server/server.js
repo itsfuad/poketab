@@ -22,7 +22,11 @@ const {
 const apiRequestLimiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minute
   max: 5, // limit each IP to 2 requests per windowMs
-  message: "Too many requests from this IP. Temporarily blocked from PokeTab server. please try again later",
+  //message: "Too many requests from this IP. Temporarily blocked from PokeTab server. please try again later",
+  handler: function (req, res, next) {
+    res.render('block');
+    next()
+  },
   standardHeaders: false, // Return rate limit info in the `RateLimit-*` headers
 	legacyHeaders: false // Disable the `X-RateLimit-*` headers
 });
@@ -58,7 +62,7 @@ app.get('/login', (_, res) => {
 });
 
 app.get('/login/:key', (req, res)=>{
-  console.log(req.params);
+  //console.log(req.params);
   let key_format = /^[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}$/;
   if (key_format.test(req.params.key)){
     res.render('login', {title: "Login", key_label: "Checking Key..." , version: `v.${version}`, key: req.params.key});
