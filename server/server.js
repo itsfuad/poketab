@@ -114,7 +114,7 @@ io.on('connection', (socket) => {
     socket.emit('server_message', generateMessage('', `You joined the chat.🔥`), params.name, socket.id);
     socket.broadcast.to(params.key).emit('server_message', generateMessage(params.name, `${params.name} joined the chat.🔥`));
     console.log(`New user ${params.name} connected on key ${params.key} with avatar ${params.avatar} and maxuser ${params.maxuser || users.getMaxUser(params.key)}`);
-    console.log(users.getMaxUser(params.key));
+    //console.log(users.getMaxUser(params.key));
   });
 
   socket.on('createMessage', async (message, replaceId, isReply, replyTo, replyText, targetId, callback) => {

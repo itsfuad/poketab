@@ -1212,11 +1212,10 @@ input[type=file] {
 }
 
 .chat__footer #message-form #textbox {
-  max-height: 100px;
-  max-height: 100px;
+  max-height: 120px;
+  min-height: 50px;
   border-radius: 25px;
   padding: 5px 35px;
-  height: auto;
   outline: none;
   resize: none;
   background: var(--focus);
