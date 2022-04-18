@@ -211,6 +211,7 @@ io.on('connection', (socket) => {
     //console.log('Reaction: ' + reaction);
     //console.log('TargetId: ' + targetId);
     //console.log('User: ' + userName);
+    //console.log(reaction);
     let user = users.getUser(socket.id);
     if (user) {
       io.to(user.key).emit('reactionResponse', targetId, userName, reaction);

@@ -360,11 +360,15 @@ socket.on('removeReactResponse', (u_name, id)=>{
 
 //functions
 function addReact(target, userName, react){
+  //console.log(target, userName, react);
   let user = userName == myname ? 'You' : userName;
   let emoji;
   switch(react){
-    case 'senti':
+    case 'like':
       emoji = '👍🏻';
+      break;
+    case 'dislike':
+      emoji = '👎🏻';
       break;
     case 'haha':
       emoji = '😂';
@@ -649,6 +653,7 @@ function deleteMessage(evt, type){
 }
 
 function sendReaction(evt, reaction){
+  //console.log(reaction);
   try{
     targetId = evt.target.closest('._message').id;
     socket.emit('reaction', targetId, myname, reaction);
@@ -662,6 +667,40 @@ function lightboxClose()
   $('.lightbox').fadeOut(100, ()=>{
     $('.lightbox__image').html("");
   });
+}
+
+function reactInit(evt1, evt){
+  //console.log(evt.target.className);
+  try{
+    switch (evt.target.className) {
+      case 'like':
+        sendReaction(evt1, 'like');
+        break;
+      case 'dislike':
+        sendReaction(evt1, 'dislike');
+        break;
+      case 'love':
+        sendReaction(evt1, 'love');
+        break;
+      case 'haha':
+        sendReaction(evt1, 'haha');
+        break;
+      case 'wow':
+        sendReaction(evt1, 'wow');
+        break;
+      case 'sad':
+        sendReaction(evt1, 'sad');
+        break;
+      case 'angry':
+        sendReaction(evt1, 'angry');
+        break;
+      default:
+        console.log('no reaction');
+        break;
+    }
+  }catch(e){
+    console.log(e);
+  }
 }
 
 function clickOptionShow(type, evt1)
@@ -693,24 +732,7 @@ function clickOptionShow(type, evt1)
       }
     });
     $('.reactionContainer').on('click', evt => {
-      if (evt.target.className.includes('senti')){
-        sendReaction(evt1, 'senti');
-      }
-      else if (evt.target.className.includes('haha')){
-        sendReaction(evt1, 'haha');
-      }
-      else if (evt.target.className.includes('sad')){
-        sendReaction(evt1, 'sad');
-      }
-      else if (evt.target.className.includes('wow')){
-        sendReaction(evt1, 'wow');
-      }
-      else if (evt.target.className.includes('love')){
-        sendReaction(evt1, 'love');
-      }
-      else if (evt.target.className.includes('angry')){
-        sendReaction(evt1, 'angry');
-      }
+      reactInit(evt1, evt);
       clickOptionHide();
     });
   }
@@ -740,24 +762,7 @@ function clickOptionShow(type, evt1)
       }
     });
     $('.reactionContainer').on('click', evt => {
-      if (evt.target.className.includes('senti')){
-        sendReaction(evt1, 'senti');
-      }
-      else if (evt.target.className.includes('haha')){
-        sendReaction(evt1, 'haha');
-      }
-      else if (evt.target.className.includes('sad')){
-        sendReaction(evt1, 'sad');
-      }
-      else if (evt.target.className.includes('wow')){
-        sendReaction(evt1, 'wow');
-      }
-      else if (evt.target.className.includes('love')){
-        sendReaction(evt1, 'love');
-      }
-      else if (evt.target.className.includes('angry')){
-        sendReaction(evt1, 'angry');
-      }
+      reactInit(evt1, evt);
       clickOptionHide();
     });
   }
