@@ -678,6 +678,8 @@ function clickOptionShow(type, evt1)
       if (evt.target.classList.contains('fa-reply')){
         textReply(evt1);
         clickOptionHide();
+        scrolling = false;
+        updateScroll();
       }
       else if (evt.target.classList.contains('fa-clone')){
         copyText(evt1.target.innerText);
@@ -721,6 +723,8 @@ function clickOptionShow(type, evt1)
       if (evt.target.classList.contains('fa-reply')){
         imageReply(evt1);
         clickOptionHide();
+        scrolling = false;
+        updateScroll();
       }
       else if (evt.target.classList.contains('fa-download')){
         $('.lightbox__image').html('');
@@ -1142,13 +1146,18 @@ ClickAndHold.applyTo(Messages, 200, function (evt) {
   }
 });
 
+let softKeyIsUp = false;
+
 $('#textbox').on('blur', ()=>{
-  $('#textbox').trigger('focus');
+  if (softKeyIsUp){
+    $('#textbox').trigger('focus');
+  }
 });
 
 window.addEventListener('resize',()=>{
   appHeight();
   updateScroll();
+  softKeyIsUp = !softKeyIsUp;
 });
 document.addEventListener('contextmenu', event => event.preventDefault());
 appHeight();
