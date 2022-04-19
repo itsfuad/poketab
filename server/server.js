@@ -26,8 +26,8 @@ const {
 } = require('./utils/users');
 
 const apiRequestLimiter = rateLimit({
-  windowMs: 1 * 60 * 1000, // 1 minute
-  max: 5, // limit each IP to 5 requests per windowMs
+  windowMs: 15 * 60 * 1000, // 1 minute
+  max: 100, // limit each IP to 5 requests per windowMs
   message: "Too many requests. Temporarily blocked from PokeTab server. Please try again later",
   //handler: function (req, res, next) {
   //  res.render('block');
