@@ -36,10 +36,10 @@ $('#key').on('click', ()=>{
     navigator.clipboard.writeText(text);
     //alert('Copied to clipboard');
     $('#key-label').css('color', 'limegreen');
-    $('#key-label').text('Key copied!');
+    $('#key-label').html('Key copied <i class="fa-solid fa-check"></i>');
     setTimeout(()=>{
         $('#key-label').css('color', 'white');
-        $('#key-label').text('Tap to Copy');
+        $('#key-label').html('Tap to Copy <i class="fa-regular fa-clone"></i>');
     }, 2000);
 });
 
@@ -68,8 +68,8 @@ $('#next').on('click',()=>{
 
 socket.on('createResponse', (keyExists, users, avatars) => {
     if (keyExists){
-       $('#key-label').text('Key already exists');
-       $('#key-label').css('color','red');
+        $('#key-label').html('Key does already exists <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
+        $('#key-label').css('color','red');
     }
     else{
         e_users = users;
@@ -91,7 +91,7 @@ function check(){
     let allow = false;
     let name = $('#name').val();
     if (name === '') {
-        $('#name-label').text('Name is required');
+        $('#name-label').html('Name is required <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
         $('#name-label').css('color','red');
         allow = false;
         return allow;
@@ -101,7 +101,7 @@ function check(){
     }
     e_users.forEach(user => {
         if(name === user){
-            $('#name-label').text('Name already exists');
+            $('#name-label').html('Name already exists <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
             $('#name-label').css('color','red');
             allow = false;
         }
@@ -115,7 +115,7 @@ function check(){
         }
     }
     if (!checked){
-        $('#name-label').text('Choose avatar');
+        $('#name-label').html('Choose avatar <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
         $('#name-label').css('color','red');
     }
     if (allow && checked){
@@ -139,22 +139,21 @@ if ('serviceWorker' in navigator){
 }
 
 if (navigator.onLine) {
-  console.log('online');
-  $('.offline').fadeOut(400);
-} else {
-  console.log('offline');
-  $('.offline').text('You are offline!');
-  $('.offline').css('background', 'orangered');
-  $('.offline').fadeIn(400);
-}
-
-
-window.addEventListener('offline', function(e) { 
-  console.log('offline'); 
-  $('.offline').text('You are offline!');
-  $('.offline').css('background', 'orangered');
-  $('.offline').fadeIn(400);
-});
+    console.log('online');
+    $('.offline').fadeOut(400);
+  } else {
+    console.log('offline');
+    $('.offline').html('You are offline <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
+    $('.offline').css('background', 'orangered');
+    $('.offline').fadeIn(400);
+  }
+  
+  window.addEventListener('offline', function(e) { 
+    console.log('offline'); 
+    $('.offline').html('You are offline <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
+    $('.offline').css('background', 'orangered');
+    $('.offline').fadeIn(400);
+  });
 
 window.addEventListener('online', function(e) {
   console.log('Back to online');

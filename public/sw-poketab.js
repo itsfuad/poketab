@@ -1,4 +1,4 @@
-const cacheName = 'chatmate-v5.2.6';
+const cacheName = 'chatmate-v5.3.0';
 //Call Install Event
 self.addEventListener('install', (e) => {
 	console.log('Service Worker: Installed');

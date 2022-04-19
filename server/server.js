@@ -1,3 +1,9 @@
+/**
+ * @author Fuad Hasan
+ * @version 6.1.0
+ * @since   2022-03-06
+ */
+
 const path = require('path');
 const http = require('http');
 const compression = require('compression');
@@ -21,7 +27,7 @@ const {
 
 const apiRequestLimiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minute
-  max: 5, // limit each IP to 2 requests per windowMs
+  max: 5, // limit each IP to 5 requests per windowMs
   message: "Too many requests. Temporarily blocked from PokeTab server. Please try again later",
   //handler: function (req, res, next) {
   //  res.render('block');
@@ -60,14 +66,14 @@ app.get('/', (_, res) => {
 });
 
 app.get('/login', (_, res) => {
-  res.render('login', {title: "Login", key_label: "Enter join key", version: `v.${version}`, key: null});
+  res.render('login', {title: "Login", key_label: 'Enter join key <i class="fa-solid fa-key"></i>', version: `v.${version}`, key: null});
 });
 
 app.get('/login/:key', (req, res)=>{
   //console.log(req.params);
   let key_format = /^[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}$/;
   if (key_format.test(req.params.key)){
-    res.render('login', {title: "Login", key_label: "Checking Key..." , version: `v.${version}`, key: req.params.key});
+    res.render('login', {title: "Login", key_label: `Checking <i class="fa-solid fa-circle-notch fa-spin"></i>` , version: `v.${version}`, key: req.params.key});
   }
   else{
     res.redirect('/');

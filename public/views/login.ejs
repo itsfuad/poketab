@@ -5,6 +5,7 @@
 </head>
 <body>
     <div class="offline" style="display: none; background: orange;padding: 2px;width: 100%;text-align: center;position: fixed;top: 0; z-index: 1000; font-size: 0.7rem"></div>
+    <div class="source-code"><a href="http://github.com/itsfuad/poketab/" target="_blank"><i class="fa-brands fa-github"></i></a></div>
     <div class="container">
         <form action="/chat" method="post" autocomplete="off" id="form" onsubmit="return check();">
             <div class="form-1" style="display: block;">
@@ -13,7 +14,7 @@
                     <div id="error-callback"></div>
                 </div>
                 <div class="form-field">
-                    <label for="key" id="key-label"><%= key_label %> </label>
+                    <label for="key" id="key-label"><%- key_label %> </label>
                     <% if (key) { %>
                         <input type="text" name="key" id="key" minlength="15" maxlength="15" value=<%= key %> >
                     <% } else { %>
@@ -45,7 +46,7 @@
         </form>
     </div>
     <%- include("layout/footer") %>
-    <script defer src="/js/src/login.min.js"></script>
+    <script defer src="/js/src/login.js"></script>
     <% if (key) { %>
         <script>
             document.addEventListener("DOMContentLoaded", ()=>{

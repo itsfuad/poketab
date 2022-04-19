@@ -19,20 +19,23 @@ if (error_code !== url){
 
 $('#next').on('click',()=>{
     //alert('sadasd');
+    $('#key-label').css('color','white');
+    $('#key-label').html('Checking <i class="fa-solid fa-circle-notch fa-spin"></i>');
     let key_format = /^[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}$/;
     let key = $('#key').val();
     if (key === '') {
-        $('#key-label').text('Key is required');
+        $('#key-label').html('Key is required <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
         $('#key-label').css('color','red');
         return;
     }
     //check if key is in xxx-xxx-xxx-xxx format
     if (!key_format.test(key)){
-        $('#key-label').text('Key is xxx-xxx-xxx-xxx format');
+        $('#key-label').html('Key is xxx-xxx-xxx-xxx format <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
         $('#key-label').css('color', 'red');
         return;
     }
     else{
+
         socket.emit('joinRequest', key);
     }
 });
@@ -40,7 +43,7 @@ $('#next').on('click',()=>{
 socket.on('joinResponse', (keyExists, users, avatars, maxuser) => {
     //console.log(maxuser);
     if (!keyExists){
-        $('#key-label').text('Key does not exists');
+        $('#key-label').html('Key does not exists <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
         $('#key-label').css('color','red');
      }
      else{
@@ -66,7 +69,7 @@ function check(){
     let allow = false;
     let name = $('#name').val();
     if (name === '') {
-        $('#name-label').text('Name is required');
+        $('#name-label').html('Name is required <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
         $('#name-label').css('color','red');
         allow = false;
         return allow;
@@ -76,7 +79,7 @@ function check(){
     }
     e_users.forEach(user => {
         if(name === user){
-            $('#name-label').text('Name already exists');
+            $('#name-label').html('Name already exists <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
             $('#name-label').css('color','red');
             allow = false;
         }
@@ -90,7 +93,7 @@ function check(){
         }
     }
     if (!checked){
-        $('#name-label').text('Choose avatar');
+        $('#name-label').html('Choose avatar <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
         $('#name-label').css('color','red');
     }
     if (allow && checked){
@@ -118,14 +121,14 @@ if (navigator.onLine) {
   $('.offline').fadeOut(400);
 } else {
   console.log('offline');
-  $('.offline').text('You are offline!');
+  $('.offline').html('You are offline <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
   $('.offline').css('background', 'orangered');
   $('.offline').fadeIn(400);
 }
 
 window.addEventListener('offline', function(e) { 
   console.log('offline'); 
-  $('.offline').text('You are offline!');
+  $('.offline').html('You are offline <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
   $('.offline').css('background', 'orangered');
   $('.offline').fadeIn(400);
 });
