@@ -50,7 +50,7 @@ socket.on('joinResponse', (keyExists, users, avatars, maxuser) => {
          e_users = users;
          e_avatars = avatars;
          if(e_users.length >= maxuser){
-             $('.form-2').html("<img src='images/sad-cry.gif' loop=infinite height='80px' width='80px'><p>Access denied on this Key</p><a href='/' style='color: var(--blue);'>Back</a>");
+             $('.form-2').html("<img src='/images/sad-cry.gif' loop=infinite height='80px' width='80px'><p>Access denied on this Key</p><a href='/' style='color: var(--blue);'>Back</a>");
              $('.form-2').css({'text-align':'center','color': 'red', 'display': 'flex','flex-direction': 'column', 'gap': '20px', 'justify-content': 'center', 'align-items': 'center'});
              $('.form-2 img').css('border-radius','50%');
          }

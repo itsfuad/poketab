@@ -235,22 +235,8 @@ socket.on('newLocationMessage', function (message) {
 socket.on('typing', (user, id) => {
   typingsound.play();
   userMap.set(id, user);
-  let _typing = '';
-
-  let mapkeys = userMap.values();
-
-  for (let i = 1; i <= userMap.size; i++) {
-    _typing += `${mapkeys.next().value}, `;
-    if (userMap.size > maxTypeShow){
-      if (i == maxTypeShow) { 
-        _typing = _typing.slice(0, -2);
-        _typing += ` and ${userMap.size - maxTypeShow} others  `;
-      }
-      break;
-    }
-  }
-  _typing = _typing.slice(0, -2);
-  $('#typingindicator').text(`${_typing} ${(userMap.size > 1 ) ? 'are' : 'is'} typing...`);
+  const typingString = getTypingString(userMap);
+  $('#typingindicator').text(typingString);
 });
 
 socket.on('stoptyping', (id) => {
@@ -258,23 +244,8 @@ socket.on('stoptyping', (id) => {
   if (userMap.size == 0) {
     $('#typingindicator').text('');
   }else{
-    let _typing = '';
-
-    let mapkeys = userMap.values();
-  
-    for (let i = 1; i <= userMap.size; i++) {
-      _typing += `${mapkeys.next().value}, `;
-      //check if last
-      if (userMap.size > maxTypeShow){
-        if (i == maxTypeShow) { 
-          _typing = _typing.slice(0, -2);
-          _typing += ` and ${userMap.size - maxTypeShow} others  `;
-        }
-        break;
-      }
-    }
-    _typing = _typing.slice(0, -2);
-    $('#typingindicator').text(`${_typing} ${(userMap.size > 1 ) ? 'are' : 'is'} typing...`);
+    const typingString = getTypingString(userMap);
+    $('#typingindicator').text(typingString);
   }
 });
 
@@ -456,6 +427,37 @@ function updateScroll(avatar = null, text = '') {
 function removeNewMessagePopup() {
   $('.newmessagepopup').fadeOut(200);
 }
+
+function getTypingString(userMap){
+  const array = Array.from(userMap.values());
+  let string = '';
+
+  if (array.length >= 1){
+      if (array.length == 1){
+          string = array[0];
+      }
+      else if (array.length == 2){
+          string += `${array[0]} and ${array[1]}`;
+      }
+      else if (array.length ==  3){
+          for (let i = 0; i < 2; i++){
+              string += `${array[i]}, `;
+          }
+          string = string.substring(0, string.length - 2);
+          string += ` and ${array[array.length - 1]}`;
+      }
+      else{
+          for (let i = 0; i < 3; i++){
+              string += `${array[i]}, `;
+          }
+          string = string.substring(0, string.length - 2);
+          string += ` and ${array.length - 3} other${array.length - 3 > 1 ? 's' : ''}`;
+      }
+  }
+  string += `${array.length > 1 ? ' are ': ' is '} typing...`
+  return string;
+}
+
 
 function censorBadWords(text) {
   text = text.replace(/fuck/g, 'f**k');
@@ -963,7 +965,7 @@ $('#send-location').on('click', function () {
 });
 
 
-$('#textbox').on('keydown', function () {
+$('#textbox').on('input change', function () {
   if (timeout) {
     clearTimeout(timeout);
     timeout = undefined;

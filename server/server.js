@@ -123,7 +123,7 @@ io.on('connection', (socket) => {
     //console.log(users.getMaxUser(params.key));
   });
 
-  socket.on('createMessage', async (message, replaceId, isReply, replyTo, replyText, targetId, callback) => {
+  socket.on('createMessage', (message, replaceId, isReply, replyTo, replyText, targetId, callback) => {
     let user = users.getUser(socket.id);
     if (user && isRealString(message.text)) {
       let id = uuid.v4();
@@ -133,14 +133,14 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('createLocationMessage', async (coords) => {
+  socket.on('createLocationMessage', (coords) => {
     let user = users.getUser(socket.id);
     if (user) {
       io.to(user.key).emit('newLocationMessage', generateLocationMessage(user.name, coords.latitude, coords.longitude));
     }
   });
 
-  socket.on('image', async (sendername, tempId, imagefile) => {
+  socket.on('image', (sendername, tempId, imagefile) => {
     let user = users.getUser(socket.id);
     if (user) {
       let id = uuid.v4();
@@ -149,7 +149,7 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('disconnect', async () => {
+  socket.on('disconnect', () => {
     let user = users.removeUser(socket.id);
     if (user) {
       io.to(user.key).emit('updateUserList', users.getUserList(user.key), users.getUserId(user.key), user.key, users.getAvatarList(user.key));
@@ -165,13 +165,13 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('typing', async () => {
+  socket.on('typing', () => {
     let user = users.getUser(socket.id);
     if (user) {
       socket.broadcast.to(user.key).emit('typing', user.name, user.id + '-typing');
     }
   });
-  socket.on('stoptyping', async () => {
+  socket.on('stoptyping', () => {
     let user = users.getUser(socket.id);
     if (user) {
       socket.broadcast.to(user.key).emit('stoptyping', user.id + '-typing');
@@ -191,7 +191,7 @@ io.on('connection', (socket) => {
       socket.emit('joinResponse',keyExists, userlist, avatarList, maxuser);
     }
   });
-  socket.on('createRequest', async (key) => {
+  socket.on('createRequest', (key) => {
     console.log('Requset for create chat: ' + key);
     let keyExists = users.getUserList(key).length > 0;
     if (keyExists){
