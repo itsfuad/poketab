@@ -120,6 +120,9 @@ socket.on('connect', function () {
       $('#main-screen').css('visibility', 'visible');
       $('#preloader').css('visibility', 'hidden');
       $('#preloader').remove();
+      if (userMap.size > 0) {
+        $('#typingindicator').text(getTypingString(userMap));
+      }
     }
   });
 });
@@ -132,7 +135,7 @@ socket.on('disconnect', function () {
 socket.on('updateUserList', function (users, ids, key, avatars) {
   let ol = $('<ul></ul>');
   for (let i = 0; i < users.length; i++) {
-    ol.append($(`<li class='user' id='${ids[i]}'></li>`).html(`<img height='30px' width='30px' src='images/avatars/${avatars[i]}(custom).png'> ${users[i]}`));
+    ol.append($(`<li class='user' id='${ids[i]}'></li>`).html(`<img height='30px' width='30px' src='/images/avatars/${avatars[i]}(custom).png'> ${users[i]}`));
   }
   $('.menu').html(`<i class="fa-solid fa-user"></i> ${users.length}`);
   $('.keyname1').text(`${key}`);
@@ -158,7 +161,7 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, 
       attr: "style",
       replyMessageStyle: `display: block; transform: translateY(20px);`,
       messageTitleStyle: `transform: translateY(20px)`,
-      attrVal: `images/avatars/${avatar}(custom).png`
+      attrVal: `/images/avatars/${avatar}(custom).png`
     });
   } else {
     //template = $('#message-template').html();
@@ -170,7 +173,7 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, 
       replyMessageStyle: `display: none; transform: translateY(0px);`,
       messageTitleStyle: `transform: translateY(0px)`,
       createdAt: formattedTime,
-      attrVal: `images/avatars/${avatar}(custom).png`
+      attrVal: `/images/avatars/${avatar}(custom).png`
     });
   }
   html = html.replace(/¶/g, '<br>');
@@ -235,8 +238,7 @@ socket.on('newLocationMessage', function (message) {
 socket.on('typing', (user, id) => {
   typingsound.play();
   userMap.set(id, user);
-  const typingString = getTypingString(userMap);
-  $('#typingindicator').text(typingString);
+  $('#typingindicator').text(getTypingString(userMap));
 });
 
 socket.on('stoptyping', (id) => {
@@ -244,8 +246,7 @@ socket.on('stoptyping', (id) => {
   if (userMap.size == 0) {
     $('#typingindicator').text('');
   }else{
-    const typingString = getTypingString(userMap);
-    $('#typingindicator').text(typingString);
+    $('#typingindicator').text(getTypingString(userMap));
   }
 });
 
@@ -265,7 +266,7 @@ socket.on('imageGet', (sendername, imagefile, avatar, id) => {
   let html = Mustache.render(imageMessageTemplate, {
     from: sendername,
     id: id,
-    attrVal: `images/avatars/${avatar}(custom).png`,
+    attrVal: `/images/avatars/${avatar}(custom).png`,
     image: `<img class='image-message' src='${imagefile}'>`,
     createdAt: moment().format('hh:mm a')
   });
@@ -410,7 +411,7 @@ function appHeight () {
 function updateScroll(avatar = null, text = '') {
   if (scrolling) {
     if (text.length > 0) {
-      $('.newmessagepopup img').attr('src', `./../images/avatars/${avatar}(custom).png`);
+      $('.newmessagepopup img').attr('src', `/images/avatars/${avatar}(custom).png`);
       $('.newmessagepopup .msg').text(text.length > 20 ? `${text.substring(0, 20)} ...` : text);
       $('.newmessagepopup').fadeIn(200);
     }
@@ -437,21 +438,13 @@ function getTypingString(userMap){
           string = array[0];
       }
       else if (array.length == 2){
-          string += `${array[0]} and ${array[1]}`;
+          string = `${array[0]} and ${array[1]}`;
       }
       else if (array.length ==  3){
-          for (let i = 0; i < 2; i++){
-              string += `${array[i]}, `;
-          }
-          string = string.substring(0, string.length - 2);
-          string += ` and ${array[array.length - 1]}`;
+          string = `${array[0]}, ${array[1]} and ${array[2]}`;
       }
       else{
-          for (let i = 0; i < 3; i++){
-              string += `${array[i]}, `;
-          }
-          string = string.substring(0, string.length - 2);
-          string += ` and ${array.length - 3} other${array.length - 3 > 1 ? 's' : ''}`;
+          string = `${array[0]}, ${array[1]}, ${array[2]} and ${array.length - 3} other${array.length - 3 > 1 ? 's' : ''}`;
       }
   }
   string += `${array.length > 1 ? ' are ': ' is '} typing...`
@@ -486,8 +479,7 @@ function makeid(length) {
   let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let charactersLength = characters.length;
   for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() *
-      charactersLength));
+    result += characters.charAt(Math.floor(Math.random() * charactersLength - 1));
   }
   return result;
 }
