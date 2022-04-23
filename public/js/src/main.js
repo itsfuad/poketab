@@ -1107,22 +1107,27 @@ Messages.addEventListener('click', (e)=>{
     //softKeyIsUp = !softKeyIsUp;
     const msgId = e.target.dataset.repid;
     const element = document.getElementById(msgId);
-    try{
-      setTimeout(()=>{
-      element.scrollIntoView({
-        block: "center"
-      });
-      }, 100);
-      $('#messages .my__message').css('filter', 'brightness(0.5)');
-      $('#messages .message').css('filter', 'brightness(0.5)');
-      $(`#${msgId}`).css('filter', 'initial');
-      setTimeout(function () {
-        $('#messages .my__message').css('filter', '');
-        $('#messages .message').css('filter', '');
-        $(`#${msgId}`).css('filter', '');
-      }, 1000);
+    if (element){
+      try{
+        setTimeout(()=>{
+        element.scrollIntoView({
+          block: "center"
+        });
+        }, 100);
+        $('#messages .my__message').css('filter', 'brightness(0.5)');
+        $('#messages .message').css('filter', 'brightness(0.5)');
+        $(`#${msgId}`).css('filter', 'initial');
+        setTimeout(function () {
+          $('#messages .my__message').css('filter', '');
+          $('#messages .message').css('filter', '');
+          $(`#${msgId}`).css('filter', '');
+        }, 1000);
+      }
+      catch(err){
+        popupMessage('Deleted message');
+      }
     }
-    catch(err){
+    else{
       popupMessage('Deleted message');
     }
     //softKeyIsUp = !softKeyIsUp;
