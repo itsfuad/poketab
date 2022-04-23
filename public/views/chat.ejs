@@ -25,7 +25,7 @@
     <div class="menuwrapper">
       <div class="chat__sidebar">
         <h3>#<span class="keyname1 key"></span></h3>
-        <div class="maxuser"><i class="fa-solid fa-user"></i> Max User: <%=maxuser%></div>
+        <div class="maxuser"><i class="fa-solid fa-user"></i> Active: <span id="current"></span>/<%=maxuser%></div>
         <div class="users"></div>
       </div>
     </div>
@@ -153,7 +153,11 @@
         <li class="image _message" id="{{id}}">
           <div class="avatar"><img id="avatar" src="{{attrVal}}" height="40px" width="40px" alt="" srcset=""></div>
           <div class="image__body _body">
-            <div class="image__title title"><h3>{{from}}</h3></div>
+            <% if (maxuser == 2) { %>
+              <div class="image__title title" style="display: none;"><h3>{{from}}</h3></div>
+            <% } else { %>
+              <div class="image__title title"><h3>{{from}}</h3></div>
+            <% } %> 
             <div class="main-image">
               <div class="imageMessage object">{{{image}}}</div>
               <div class="reactor" style="display: none;"><ul></ul></div>

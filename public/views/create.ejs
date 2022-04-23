@@ -17,7 +17,7 @@
                 </div>
                 <div class="form-field">
                     <label for="key" id="key-label">Tap to Copy <i class="fa-regular fa-clone"></i></label>
-                    <input type="text" name="key" value="Generating Key" class="copy-key" id="key" minlength="10" maxlength="10" readonly>
+                    <input type="text" name="key" placeholder="Generating Key" class="copy-key" id="key" minlength="10" maxlength="10" readonly>
                 </div>
                 <div class="form-field">
                     <input type="button" value="Next" id="next">
@@ -31,8 +31,8 @@
             </div>
             <div class="form-2" style="display: none;">
                 <div class="form-field">
-                    <label for="name"  id="name-label">Your name</label>
-                    <input type="text" name="name" id="name" maxlength="20">
+                    <label for="name"  id="name-label">Choose username</label>
+                    <input type="text" name="name" id="name" maxlength="20" placeholder="Username">
                 </div>
                 <div class="form-field">
                     <%- include("layout/avatars") %> 

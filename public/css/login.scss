@@ -114,6 +114,7 @@ body {
 .form-field label {
   display: block;
   margin-bottom: 7px;
+  min-height: 25px;
 }
 
 .form-field input,
@@ -136,6 +137,8 @@ body {
     font-size: 2rem;
   }
 }
+
+
 
 
 input:-webkit-autofill,
@@ -222,13 +225,15 @@ input[type="radio"] {
   }
 }
 
-input[type='text'], input[type='number']{
-  border: 2px solid var(--blue);
+input[type='text']{
+  border: none;
   outline: none;
   transition: 200ms;
+  background: #ffffff0f;
   &:focus{
-    border: 2px solid var(--hoverblue);
+    border: none;
   }
+  text-align: center;
 }
 
 img{

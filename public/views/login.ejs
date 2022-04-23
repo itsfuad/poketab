@@ -18,7 +18,7 @@
                     <% if (key) { %>
                         <input type="text" name="key" id="key" minlength="15" maxlength="15" value=<%= key %> >
                     <% } else { %>
-                        <input type="text" name="key" id="key" minlength="15" maxlength="15">
+                        <input type="text" name="key" id="key" minlength="15" maxlength="15" placeholder="xxx-xxx-xxx-xxx">
                     <% } %>
                 </div>
                 <div class="form-field">
@@ -33,8 +33,8 @@
             </div>
             <div class="form-2" style="display: none;">
                 <div class="form-field">
-                    <label for="name"  id="name-label">Your name</label>
-                    <input type="text" name="name" id="name" maxlength="20">
+                    <label for="name"  id="name-label">Choose username</label>
+                    <input type="text" name="name" id="name" maxlength="20" placeholder="Username">
                 </div>
                 <div class="form-field">
                     <%- include("layout/avatars") %> 

@@ -157,6 +157,7 @@ body {
 .form-field label {
   display: block;
   margin-bottom: 7px;
+  min-height: 25px;
 }
 
 .form-field input,
@@ -294,15 +295,17 @@ input[type="radio"]:checked + label img {
   cursor: pointer;
 }
 
-input[type='text'], input[type='number'] {
-  border: 2px solid var(--blue);
+input[type='text'] {
+  border: none;
   outline: none;
   -webkit-transition: 200ms;
   transition: 200ms;
+  background: #ffffff0f;
+  text-align: center;
 }
 
-input[type='text']:focus, input[type='number']:focus {
-  border: 2px solid var(--hoverblue);
+input[type='text']:focus {
+  border: none;
 }
 
 img {

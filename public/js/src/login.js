@@ -30,7 +30,7 @@ $('#next').on('click',()=>{
     }
     //check if key is in xxx-xxx-xxx-xxx format
     if (!key_format.test(key)){
-        $('#key-label').html('Key is xxx-xxx-xxx-xxx format <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
+        $('#key-label').html('Invalid key <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
         $('#key-label').css('color', 'red');
         return;
     }
@@ -75,15 +75,17 @@ function check(){
         return allow;
     }
     else{
-        allow = true;
-    }
-    e_users.forEach(user => {
-        if(name === user){
-            $('#name-label').html('Name already exists <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
+        //if e_users array contains name
+        if (e_users.includes(name)){
+            $('#name-label').html('Username exists <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
             $('#name-label').css('color','red');
             allow = false;
+            return allow;
         }
-    });
+        else{
+            allow = true;
+        }
+    }
     let radios = document.getElementsByName('avatar');
     let checked = false;
     for (var i = 0; i < radios.length; i++) {

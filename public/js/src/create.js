@@ -27,6 +27,7 @@ function makeid(length) {
     return result;
 }
 
+
 //make id in xxx-xxx-xxx-xxx format
 $('#key').val(`${makeid(3)}-${makeid(3)}-${makeid(3)}-${makeid(3)}`);
 
@@ -97,15 +98,17 @@ function check(){
         return allow;
     }
     else{
-        allow = true;
-    }
-    e_users.forEach(user => {
-        if(name === user){
-            $('#name-label').html('Name already exists <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
+        //if e_users array contains name
+        if (e_users.includes(name)){
+            $('#name-label').html('Username exists <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
             $('#name-label').css('color','red');
             allow = false;
+            return allow;
         }
-    });
+        else{
+            allow = true;
+        }
+    }
     let radios = document.getElementsByName('avatar');
     let checked = false;
     for (var i = 0; i < radios.length; i++) {

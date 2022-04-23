@@ -137,10 +137,11 @@ socket.on('updateUserList', function (users, ids, key, avatars) {
   for (let i = 0; i < users.length; i++) {
     ol.append($(`<li class='user' id='${ids[i]}'></li>`).html(`<img height='30px' width='30px' src='/images/avatars/${avatars[i]}(custom).png'> ${users[i]}`));
   }
-  $('.menu').html(`<i class="fa-solid fa-user"></i> ${users.length}`);
+  $('.menu').html(`<i class="fa-solid fa-earth-asia"></i> ${users.length}`);
   $('.keyname1').text(`${key}`);
   $('.keyname2').text(`${key}`);
   $('.users').html(ol);
+  $('#current').text(`${users.length}`);
 });
 
 socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, id, targetId) {
@@ -152,7 +153,7 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, 
     //template = $('#message-template').html();
     html = Mustache.render(messageTemplate, {
       text: linkify(message.text),
-      from: `${message.from} replied to ${replyTo}`,
+      from: `${message.from} replied to ${replyTo == message.from ? 'self' : replyTo}`,
       reply: replyText,
       id: id,
       repId: targetId,
@@ -171,7 +172,7 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, 
       id: id,
       attr: "style",
       replyMessageStyle: `display: none; transform: translateY(0px);`,
-      messageTitleStyle: `transform: translateY(0px)`,
+      messageTitleStyle: `${$('#maxuser').text() == 2 ? 'display: none;' : 'display: block;'} transform: translateY(0px)`,
       createdAt: formattedTime,
       attrVal: `/images/avatars/${avatar}(custom).png`
     });
