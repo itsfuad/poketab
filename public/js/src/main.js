@@ -848,8 +848,8 @@ $('.close-action').on('click', function (evt) {
 
 $('#messages').scroll(function (event) {
   scroll = $('#messages').scrollTop();
-  console.log(scroll + ' : ' + lastPageLength + ' : ' + scrolling);
-  console.log(lastPageLength-scroll);
+  //console.log(scroll + ' : ' + lastPageLength + ' : ' + scrolling);
+  //console.log(lastPageLength-scroll);
   let scrolled = lastPageLength-scroll;
   if (scroll <= lastPageLength) {
     if (scrolled >= 50){   

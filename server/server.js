@@ -155,13 +155,12 @@ io.on('connection', (socket) => {
       io.to(user.key).emit('updateUserList', users.getUserList(user.key), users.getUserId(user.key), user.key, users.getAvatarList(user.key));
       io.to(user.key).emit('server_message', generateMessage(user.name, `${user.name} left the chat.🐸`));
       console.log(`User ${user.name} disconnected from key ${user.key}`);
-      console.log(users.getMaxUser(user.key));
       let usercount = users.users.filter(datauser => datauser.key === user.key);
       if (usercount.length === 0) {
         users.removeMaxUser(user.key);
         console.log(`Session ended with key: ${user.key}`);
-        console.log(users.getMaxUser(user.key));
       }
+      console.log(`${usercount.length } users left`);
     }
   });
 
@@ -185,7 +184,7 @@ io.on('connection', (socket) => {
       socket.emit('joinResponse', keyExists, null, null, null);
     }
     else{
-      console.log('New User Attempt');
+      console.log('Request for existing key: ' + key);
       let userlist = users.getUserList(key);
       let avatarList = users.getAvatarList(key);
       socket.emit('joinResponse',keyExists, userlist, avatarList, maxuser);
@@ -199,7 +198,7 @@ io.on('connection', (socket) => {
     }
     else{
       socket.emit('createResponse', keyExists);
-      console.log('New User Attempt');
+      console.log('Creating new key: ' + key);
       let userlist = users.getUserList(key);
       let avatarList = users.getAvatarList(key);
       socket.emit('createResponse', keyExists, userlist, avatarList);
