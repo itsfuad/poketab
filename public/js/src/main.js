@@ -848,14 +848,21 @@ $('.close-action').on('click', function (evt) {
 
 $('#messages').scroll(function (event) {
   scroll = $('#messages').scrollTop();
-
-  if (scroll >= lastPageLength) {
+  console.log(scroll + ' : ' + lastPageLength + ' : ' + scrolling);
+  console.log(lastPageLength-scroll);
+  let scrolled = lastPageLength-scroll;
+  if (scroll <= lastPageLength) {
+    if (scrolled >= 50){   
+      scrolling = true;
+    }
+    if (scrolled == 0){
+      scrolling = false;
+    }
+  } 
+  else {
     lastPageLength = scroll;
     removeNewMessagePopup();
     scrolling = false;
-  } 
-  else {
-    scrolling = true;
   }
   //console.log(scrolling);
 });
