@@ -19,14 +19,14 @@
   <div id="main-screen" style="visibility: hidden;">
     <div class="offline" style="display: none; background: orange;padding: 2px;width: 100%;text-align: center;position: fixed;top: 0; font-size: 0.7rem"></div>
     <div class="topbar">
-        <div class="back"><i class="fa-solid fa-chevron-left"></i></div>
-        <div class="menu"></div>
+        <div class="currently_active"></div>
+        <div class="menu"><i class="fa-solid fa-ellipsis-vertical"></i></div>
     </div>
     <div class="menuwrapper">
       <div class="chat__sidebar">
-        <h3>#<span class="keyname1 key"></span></h3>
-        <div class="maxuser"><i class="fa-solid fa-user"></i> Active: <span id="current"></span>/<%=maxuser%></div>
+        <h3>#<span class="keyname1 key"></span> <i class="fa-regular fa-clone"></i></h3>
         <div class="users"></div>
+        <div class="leave back"><button>Leave</button></div>
       </div>
     </div>
     <div class="chat">

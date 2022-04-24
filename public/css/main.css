@@ -5,7 +5,7 @@
 
 :root {
   --primary-dark: #111d2a;
-  --foreground-dark: #ffffff;
+  --foreground-dark: #e1eeff;
   --secondary-dark: #4598ff;
   --focus--dark: #192838bd;
   --red: #cd4040;
@@ -70,6 +70,7 @@ body {
 .intro h2 {
   font-size: 1.5rem;
   text-align: center;
+  color: var(--foreground);
 }
 
 .wrapper {
@@ -128,7 +129,6 @@ button:hover {
 
 .chat__sidebar ul {
   list-style-type: none;
-  border-top: 2px solid var(--focus);
   margin: 5px;
   overflow-y: scroll;
 }
@@ -211,8 +211,37 @@ button:disabled {
   list-style-type: none;
 }
 
+.leave {
+  position: absolute;
+  bottom: 0;
+  padding: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+}
+
+.leave button {
+  border-radius: 5px;
+  background: orangered;
+  padding: 5px 10px;
+}
+
+.leave button:hover {
+  background: red;
+}
+
 .users {
-  overflow: scroll;
+  overflow-y: scroll;
+  max-height: 75%;
+  overflow-x: hidden;
+  border-top: 2px solid var(--focus);
 }
 
 .chat__sidebar li {
@@ -340,12 +369,9 @@ input[type=file] {
   cursor: pointer;
 }
 
-.back {
-  cursor: pointer;
-}
-
-.back .fa-chevron-left {
-  color: var(--secondary);
+.currently_active {
+  font-size: 0.8rem;
+  color: var(--foreground);
 }
 
 .fa-location-dot {
@@ -641,8 +667,11 @@ input[type=file] {
 
 .menu {
   display: block;
-  color: limegreen;
-  font-size: 0.9rem;
+  font-size: 1rem;
+  width: 30px;
+  text-align: center;
+  padding: 5px;
+  border-radius: 50%;
 }
 
 .menu:hover {
@@ -656,7 +685,7 @@ input[type=file] {
   background: var(--option-color);
   -webkit-backdrop-filter: blur(10px);
           backdrop-filter: blur(10px);
-  width: 60%;
+  width: 70%;
   -webkit-transition: 200ms;
   transition: 200ms;
   z-index: 11;

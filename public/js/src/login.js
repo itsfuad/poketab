@@ -43,7 +43,7 @@ $('#next').on('click',()=>{
 socket.on('joinResponse', (keyExists, users, avatars, maxuser) => {
     //console.log(maxuser);
     if (!keyExists){
-        $('#key-label').html('Key does not exists <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
+        $('#key-label').html('Key does not exists <i class="fa-solid fa-ghost" style="color: white;"></i>');
         $('#key-label').css('color','red');
      }
      else{
@@ -69,7 +69,7 @@ function check(){
     let allow = false;
     let name = $('#name').val();
     if (name === '') {
-        $('#name-label').html('Name is required <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
+        $('#name-label').html('Username required <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
         $('#name-label').css('color','red');
         allow = false;
         return allow;
@@ -95,7 +95,7 @@ function check(){
         }
     }
     if (!checked){
-        $('#name-label').html('Choose avatar <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
+        $('#name-label').html('Select avatar <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
         $('#name-label').css('color','red');
     }
     if (allow && checked){

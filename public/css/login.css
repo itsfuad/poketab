@@ -172,14 +172,13 @@ body {
 
 .source-code {
   position: relative;
-  text-align: right;
+  text-align: center;
   width: 100%;
   padding: 10px;
 }
 
 .source-code a {
   color: white;
-  font-size: 2rem;
 }
 
 input:-webkit-autofill,
@@ -338,7 +337,7 @@ input[type='button']:focus, input[type='submit']:focus {
   width: 100vw;
   padding: 30px;
   text-align: justify;
-  font-size: 0.7em;
+  font-size: 0.6em;
   max-width: -webkit-max-content;
   max-width: -moz-max-content;
   max-width: max-content;

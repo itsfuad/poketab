@@ -66,7 +66,7 @@ app.get('/', (_, res) => {
 });
 
 app.get('/login', (_, res) => {
-  res.render('login', {title: "Login", key_label: 'Enter join key <i class="fa-solid fa-key"></i>', version: `v.${version}`, key: null});
+  res.render('login', {title: "Login", key_label: 'Chat Key <i class="fa-solid fa-key"></i>', version: `v.${version}`, key: null});
 });
 
 app.get('/login/:key', (req, res)=>{

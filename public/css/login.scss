@@ -129,12 +129,11 @@ body {
 
 .source-code{
   position: relative;
-  text-align: right;
+  text-align: center;
   width: 100%;
   padding: 10px;
   a{
     color: white;
-    font-size: 2rem;
   }
 }
 
@@ -262,7 +261,7 @@ input[type='button'], input[type='submit']{
 width: 100vw;
 padding: 30px;
 text-align: justify;
-font-size: 0.7em;
+font-size: 0.6em;
 max-width: max-content;
 ul{
   list-style-type: disc;

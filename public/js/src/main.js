@@ -137,7 +137,7 @@ socket.on('updateUserList', function (users, ids, key, avatars) {
   for (let i = 0; i < users.length; i++) {
     ol.append($(`<li class='user' id='${ids[i]}'></li>`).html(`<img height='30px' width='30px' src='/images/avatars/${avatars[i]}(custom).png'> ${users[i]}`));
   }
-  $('.menu').html(`<i class="fa-solid fa-earth-asia"></i> ${users.length}`);
+  $('.currently_active').html(`<i class="fa-solid fa-user"></i> Active: ${users.length}/${$('#maxuser').text()}`);
   $('.keyname1').text(`${key}`);
   $('.keyname2').text(`${key}`);
   $('.users').html(ol);
