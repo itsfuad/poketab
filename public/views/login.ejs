@@ -26,7 +26,7 @@
                 <div class="create-chat">
                     <fieldset class="line">
                         <legend class="h1">Or</legend>
-                        <a id="create" href="/create">Create chat</a>
+                        <a id="create" href="/create" onclick="route()">Create chat</a>
                     </fieldset>
                 </div>
             </div>
@@ -46,6 +46,7 @@
     </div>
     <%- include("layout/footer") %>
     <script defer src="/js/src/login.min.js"></script>
+    <script src="/js/src/router.js"></script>
     <% if (key) { %>
         <script>
             document.addEventListener("DOMContentLoaded", ()=>{

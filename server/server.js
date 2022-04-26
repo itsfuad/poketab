@@ -89,7 +89,7 @@ app.get('/chat', (_, res) => {
 });
 
 app.get('*', (_, res) => {
-  res.render('404');
+  res.sendFile(path.join(publicPath, 'views/404.html'));
 });
 
 app.post('/chat', (req, res) => {
