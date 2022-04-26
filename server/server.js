@@ -82,7 +82,7 @@ app.get('/login/:key', (req, res)=>{
 });
 
 app.get('/create', (_, res) => {
-  res.render('create', {title: "Create", version: `v.${version}`, key: `${makeid(3)}-${makeid(3)}-${makeid(3)}-${makeid(3)}`});
+  res.render('create', {title: "Create", version: `v.${version}`, key: `${await makeid(15)}`});
 });
 
 app.get('/chat', (_, res) => {
@@ -103,6 +103,9 @@ function makeid(count){
   var text = "";
   var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   for (var i = 0; i < count; i++){
+    if (i % 3 == 0 && i != 0){
+        text += '-';
+    }
     text += possible.charAt(Math.floor(Math.random() * possible.length - 1));
   }
   return text;
