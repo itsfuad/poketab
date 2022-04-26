@@ -12,7 +12,10 @@ const rateLimit = require('express-rate-limit');
 const cors = require('cors');
 const socketIO = require('socket.io');
 const uuid = require("uuid");
+const mongo = require('mongodb').MongoClient;
 const version = process.env.npm_package_version;
+
+const URL = "mongodb+srv://itsfuad:U4EyFG6Ba7GlesYQ@cluster0.kt2xe.mongodb.net?retryWrites=true&w=majority";
 
 const {
   generateMessage,
@@ -81,8 +84,37 @@ app.get('/login/:key', (req, res)=>{
   }
 });
 
-app.get('/create', (_, res) => {
-  res.render('create', {title: "Create", version: `v.${version}`, key: `${makeid(3)}-${makeid(3)}-${makeid(3)}-${makeid(3)}`});
+app.get('/create', async (req, res) => {
+  const key = makeid(12);
+  const client = await mongo.connect(URL, {useNewUrlParser: true}).catch(err => {console.log(err);});
+  if (!client){
+    res.status(500).send({
+      error: 'Could not connect to database'
+    });
+  }
+  try{
+    const data = {IP: req.ip, Key: key};
+    const db = client.db('Poketab');
+    const collection = db.collection('IP_KEY');
+    await collection.insertOne(data, (err, res) => {
+        if (err) {
+            console.log(err);
+            client.close();
+            return;
+        }
+        else{
+            console.log("Inserted data");
+            client.close();
+            return;
+          }
+        });
+        res.render('create', {title: "Create", version: `v.${version}`, key: key});
+  }catch(err){
+    res.status(500).send({
+      error: 'Could not connect to database'
+    });
+  }
+      
 });
 
 app.get('/chat', (_, res) => {
@@ -93,16 +125,64 @@ app.get('*', (_, res) => {
   res.render('404');
 });
 
-app.post('/chat', (req, res) => {
-  let username = req.body.name.replace(/(<([^>]+)>)/gi, "");
-  res.render('chat', {myname: username, mykey: req.body.key, myavatar: req.body.avatar, maxuser: req.body.maxuser || users.getMaxUser(req.body.key)});
+app.post('/chat', async (req, res) => {
+  const client = await mongo.connect(URL, { useNewUrlParser: true }).catch(err => { console.log(err); });
+  if (!client){
+    res.status(500).send({
+      error: 'Could not connect to database'
+    });
+  }
+  try{
+    const db = client.db('Poketab');
+    const collection = db.collection('IP_KEY');
+    const key = req.body.key;
+    collection.findOne({Key: key}, async (err, data) => {
+      if (err){
+        console.log(err);
+        client.close();
+        return;
+      }else{
+        //wait for data to be found
+        console.log(data);
+        if (data){
+          if (data.IP == req.ip){
+            /*
+            res.status(200).send({
+              message: 'Welcome to PokeTab',
+              key: key
+            });
+            */
+            let username = req.body.name.replace(/(<([^>]+)>)/gi, "");
+            res.render('chat', {myname: username, mykey: req.body.key, myavatar: req.body.avatar, maxuser: req.body.maxuser || users.getMaxUser(req.body.key)});
+          }
+          else{
+            res.status(403).send({
+              error: 'IP mismatch'
+            });
+          }
+        }
+        else{
+          res.status(403).send({
+            error: 'Key expired or invalid'
+          });
+        }
+      }
+    });
+  }catch(err){
+    console.log(err);
+    res.status(500).send({
+      error: 'Could not connect to database'
+    });
+  }
 });
 
-
 function makeid(count){
-  var text = "";
-  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  for (var i = 0; i < count; i++){
+  let text = "";
+  const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  for (let i = 0; i < count; i++){
+    if (i % 3 == 0 && i != 0){
+      text += "-";
+    }
     text += possible.charAt(Math.floor(Math.random() * possible.length - 1));
   }
   return text;
@@ -207,7 +287,7 @@ io.on('connection', (socket) => {
       socket.emit('createResponse', keyExists, null, null);
     }
     else{
-      let key_format = /^[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}$/;;
+      let key_format = /^[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}$/;
       if (key_format.test(key)){
         socket.emit('createResponse', keyExists);
         console.log('Creating new key: ' + key);
