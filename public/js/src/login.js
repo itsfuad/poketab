@@ -35,8 +35,12 @@ $('#next').on('click',()=>{
         return;
     }
     else{
-
-        socket.emit('joinRequest', key);
+        socket.emit('joinRequest', key, function(err){
+            if (err){
+                $('#key-label').html('Invalid key <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
+                $('#key-label').css('color', 'red');
+            }
+        });
     }
 });
 

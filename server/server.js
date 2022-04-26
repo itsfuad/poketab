@@ -71,6 +71,7 @@ app.get('/login', (_, res) => {
 
 app.get('/login/:key', (req, res)=>{
   //console.log(req.params);
+  //validate key with uuid.v4
   let key_format = /^[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}$/;
   if (key_format.test(req.params.key)){
     res.render('login', {title: "Login", key_label: `Checking <i class="fa-solid fa-circle-notch fa-spin"></i>` , version: `v.${version}`, key: req.params.key});
@@ -81,7 +82,7 @@ app.get('/login/:key', (req, res)=>{
 });
 
 app.get('/create', (_, res) => {
-  res.render('create', {title: "Create", version: `v.${version}`});
+  res.render('create', {title: "Create", version: `v.${version}`, key: `${makeid(3)}-${makeid(3)}-${makeid(3)}-${makeid(3)}`});
 });
 
 app.get('/chat', (_, res) => {
@@ -97,6 +98,15 @@ app.post('/chat', (req, res) => {
   res.render('chat', {myname: username, mykey: req.body.key, myavatar: req.body.avatar, maxuser: req.body.maxuser || users.getMaxUser(req.body.key)});
 });
 
+
+function makeid(count){
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  for (var i = 0; i < count; i++){
+    text += possible.charAt(Math.floor(Math.random() * possible.length - 1));
+  }
+  return text;
+}
 
 
 io.on('connection', (socket) => {
@@ -190,18 +200,24 @@ io.on('connection', (socket) => {
       socket.emit('joinResponse',keyExists, userlist, avatarList, maxuser);
     }
   });
-  socket.on('createRequest', (key) => {
+  socket.on('createRequest', (key, callback) => {
     console.log('Requset for create chat: ' + key);
     let keyExists = users.getUserList(key).length > 0;
     if (keyExists){
       socket.emit('createResponse', keyExists, null, null);
     }
     else{
-      socket.emit('createResponse', keyExists);
-      console.log('Creating new key: ' + key);
-      let userlist = users.getUserList(key);
-      let avatarList = users.getAvatarList(key);
-      socket.emit('createResponse', keyExists, userlist, avatarList);
+      let key_format = /^[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}$/;;
+      if (key_format.test(key)){
+        socket.emit('createResponse', keyExists);
+        console.log('Creating new key: ' + key);
+        let userlist = users.getUserList(key);
+        let avatarList = users.getAvatarList(key);
+        socket.emit('createResponse', keyExists, userlist, avatarList);
+      }
+      else{
+        callback('Invalid key');
+      }
     }
   });
 

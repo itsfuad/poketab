@@ -16,21 +16,6 @@ if (error_code !== url){
     error.innerText = '*Please fill up all requirements*';
 }
 
-function makeid(length) {
-    let result = '';
-    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() *
-        charactersLength));
-    }
-    return result;
-}
-
-
-//make id in xxx-xxx-xxx-xxx format
-$('#key').val(`${makeid(3)}-${makeid(3)}-${makeid(3)}-${makeid(3)}`);
-
 $('#key').on('click', ()=>{
     let text = `${location.origin}/login/${$('#key').val()}`;
     //console.log(`${location.href}/${text}`);
@@ -51,19 +36,28 @@ $('#maxuser').on('input', ()=>{
 
 $('#next').on('click',()=>{
     //alert('sadasd');
+    $('#key-label').css('color','white');
+    $('#key-label').html('Checking <i class="fa-solid fa-circle-notch fa-spin"></i>');
+    let key_format = /^[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}$/;
     let key = $('#key').val();
     if (key === '') {
-        $('#key-label').text('Key is required');
+        $('#key-label').html('Key is required <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
         $('#key-label').css('color','red');
         return;
     }
-    if (key.length !== 15){
-        $('#key-label').text('Key is 12 digit');
+    //check if key is in xxx-xxx-xxx-xxx format
+    if (!key_format.test(key)){
+        $('#key-label').html('Invalid key <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
         $('#key-label').css('color', 'red');
         return;
     }
     else{
-        socket.emit('createRequest', key);
+        socket.emit('createRequest', key, function(err){
+            if (err){
+                $('#key-label').html('Invalid key <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
+                $('#key-label').css('color', 'red');
+            }
+        });
     }
 });
 
