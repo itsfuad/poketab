@@ -82,7 +82,7 @@ app.get('/login/:key', (req, res)=>{
 });
 
 app.get('/create', (_, res) => {
-  res.render('create', {title: "Create", version: `v.${version}`, key: `${await makeid(15)}`});
+  res.render('create', {title: "Create", version: `v.${version}`, key: makeid(12)});
 });
 
 app.get('/chat', (_, res) => {
@@ -95,7 +95,18 @@ app.get('*', (_, res) => {
 
 app.post('/chat', (req, res) => {
   let username = req.body.name.replace(/(<([^>]+)>)/gi, "");
-  res.render('chat', {myname: username, mykey: req.body.key, myavatar: req.body.avatar, maxuser: req.body.maxuser || users.getMaxUser(req.body.key)});
+
+  //get current users list on key
+  let key = req.body.key;
+  let user = users.getUserList(key);
+  let max_users = users.getMaxUser(key);
+  if (user.length >= max_users){
+    //send unauthorized access message
+    res.status(401).send({
+      message: "Unauthorized access."
+    });
+  }
+  res.render('chat', {myname: username, mykey: key, myavatar: req.body.avatar, maxuser: req.body.maxuser || max_users});
 });
 
 
