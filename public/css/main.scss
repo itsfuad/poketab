@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Comic';
-  src: url('./../fonts/comic-webfont.woff2');
+  src: url('/fonts/comic-webfont.woff2');
 }
 
 
@@ -403,10 +403,13 @@ input[type=file] {
 }
 
 [class^="react-or-"]{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 0.1fr 1fr 0.1fr;
+  justify-content: flex-start;
+  align-items: center;
   color: #698ea5;
+  gap: 5px;
   .emoticon{
     font-size: 1.3rem;
     &:hover{

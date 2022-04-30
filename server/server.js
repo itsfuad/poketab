@@ -247,14 +247,14 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('reaction', (targetId, userName, reaction) => {
+  socket.on('reaction', (targetId, userName, avatar, reaction) => {
     //console.log('Reaction: ' + reaction);
     //console.log('TargetId: ' + targetId);
     //console.log('User: ' + userName);
     //console.log(reaction);
     let user = users.getUser(socket.id);
     if (user) {
-      io.to(user.key).emit('reactionResponse', targetId, userName, reaction);
+      io.to(user.key).emit('reactionResponse', targetId, userName, avatar, reaction);
     }
   });
 

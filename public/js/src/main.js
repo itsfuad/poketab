@@ -1,16 +1,23 @@
 "use strict";
 //Variables
+
+import {v4} from 'uuid';
+import {io} from 'socket.io-client';
+import $ from 'jquery';
+import moment from 'moment';
+import Mustache from 'mustache';
+
+
 const socket = io();
-const incommingmessage = new Audio('./../sounds/incommingmessage.wav');
-const outgoingmessage = new Audio('./../sounds/outgoingmessage.wav');
-const joinsound = new Audio('./../sounds/join.wav');
-const leavesound = new Audio('./../sounds/leave.wav');
-const typingsound = new Audio('./../sounds/typing.wav');
+const incommingmessage = new Audio('/sounds/incommingmessage.wav');
+const outgoingmessage = new Audio('/sounds/outgoingmessage.wav');
+const joinsound = new Audio('/sounds/join.wav');
+const leavesound = new Audio('/sounds/leave.wav');
+const typingsound = new Audio('/sounds/typing.wav');
 let scrolling = false;
 let lastPageLength = $('#messages').scrollTop();;
 let scroll = 0;
 const userMap = new Map();
-const maxTypeShow = 2;
 let typing = false;
 let timeout = undefined;
 let isReply = false;
@@ -323,8 +330,8 @@ socket.on('deleteImage', (messageId, user) => {
   }
 });
 
-socket.on('reactionResponse', (target, userName, react)=>{
-  addReact(target, userName, react);
+socket.on('reactionResponse', (target, userName, avatar, react)=>{
+  addReact(target, userName, avatar, react);
 });
 
 
@@ -337,7 +344,7 @@ socket.on('removeReactResponse', (u_name, id)=>{
 
 
 //functions
-function addReact(target, userName, react){
+function addReact(target, userName, avatar, react){
   //console.log(target, userName, react);
   let user = userName == myname ? 'You' : userName;
   let emoji;
@@ -373,10 +380,10 @@ function addReact(target, userName, react){
       return;
     }else{
       $(`#${target} .reactor ul`).find(`li:contains(${user})`).remove();
-      $(`#${target} .reactor ul`).append(`<li class='react-or-${user}'><span>${user}</span><span class='emoticon' data-name='${react}'>${emoji}</span></li>`);
+      $(`#${target} .reactor ul`).append(`<li class='react-or-${user}'><img src='/images/avatars/${avatar}.png' height='25px' width='25px'></img><span>${user}</span><span class='emoticon' data-name='${react}'>${emoji}</span></li>`);
     }
   }
-  loadReact(target);
+  //loadReact(target);
   // get list count
   let count = $(`#${target} .reactions`).children().length;
   //console.log(count);
@@ -656,7 +663,7 @@ function sendReaction(evt, reaction){
   //console.log(reaction);
   try{
     targetId = evt.target.closest('._message').id;
-    socket.emit('reaction', targetId, myname, reaction);
+    socket.emit('reaction', targetId, myname, myavatar, reaction);
   }catch(e){
     console.log(e);
   }
@@ -898,7 +905,7 @@ $('#message-form').on('submit', function (e) {
   text = censorBadWords(text);
   text = text.replace(/\n/g, '¶');
 
-  let replaceId = makeid(10);
+  let replaceId = v4();
   let formattedTime = moment().format('hh:mm a');
   let html;
   if (isReply) {
@@ -1069,7 +1076,7 @@ $('.sendimage').on('click', () => {
     image.src = blobURL;
     image.onload = function() {
       let resized = resizeImage(image, file.mimetype);
-      let tempId = makeid(10);
+      let tempId = v4();
       let html = Mustache.render(myImageMessageTemplate, {
         from: myname,
         uid: myid,

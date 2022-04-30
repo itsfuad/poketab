@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Comic';
-  src: url("./../fonts/comic-webfont.woff2");
+  src: url("/fonts/comic-webfont.woff2");
 }
 
 :root {
@@ -513,17 +513,18 @@ input[type=file] {
 }
 
 [class^="react-or-"] {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  display: -ms-grid;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 0.1fr 1fr 0.1fr;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   color: #698ea5;
+  gap: 5px;
 }
 
 [class^="react-or-"] .emoticon {
