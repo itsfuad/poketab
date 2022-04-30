@@ -16,6 +16,7 @@
     <div class="offline" style="display: none; background: orange;padding: 2px;width: 100%;text-align: center;position: fixed;top: 0; font-size: 0.7rem"></div>
     <div class="topbar">
         <div class="currently_active"></div>
+        <div class="call"><i class="fa-solid fa-phone"></i></div>
         <div class="menu"><i class="fa-solid fa-ellipsis-vertical"></i></div>
     </div>
     <div class="menuwrapper">
@@ -93,6 +94,18 @@
       </div>
 
       <div class="reactorContainer" style="display: none;">Reactions <ul></ul></div>
+
+      <div class="call-sandbox">
+        <div class="call-controls">
+          <div class="hangup"><i class="fa-solid fa-phone-slash"></i></div>
+          <div class="mute"><i class="fa-solid fa-microphone-slash"></i></div>
+          <div class="minimize"><i class="fa-solid fa-angle-down"></i></div>
+        </div>
+        <div class="call-container">
+          <div class="stream">
+          </div>
+        </div>
+      </div>
     
       <template id="message-template" type="text/template">
         <li class="message _message" id="{{id}}" data-uid="{{uid}}">

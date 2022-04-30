@@ -19,6 +19,52 @@ let targetId;
 const emoji_regex = /^(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])+$/;
 const maxWindowHeight = window.innerHeight;
 
+/*const myPeer = new Peer({
+  key: 'peerjs',
+  debug: 3,
+  config: {
+    'iceServers': [
+      {
+        'urls': 'stun:stun.l.google.com:19302'
+      }
+    ]
+  }
+});*/
+
+const videogrid = document.querySelector('.stream');
+const myVideo = document.createElement('video');
+myVideo.muted = true;
+
+const peers = {};
+
+function connectToNewUser(userId, stream){
+  const call = myPeer.call(userId, stream);
+  const video = document.createElement('video');
+  call.on('stream', myStream => {
+    addVideoStream(video, myStream);
+  });
+  call.on('close', () => {
+    video.remove();
+  });
+  peers[userId] = call;
+}
+
+function addVideoStream(video, stream) {
+  video.srcObject = stream;
+  video.addEventListener('loadedmetadata', ()=>{
+    video.play();
+  });
+  videogrid.append(video);
+}
+
+const myPeer = new Peer(myid, {
+  host: '/',
+  port: '3001',
+});
+
+myPeer.on('open', id => {
+  socket.emit('peerId', id);
+});
 
 class ClickAndHold{
   /**
@@ -1179,6 +1225,45 @@ $('#textbox').on('blur', ()=>{
     $('#textbox').trigger('focus');
   }
 });
+
+
+$('.call').on('click', ()=>{
+  socket.emit('call-request', myname, myid, myavatar);
+  $('.call-sandbox').addClass('active');
+  navigator.mediaDevices.getUserMedia({video: true, audio: true})
+  .then(stream => {
+    addVideoStream(myVideo, stream);
+
+    myPeer.on('call', call => {
+      call.answer(stream);
+      const video = document.createElement('video');
+      call.on('stream', remoteStream => {
+        addVideoStream(video, remoteStream);
+      });
+    });
+
+    socket.on('call-request-response', (userName, userId, userAvatar) => {
+      connectToNewUser(userId, stream);
+    });
+    socket.on('call-end', (userName, userId) => {
+      if (peers[userId]) {
+        peers[userId].close();
+        //delete peers[userId];
+        popupMessage(`${userName} has left the call`);
+      }
+    });
+  });
+});
+
+$('.minimize').on('click', ()=>{
+  $('.call-sandbox').removeClass('active');
+});
+
+$('.hangup').on('click', ()=>{
+  socket.emit('call-end', myname, myid);
+  $('.call-sandbox').removeClass('active');
+});
+
 
 window.addEventListener('resize',()=>{
   appHeight();

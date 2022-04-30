@@ -25,6 +25,7 @@ const {
   Users
 } = require('./utils/users');
 
+
 const apiRequestLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minute
   max: 100, // limit each IP to 100 requests per windowMs
@@ -39,6 +40,7 @@ const apiRequestLimiter = rateLimit({
 
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
+
 let app = express();
 let server = http.createServer(app);
 let io = socketIO(server);
@@ -183,6 +185,7 @@ io.on('connection', (socket) => {
     if (user) {
       io.to(user.key).emit('updateUserList', users.getUserList(user.key), users.getUserId(user.key), user.key, users.getAvatarList(user.key));
       io.to(user.key).emit('server_message', generateMessage(user.name, `${user.name} left the chat.🐸`));
+      //io.to(user.key).emit('call-end', userName, userId);
       console.log(`User ${user.name} disconnected from key ${user.key}`);
       let usercount = users.users.filter(datauser => datauser.key === user.key);
       if (usercount.length === 0) {
@@ -278,6 +281,25 @@ io.on('connection', (socket) => {
       io.to(user.key).emit('deleteImage', messageId, userD);
     }
   });
+
+  socket.on('peerId', id => {
+    console.log('Peer request from: ' + id);
+  });
+
+  socket.on('call-request', (userName, userId, userAvatar) => {
+    let user = users.getUser(socket.id);
+    if (user) {
+      io.to(user.key).emit('call-request-response', userName, userId, userAvatar);
+    }
+  });
+
+  socket.on('call-end', (userName, userId) => {
+    let user = users.getUser(socket.id);
+    if (user) {
+      io.to(user.key).emit('call-end', userName, userId);
+    }
+  });
+
 });
 
 server.listen(port, () => {
