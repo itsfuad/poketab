@@ -7,10 +7,6 @@
 </head>
 
 <body>
-  <div id="myname" hidden><%=myname%></div>
-  <div id="mykey" hidden><%=mykey%></div>
-  <div id="myavatar" hidden><%=myavatar%></div>
-  <div id="maxuser" hidden><%=maxuser%></div>
   <div id="preloader" style="z-index: 100; overflow: hidden; visibility: visible; position: absolute;height: 100vh;width: 100vw;display: flex;position: fixed; flex-direction: column; background: #111d2a;justify-content: center;align-items: center;">
     <!--create a preloder screen-->
     <img src="/images/loader.gif" height="100px" width="100px" alt="" srcset="">
@@ -99,7 +95,7 @@
       <div class="reactorContainer" style="display: none;">Reactions <ul></ul></div>
     
       <template id="message-template" type="text/template">
-        <li class="message _message" id="{{id}}">
+        <li class="message _message" id="{{id}}" data-uid="{{uid}}">
           <div class="avatar"><img id="avatar" src="{{attrVal}}" height="40px" width="40px" alt="" srcset=""></div>
           <div class="message__body _body">
             <div class="message__title title" {{attr}}="{{messageTitleStyle}}"><h3>{{{repIcon}}}{{from}}</h3></div>
@@ -116,7 +112,7 @@
       </template>
   
       <template id="my-message-template" type="text/template">
-        <li class="my__message _message" id="{{id}}">
+        <li class="my__message _message" id="{{id}}" data-uid="{{uid}}">
           <!--div class="avatar"><img id="avatar" {{attr}}="{{attrVal}}" height="40px" width="40px" alt="" srcset=""></-div-->
           <div class="my__message__body _body">
             <div class="my__message__title title" {{attr}}="{{messageTitleStyle}}"><h3>{{{repIcon}}}{{from}}</h3></div>
@@ -150,13 +146,13 @@
       </template>
 
       <template id="image-message-template" type="text/template">
-        <li class="image _message" id="{{id}}">
+        <li class="image _message" id="{{id}}" data-uid="{{uid}}">
           <div class="avatar"><img id="avatar" src="{{attrVal}}" height="40px" width="40px" alt="" srcset=""></div>
           <div class="image__body _body">
             <% if (maxuser == 2) { %>
               <div class="image__title title" style="display: none;"><h3>{{from}}</h3></div>
             <% } else { %>
-              <div class="image__title title"><h3>{{from}}</h3></div>
+              <div class="image__title title" {{attr}}="{{messageTitleStyle}}"><h3>{{from}}</h3></div>
             <% } %> 
             <div class="main-image">
               <div class="imageMessage object">{{{image}}}</div>
@@ -169,7 +165,7 @@
       </template>
 
       <template id="my-image-message-template" type="text/template">
-        <li class="my__image _message" id="{{id}}">
+        <li class="my__image _message" id="{{id}}" data-uid="{{uid}}">
           <div class="image__body _body">
             <div class="image__title title" style="display: none;"><h3>{{from}}</h3></div>
             <div class="main-image">

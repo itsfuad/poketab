@@ -72,7 +72,7 @@ app.get('/login', (_, res) => {
 app.get('/login/:key', (req, res)=>{
   //console.log(req.params);
   //validate key with uuid.v4
-  let key_format = /^[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}$/;
+  const key_format = /^[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}$/;
   if (key_format.test(req.params.key)){
     res.render('login', {title: "Login", key_label: `Checking <i class="fa-solid fa-circle-notch fa-spin"></i>` , version: `v.${version}`, key: req.params.key});
   }
@@ -100,24 +100,29 @@ app.post('/chat', (req, res) => {
   let key = req.body.key;
   let user = users.getUserList(key);
   let max_users = users.getMaxUser(key);
+  let uid = uuid.v4();
   if (user.length >= max_users){
     //send unauthorized access message
     res.status(401).send({
       message: "Unauthorized access."
     });
   }
-  res.render('chat', {myname: username, mykey: key, myavatar: req.body.avatar, maxuser: req.body.maxuser || max_users});
+  res.render('chat', {myname: username, mykey: key, myid: uid, myavatar: req.body.avatar, maxuser: req.body.maxuser || max_users});
 });
 
 
 function makeid(count){
-  var text = "";
-  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  for (var i = 0; i < count; i++){
+  let text = "";
+  let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const key_format = /^[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}$/;
+  for (let i = 0; i < count; i++){
     if (i % 3 == 0 && i != 0){
         text += '-';
     }
     text += possible.charAt(Math.floor(Math.random() * possible.length - 1));
+  }
+  if (!key_format.test(text)){
+    text = makeid(count);
   }
   return text;
 }
@@ -147,13 +152,13 @@ io.on('connection', (socket) => {
     //console.log(users.getMaxUser(params.key));
   });
 
-  socket.on('createMessage', (message, replaceId, isReply, replyTo, replyText, targetId, callback) => {
+  socket.on('createMessage', (message, sender_id, replaceId, isReply, replyTo, replyText, targetId, callback) => {
     let user = users.getUser(socket.id);
     if (user && isRealString(message.text)) {
       let id = uuid.v4();
       message.text = message.text.replace(/>/gi, "&gt;").replace(/</gi, "&lt;");
       socket.emit('messageSent', replaceId, id);
-      socket.broadcast.to(user.key).emit('newMessage', generateMessage(user.name, message.text), user.avatar, isReply, replyTo, replyText, id, targetId);
+      socket.broadcast.to(user.key).emit('newMessage', generateMessage(user.name, message.text), sender_id, user.avatar, isReply, replyTo, replyText, id, targetId);
     }
   });
 
@@ -164,12 +169,12 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('image', (sendername, tempId, imagefile) => {
+  socket.on('image', (sendername, sender_id, tempId, imagefile) => {
     let user = users.getUser(socket.id);
     if (user) {
       let id = uuid.v4();
       socket.emit('messageSent', tempId, id);
-      socket.broadcast.to(user.key).emit('imageGet', sendername, imagefile, user.avatar, id);
+      socket.broadcast.to(user.key).emit('imageGet', sendername, sender_id, imagefile, user.avatar, id);
     }
   });
 
@@ -221,7 +226,7 @@ io.on('connection', (socket) => {
       socket.emit('createResponse', keyExists, null, null);
     }
     else{
-      let key_format = /^[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}$/;;
+      const key_format = /^[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}$/;;
       if (key_format.test(key)){
         socket.emit('createResponse', keyExists);
         console.log('Creating new key: ' + key);

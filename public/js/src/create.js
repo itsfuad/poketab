@@ -38,7 +38,7 @@ $('#next').on('click',()=>{
     //alert('sadasd');
     $('#key-label').css('color','white');
     $('#key-label').html('Checking <i class="fa-solid fa-circle-notch fa-spin"></i>');
-    let key_format = /^[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}$/;
+    const key_format = /^[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}$/;
     let key = $('#key').val();
     if (key === '') {
         $('#key-label').html('Key is required <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');

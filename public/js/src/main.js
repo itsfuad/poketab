@@ -6,8 +6,6 @@ const outgoingmessage = new Audio('./../sounds/outgoingmessage.wav');
 const joinsound = new Audio('./../sounds/join.wav');
 const leavesound = new Audio('./../sounds/leave.wav');
 const typingsound = new Audio('./../sounds/typing.wav');
-let myname;
-let myid;
 let scrolling = false;
 let lastPageLength = $('#messages').scrollTop();;
 let scroll = 0;
@@ -100,14 +98,10 @@ $('#my-image-message-template').remove();
 
 //Socket Connections
 socket.on('connect', function () {
-  let name = $('#myname').text();
-  let key = $('#mykey').text();
-  let avatar = $('#myavatar').text();
-  let maxuser = $('#maxuser').text();
   let params = {
-    name: name,
-    key: key,
-    avatar: avatar,
+    name: myname,
+    key: mykey,
+    avatar: myavatar,
     maxuser: maxuser
   };
   socket.emit('join', params, function (err) {
@@ -137,14 +131,14 @@ socket.on('updateUserList', function (users, ids, key, avatars) {
   for (let i = 0; i < users.length; i++) {
     ol.append($(`<li class='user' id='${ids[i]}'></li>`).html(`<img height='30px' width='30px' src='/images/avatars/${avatars[i]}(custom).png'> ${users[i]}`));
   }
-  $('.currently_active').html(`<i class="fa-solid fa-user"></i> Active: ${users.length}/${$('#maxuser').text()}`);
+  $('.currently_active').html(`<i class="fa-solid fa-user"></i> Active: ${users.length}/${maxuser}`);
   $('.keyname1').text(`${key}`);
   $('.keyname2').text(`${key}`);
   $('.users').html(ol);
   $('#current').text(`${users.length}`);
 });
 
-socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, id, targetId) {
+socket.on('newMessage', function (message, sender_id, avatar, isReply, replyTo, replyText, id, targetId) {
   incommingmessage.play();
   let formattedTime = moment(message.createdAt).format('hh:mm a');
   let html;
@@ -154,6 +148,7 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, 
     html = Mustache.render(messageTemplate, {
       text: linkify(message.text),
       from: `${message.from} replied to ${replyTo == message.from ? 'self' : replyTo}`,
+      uid: sender_id,
       reply: replyText,
       id: id,
       repId: targetId,
@@ -169,15 +164,21 @@ socket.on('newMessage', function (message, avatar, isReply, replyTo, replyText, 
     html = Mustache.render(messageTemplate, {
       text: linkify(message.text),
       from: message.from,
+      uid: sender_id,
       id: id,
       attr: "style",
       replyMessageStyle: `display: none; transform: translateY(0px);`,
-      messageTitleStyle: `${$('#maxuser').text() == 2 ? 'display: none;' : 'display: block;'} transform: translateY(0px)`,
+      messageTitleStyle: `${(maxuser == 2) || (document.querySelector('#messages').lastChild.previousSibling.dataset.uid == sender_id) ? 'display: none;' : 'display: block;'} transform: translateY(0px)`,
       createdAt: formattedTime,
       attrVal: `/images/avatars/${avatar}(custom).png`
     });
   }
+  if (document.querySelector('#messages').lastChild.previousSibling.dataset.uid == sender_id) {
+    let target = document.querySelector('#messages').lastChild.previousSibling.classList[0];
+    $(`.${target} .avatar`).last().css('visibility', 'hidden');
+  }
   html = html.replace(/¶/g, '<br>');
+  if ($('#id'))
   $('#messages').append(html);
   if (emo_test(message.text)) {
     $("#messages li:last div p").css({
@@ -203,10 +204,7 @@ socket.on('messageSent', function (replaceId, id) {
 });
 
 
-socket.on('server_message', function (message, name = null, id = null) {
-  myname = name || myname;
-  myid = id || myid;
-
+socket.on('server_message', function (message) {
   let html = Mustache.render(serverMessageTemplate, {
     text: message.text,
     from: message.from
@@ -263,18 +261,25 @@ socket.on('vibrateResponse', (sender_name, id) => {
   }
 });
 
-socket.on('imageGet', (sendername, imagefile, avatar, id) => {
+socket.on('imageGet', (sendername, sender_id, imagefile, avatar, id) => {
   let html = Mustache.render(imageMessageTemplate, {
     from: sendername,
+    uid: sender_id,
     id: id,
     attrVal: `/images/avatars/${avatar}(custom).png`,
+    attr: "style",
+    messageTitleStyle: `${(maxuser == 2) || (document.querySelector('#messages').lastChild.previousSibling.dataset.uid == sender_id) ? 'display: none;' : 'display: block;'} transform: translateY(0px)`,
     image: `<img class='image-message' src='${imagefile}'>`,
     createdAt: moment().format('hh:mm a')
   });
   incommingmessage.play();
+  if (document.querySelector('#messages').lastChild.previousSibling.dataset.uid == sender_id) {
+    let target = document.querySelector('#messages').lastChild.previousSibling.classList[0];
+    $(`.${target} .avatar`).last().css('visibility', 'hidden');
+  }
   $('#messages').append(html);
   $(`#${id}`).find('.image-message').on('load', function () {
-  updateScroll(avatar, 'Photo');
+    updateScroll(avatar, 'Photo');
   });
 });
 
@@ -900,6 +905,7 @@ $('#message-form').on('submit', function (e) {
     html = Mustache.render(myMessageTemplate, {
       text: linkify(text),
       from: `You replied to ${replyTo == myname ? 'You': replyTo}`,
+      uid: myid,
       id: replaceId,
       repId: targetId,
       reply: replyText,
@@ -914,6 +920,7 @@ $('#message-form').on('submit', function (e) {
       text: linkify(text),
       id: replaceId,
       from: myname,
+      uid: myid,
       attr: "style",
       replyMessageStyle: `display: none; transform: translateY(0px);`,
       messageTitleStyle: `display: none; transform: translateY(0px)`,
@@ -933,7 +940,7 @@ $('#message-form').on('submit', function (e) {
   socket.emit('stoptyping');
   socket.emit('createMessage', {
       text: text
-    }, replaceId, isReply, replyTo, replyText, targetId,
+    }, myid, replaceId, isReply, replyTo, replyText, targetId,
     function () {
       $('#textbox').css('height', 'auto');
     });
@@ -1065,6 +1072,7 @@ $('.sendimage').on('click', () => {
       let tempId = makeid(10);
       let html = Mustache.render(myImageMessageTemplate, {
         from: myname,
+        uid: myid,
         id: tempId,
         image: `<img class='image-message' src='${resized}'>`,
         createdAt: moment(moment().valueOf()).format('hh:mm a')
@@ -1073,7 +1081,7 @@ $('.sendimage').on('click', () => {
         scrolling = false;
         updateScroll();
       });
-      socket.emit('image', myname, tempId, resized);
+      socket.emit('image', myname, myid, tempId, resized);
     }
     $('.previewimage').hide();
     $('.previewimage__image').html("");
