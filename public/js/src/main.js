@@ -203,7 +203,7 @@ socket.on('messageSent', function (replaceId, id) {
   outgoingmessage.play();
   try{
     $(`#${replaceId}`).attr('id', id);
-    $(`#${id} .sent`).attr('class', 'fa-solid fa-circle-check sent');
+    $(`#${id} .sent`).remove();
   }
   catch(e){
     console.log(e);

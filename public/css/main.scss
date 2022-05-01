@@ -281,10 +281,11 @@ input[type=file] {
 }
 
 .sent{
-  font-size: 0.6rem;
-  color: var(--secondary);
-  position: relative;
-  right: 5px;
+  font-size: 0.6rem !important;
+  color: #e1eeff !important;
+  position: relative !important;
+  right: -3px !important;
+  padding: 0 !important;
 }
 
 .imageMessage{
@@ -356,7 +357,7 @@ input[type=file] {
   .main-image{
     display: flex;
     flex-direction: row;
-    gap: 8px;
+    //gap: 8px;
     align-items: flex-end;
     justify-content: flex-start;
     position: relative;
@@ -654,7 +655,7 @@ scrollbar-width: none;  /* Firefox */
       position: relative;
       display: flex;
       flex-direction: row;
-      gap: 8px;
+      //gap: 8px;
       align-items: flex-end;
     }
     .replyMessage{

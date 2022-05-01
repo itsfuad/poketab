@@ -1,4 +1,4 @@
-const cacheName = 'chatmate-v5.4.6';
+const cacheName = 'chatmate-v5.4.7';
 //Call Install Event
 self.addEventListener('install', (e) => {
 	console.log('Service Worker: Installed');
@@ -44,4 +44,26 @@ self.addEventListener('fetch', e=> {
 	);
 });
 
+/*
+if (Notification.permission === 'granted'){
+    alert("We have permission");
+}
+else if (Notification.permission !== 'denied'){
+    Notification.requestPermission().then(permission => {
+        console.log(permission);
+        if (permission === 'granted'){
+            console.log("We have permission");
+        }
+    });
+}
 
+//ask for notification permission
+self.addEventListener('push', e => {
+	console.log('Service Worker: Push Received [' + e.data.text() + ']');
+	const data = e.data.json();
+	self.registration.showNotification(data.title, {
+		body: 'Notification from ' + data.name,
+		icon: 'https://cdn.pixabay.com/photo/2016/11/18/23/38/child-1837375_960_720.png'
+	});
+});
+*/
