@@ -156,6 +156,7 @@ socket.on('newMessage', function (message, sender_id, avatar, isReply, replyTo, 
       text: linkify(message.text),
       from: `${message.from} replied to ${replyTo == message.from ? 'self' : replyTo}`,
       uid: sender_id,
+      isReply: true,
       reply: replyText,
       id: id,
       repId: targetId,
@@ -172,17 +173,19 @@ socket.on('newMessage', function (message, sender_id, avatar, isReply, replyTo, 
       text: linkify(message.text),
       from: message.from,
       uid: sender_id,
+      isReply: false,
       id: id,
       attr: "style",
       replyMessageStyle: `display: none; transform: translateY(0px);`,
-      messageTitleStyle: `${(maxuser == 2) || (document.querySelector('#messages').lastChild.previousSibling.dataset.uid == sender_id) ? 'display: none;' : 'display: block;'} transform: translateY(0px)`,
+      messageTitleStyle: `${(maxuser == 2) || (document.querySelector('#messages').lastElementChild.dataset.uid == sender_id) ? 'display: none;' : 'display: block;'} transform: translateY(0px)`,
       createdAt: formattedTime,
       attrVal: `/images/avatars/${avatar}(custom).png`
     });
   }
-  if (document.querySelector('#messages').lastChild.previousSibling.dataset.uid == sender_id) {
-    let target = document.querySelector('#messages').lastChild.previousSibling.classList[0];
+  if (document.querySelector('#messages').lastElementChild.dataset.uid == sender_id && !isReply) {
+    let target = document.querySelector('#messages').lastElementChild.classList[0];
     $(`.${target} .avatar`).last().css('visibility', 'hidden');
+    //$(`.${target} .textMessage`).last().css('border-radius', '0 15px 15px 0');
   }
   html = html.replace(/¶/g, '<br>');
   if ($('#id'))
@@ -272,16 +275,17 @@ socket.on('imageGet', (sendername, sender_id, imagefile, avatar, id) => {
   let html = Mustache.render(imageMessageTemplate, {
     from: sendername,
     uid: sender_id,
+    isReply: false,
     id: id,
     attrVal: `/images/avatars/${avatar}(custom).png`,
     attr: "style",
-    messageTitleStyle: `${(maxuser == 2) || (document.querySelector('#messages').lastChild.previousSibling.dataset.uid == sender_id) ? 'display: none;' : 'display: block;'} transform: translateY(0px)`,
+    messageTitleStyle: `${(maxuser == 2) || (document.querySelector('#messages').lastElementChild.dataset.uid == sender_id) ? 'display: none;' : 'display: block;'} transform: translateY(0px)`,
     image: `<img class='image-message' src='${imagefile}'>`,
     createdAt: moment().format('hh:mm a')
   });
   incommingmessage.play();
-  if (document.querySelector('#messages').lastChild.previousSibling.dataset.uid == sender_id) {
-    let target = document.querySelector('#messages').lastChild.previousSibling.classList[0];
+  if (document.querySelector('#messages').lastElementChild.dataset.uid == sender_id) {
+    let target = document.querySelector('#messages').lastElementChild.classList[0];
     $(`.${target} .avatar`).last().css('visibility', 'hidden');
   }
   $('#messages').append(html);
@@ -292,10 +296,28 @@ socket.on('imageGet', (sendername, sender_id, imagefile, avatar, id) => {
 
 socket.on('deleteMessage', (messageId, user) => {
   try{
-    $(`#${messageId} .object`).css('background', '#dd0000');
+    $(`#${messageId} .object`).css('background', 'slategrey');
     setTimeout(() => {
-      $(`#${messageId}`).remove();
-      //console.log($(`[data-repid='${messageId}']`));
+      let target = document.getElementById(messageId);
+      let next = target.nextElementSibling || {dataset: {uid: '0'}};
+      let prev = target.previousElementSibling || {dataset: {uid: '0'}};
+
+      if (prev.dataset.uid == target.dataset.uid) {
+        if (next.dataset.uid != target.dataset.uid && target.dataset.uid != myid) {
+          prev.firstElementChild.style.visibility = 'visible';
+        }
+        if (next.dataset.uid == target.dataset.uid && next.dataset.reply == 'true') {
+          prev.firstElementChild.style.visibility = 'visible';
+        }
+      }
+
+      if (next.dataset.uid == target.dataset.uid) {
+        if (prev.dataset.uid != target.dataset.uid && target.dataset.uid != myid) {
+          next.lastElementChild.firstElementChild.style.display = 'block';
+        }
+      }
+
+      target.remove();
       $(`[data-repid='${messageId}']`).text(`${user === myname ? 'You' : user} deleted this message`);
       $(`[data-repid='${messageId}']`).css('background', '#000000b5');
       if (user == myname) {
@@ -307,15 +329,33 @@ socket.on('deleteMessage', (messageId, user) => {
     }, 1000);
   }
   catch(e){
-    console.log(e);
+    console.log(`Error in deleting message: ${e}`);
   }
 });
 
 socket.on('deleteImage', (messageId, user) => {
   try{
-    $(`#${messageId} .object`).css('outline', '1px solid orangered');
+    $(`#${messageId} .object`).css('border', '2px solid slategrey');
     setTimeout(() => {
-      $(`#${messageId}`).remove();
+      let target = document.getElementById(messageId);
+      let next = target.nextElementSibling || {dataset: {uid: '0'}};
+      let prev = target.previousElementSibling || {dataset: {uid: '0'}};
+
+      if (prev.dataset.uid == target.dataset.uid) {
+        if (next.dataset.uid != target.dataset.uid && target.dataset.uid != myid) {
+          prev.firstElementChild.style.visibility = 'visible';
+        }
+        if (next.dataset.uid == target.dataset.uid && next.dataset.reply == 'true') {
+          prev.firstElementChild.style.visibility = 'visible';
+        }
+      }
+
+      if (next.dataset.uid == target.dataset.uid) {
+        if (prev.dataset.uid != target.dataset.uid && target.dataset.uid != myid) {
+          next.lastElementChild.firstElementChild.style.display = 'block';
+        }
+      }
+      target.remove();
       $(`[data-repid='${messageId}']`).text(`${user} deleted this message`);
       $(`[data-repid='${messageId}']`).css('background', '#000000b5');
       if (user == myname) {
@@ -918,6 +958,7 @@ $('#message-form').on('submit', function (e) {
       text: linkify(text),
       from: `You replied to ${replyTo == myname ? 'You': replyTo}`,
       uid: myid,
+      isReply: true,
       id: replaceId,
       repId: targetId,
       reply: replyText,
@@ -933,6 +974,7 @@ $('#message-form').on('submit', function (e) {
       id: replaceId,
       from: myname,
       uid: myid,
+      isReply: false,
       attr: "style",
       replyMessageStyle: `display: none; transform: translateY(0px);`,
       messageTitleStyle: `display: none; transform: translateY(0px)`,

@@ -859,6 +859,7 @@ input[type=file] {
   background: #26313d;
   padding: 10px 15px;
   border-radius: 15px;
+  border: 2px solid transparent;
 }
 
 #messages .message .textMessage:hover::after {
@@ -915,7 +916,6 @@ input[type=file] {
 #messages .my-reply-message {
   border-radius: 15px 15px 0px 15px;
   position: relative;
-  right: 18px;
 }
 
 #messages .my__message {
@@ -927,10 +927,6 @@ input[type=file] {
 
 #messages .my__message .time {
   right: 120%;
-}
-
-#messages .my__message .reactions {
-  right: 20px;
 }
 
 #messages .message .time {

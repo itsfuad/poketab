@@ -95,7 +95,7 @@
       <div class="reactorContainer" style="display: none;">Reactions <ul></ul></div>
     
       <template id="message-template" type="text/template">
-        <li class="message _message" id="{{id}}" data-uid="{{uid}}">
+        <li class="message _message" id="{{id}}" data-uid="{{uid}}" data-reply="{{isReply}}">
           <div class="avatar"><img id="avatar" src="{{attrVal}}" height="40px" width="40px" alt="" srcset=""></div>
           <div class="message__body _body">
             <div class="message__title title" {{attr}}="{{messageTitleStyle}}"><h3>{{{repIcon}}}{{from}}</h3></div>
@@ -112,7 +112,7 @@
       </template>
   
       <template id="my-message-template" type="text/template">
-        <li class="my__message _message" id="{{id}}" data-uid="{{uid}}">
+        <li class="my__message _message" id="{{id}}" data-uid="{{uid}}" data-reply="{{isReply}}">
           <!--div class="avatar"><img id="avatar" {{attr}}="{{attrVal}}" height="40px" width="40px" alt="" srcset=""></-div-->
           <div class="my__message__body _body">
             <div class="my__message__title title" {{attr}}="{{messageTitleStyle}}"><h3>{{{repIcon}}}{{from}}</h3></div>
@@ -146,7 +146,7 @@
       </template>
 
       <template id="image-message-template" type="text/template">
-        <li class="image _message" id="{{id}}" data-uid="{{uid}}">
+        <li class="image _message" id="{{id}}" data-uid="{{uid}}" data-reply="{{isReply}}">
           <div class="avatar"><img id="avatar" src="{{attrVal}}" height="40px" width="40px" alt="" srcset=""></div>
           <div class="image__body _body">
             <% if (maxuser == 2) { %>
@@ -165,7 +165,7 @@
       </template>
 
       <template id="my-image-message-template" type="text/template">
-        <li class="my__image _message" id="{{id}}" data-uid="{{uid}}">
+        <li class="my__image _message" id="{{id}}" data-uid="{{uid}}" data-reply="{{isReply}}">
           <div class="image__body _body">
             <div class="image__title title" style="display: none;"><h3>{{from}}</h3></div>
             <div class="main-image">

@@ -293,6 +293,7 @@ input[type=file] {
   align-items: center;
   justify-content: center;
   border-radius: 10px;
+  //border: 2px solid transparent;
   &:hover{
     background: #00000029;
     cursor: pointer;
@@ -638,6 +639,7 @@ scrollbar-width: none;  /* Firefox */
       background: #26313d;
       padding: 10px 15px;
       border-radius: 15px;
+      border: 2px solid transparent;
       &:hover::after{
         left: 90%;
       }
@@ -678,15 +680,12 @@ scrollbar-width: none;  /* Firefox */
     .my-reply-message{
       border-radius: 15px 15px 0px 15px;
       position: relative;
-      right: 18px;
+      //right: 18px;
     }
     .my__message{
       flex-direction: row-reverse;
       .time{
         right: 120%;
-      }
-    .reactions{
-        right: 20px;
       }
     }
     .message{
