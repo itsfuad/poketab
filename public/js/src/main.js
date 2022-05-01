@@ -380,7 +380,12 @@ function addReact(target, userName, avatar, react){
       return;
     }else{
       $(`#${target} .reactor ul`).find(`li:contains(${user})`).remove();
-      $(`#${target} .reactor ul`).append(`<li class='react-or-${user}'><img src='/images/avatars/${avatar}.png' height='25px' width='25px'></img><span>${user}</span><span class='emoticon' data-name='${react}'>${emoji}</span></li>`);
+      const data = `<li class='react-or-${user}'><img src='/images/avatars/${avatar}(custom).png' height='25px' width='25px'></img><span>${user}</span><span class='emoticon' data-name='${react}'>${emoji}</span></li>`;
+      if (userName == myname){
+        $(`#${target} .reactor ul`).prepend(data);
+      }else{
+        $(`#${target} .reactor ul`).append(data);
+      }
     }
   }
   //loadReact(target);
