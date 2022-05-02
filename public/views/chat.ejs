@@ -74,10 +74,10 @@
 
       <div class="click-option" style="display: none;">
         <ul>
-          <li class="reply-action"><i class="fa-solid fa-reply"></i></li>
-          <li class="store-action" style="display: none;"><i class="fa-solid fa-download"></i></li>
-          <li class="copy-action" style="display: none;"><i class="fa-regular fa-clone"></i></li>
-          <li class="delete-action"><i class="fa-solid fa-trash"></i></li>
+          <li class="reply-action"><i class="fa-solid fa-reply"></i> <span class="op reply"> Reply </span> </li>
+          <li class="store-action" style="display: none;"><i class="fa-solid fa-download"></i> <span class="op download"> Download </span> </li>
+          <li class="copy-action" style="display: none;"><i class="fa-regular fa-clone"></i> <span class="op clone"> Copy </span> </li>
+          <li class="delete-action"><i class="fa-solid fa-trash"></i> <span class="op trash"> Delete </span> </li>
           <li class="close-action"><i class="fa-solid fa-xmark"></i></li>
         </ul>
       </div>
@@ -101,7 +101,7 @@
             <div class="message__title title" {{attr}}="{{messageTitleStyle}}"><h3>{{{repIcon}}}{{from}}</h3></div>
             <div class="reply-message replyMessage" {{attr}}="{{replyMessageStyle}}" data-repid="{{repId}}">{{reply}}</div>
             <div class="main-message">
-              <p class="textMessage object">{{{text}}}</p>
+              <p class="textMessage object" {{attr}}="{{radius}}">{{{text}}}</p>
               <div class="reactor" style="display: none;"><ul></ul></div>
               <ul class="reactions"></ul>
               <span class='time'>{{createdAt}}</span>
@@ -119,7 +119,7 @@
             <div class="my-reply-message replyMessage" {{attr}}="{{replyMessageStyle}}" data-repid="{{repId}}">{{reply}}</div>
             <div class="main-message">
               <span class='time'>{{createdAt}}</span>
-              <p class="textMessage object">{{{text}}}</p>
+              <p class="textMessage object" {{attr}}="{{radius}}">{{{text}}}</p>
               <div class="reactor" style="display: none;"><ul></ul></div>
               <ul class="reactions"></ul>
               <i class="fa-regular fa-paper-plane sent"></i>
@@ -155,7 +155,7 @@
               <div class="image__title title" {{attr}}="{{messageTitleStyle}}"><h3>{{from}}</h3></div>
             <% } %> 
             <div class="main-image">
-              <div class="imageMessage object">{{{image}}}</div>
+              <div class="imageMessage object" {{attr}}="{{radius}}">{{{image}}}</div>
               <div class="reactor" style="display: none;"><ul></ul></div>
               <ul class="reactions"></ul>
               <span class='time'>{{createdAt}}</span>
@@ -170,7 +170,7 @@
             <div class="image__title title" style="display: none;"><h3>{{from}}</h3></div>
             <div class="main-image">
               <span class='time'>{{createdAt}}</span>
-              <div class="imageMessage object">{{{image}}}</div>
+              <div class="imageMessage object" {{attr}}="{{radius}}">{{{image}}}</div>
               <div class="reactor" style="display: none;"><ul></ul></div>
               <ul class="reactions"></ul>
               <i class="fa-regular fa-paper-plane sent"></i>

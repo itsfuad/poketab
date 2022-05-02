@@ -351,7 +351,8 @@ input[type=file] {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  border-radius: 10px;
+  border-radius: 15px;
+  overflow: hidden;
 }
 
 .imageMessage:hover {
@@ -398,20 +399,7 @@ input[type=file] {
 }
 
 .image .reactions {
-  position: absolute;
-  bottom: 0px;
-  font-size: 0.8rem;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  background: #7f7f7fc2;
-  min-width: 15px;
-  border-radius: 10px;
-  right: 0;
+  left: 0;
 }
 
 .image .time {
@@ -479,20 +467,7 @@ input[type=file] {
 }
 
 .my__image .reactions {
-  position: absolute;
-  bottom: 0px;
-  font-size: 0.8rem;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  background: #7f7f7fc2;
-  min-width: 15px;
-  border-radius: 10px;
-  right: 20px;
+  right: 0;
 }
 
 .my__image .time {
@@ -500,12 +475,28 @@ input[type=file] {
 }
 
 .reactions {
-  max-width: 35px;
-}
-
-.reactions .emo {
-  overflow: hidden;
-  padding: 0 5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background: #192838;
+  position: absolute;
+  border-radius: 10px;
+  right: 0;
+  font-size: 0.8rem;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  padding: 0 3px;
 }
 
 .reactorContainer ul {
@@ -541,10 +532,19 @@ input[type=file] {
 
 .image-message {
   max-width: 50vw;
-  border-radius: 10px;
   max-height: 300px;
   color: white;
   min-width: 100px;
+}
+
+.first .object {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.last .object {
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
 }
 
 .lightbox {
@@ -785,10 +785,6 @@ input[type=file] {
   gap: 2px;
 }
 
-.reactions {
-  font-size: 0.8rem;
-}
-
 #messages {
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
@@ -934,7 +930,7 @@ input[type=file] {
 }
 
 #messages .message .reactions {
-  right: 0;
+  left: 0;
 }
 
 #messages .my__message__body {
@@ -1005,6 +1001,10 @@ input[type=file] {
 
 .reactions:hover {
   cursor: pointer;
+}
+
+.op {
+  font-size: 0.7rem;
 }
 
 .reactionContainer {
@@ -1100,27 +1100,6 @@ input[type=file] {
       -ms-flex-direction: column;
           flex-direction: column;
   list-style-type: none;
-}
-
-.message .reactions, .my__message .reactions {
-  position: absolute;
-  bottom: 0px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  background: #7f7f7fc2;
-  min-width: 15px;
-  border-radius: 10px;
 }
 
 .popup-message {

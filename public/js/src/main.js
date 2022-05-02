@@ -1,11 +1,13 @@
 "use strict";
 //Variables
 
+
 import {v4} from 'uuid';
 import {io} from 'socket.io-client';
 import $ from 'jquery';
 import moment from 'moment';
 import Mustache from 'mustache';
+
 
 
 const socket = io();
@@ -136,7 +138,7 @@ socket.on('disconnect', function () {
 socket.on('updateUserList', function (users, ids, key, avatars) {
   let ol = $('<ul></ul>');
   for (let i = 0; i < users.length; i++) {
-    ol.append($(`<li class='user' id='${ids[i]}'></li>`).html(`<img height='30px' width='30px' src='/images/avatars/${avatars[i]}(custom).png'> ${users[i]}`));
+    ol.append($(`<li class='user' id='${ids[i]}'></li>`).html(`<img height='30px' width='30px' src='/images/avatars/${avatars[i]}(custom).png'> ${users[i] == myname ? 'You' : users[i]}`));
   }
   $('.currently_active').html(`<i class="fa-solid fa-user"></i> Active: ${users.length}/${maxuser}`);
   $('.keyname1').text(`${key}`);
@@ -164,7 +166,8 @@ socket.on('newMessage', function (message, sender_id, avatar, isReply, replyTo, 
       createdAt: formattedTime,
       attr: "style",
       replyMessageStyle: `display: block; transform: translateY(20px);`,
-      messageTitleStyle: `transform: translateY(20px)`,
+      messageTitleStyle: `transform: translateY(20px);`,
+      radius: "border-radius: 15px",
       attrVal: `/images/avatars/${avatar}(custom).png`
     });
   } else {
@@ -177,10 +180,16 @@ socket.on('newMessage', function (message, sender_id, avatar, isReply, replyTo, 
       id: id,
       attr: "style",
       replyMessageStyle: `display: none; transform: translateY(0px);`,
-      messageTitleStyle: `${(maxuser == 2) || (document.querySelector('#messages').lastElementChild.dataset.uid == sender_id) ? 'display: none;' : 'display: block;'} transform: translateY(0px)`,
+      messageTitleStyle: `${(maxuser == 2) || (document.querySelector('#messages').lastElementChild.dataset.uid == sender_id) ? 'display: none;' : 'display: block;'} transform: translateY(0px);`,
+      radius: `${(document.querySelector('#messages').lastElementChild.dataset.uid == sender_id) ? "border-radius: 5px 15px 15px 15px" : "border-radius: 15px"}`,
       createdAt: formattedTime,
       attrVal: `/images/avatars/${avatar}(custom).png`
     });
+    //$('#messages .object').css('border-bottom-left-radius', '0');
+    let msg = $('#messages ._message:last-child')[0];
+    if (msg != null && (msg.dataset.uid == sender_id)){
+      msg.querySelector('.object').style.borderBottomLeftRadius = '5px';
+    }
   }
   if (document.querySelector('#messages').lastElementChild.dataset.uid == sender_id && !isReply) {
     let target = document.querySelector('#messages').lastElementChild.classList[0];
@@ -188,8 +197,8 @@ socket.on('newMessage', function (message, sender_id, avatar, isReply, replyTo, 
     //$(`.${target} .textMessage`).last().css('border-radius', '0 15px 15px 0');
   }
   html = html.replace(/¶/g, '<br>');
-  if ($('#id'))
   $('#messages').append(html);
+  //$('#messages .object').css('border-bottom-left-radius', '15px');
   if (emo_test(message.text)) {
     $("#messages li:last div p").css({
       "background": "none",
@@ -280,6 +289,7 @@ socket.on('imageGet', (sendername, sender_id, imagefile, avatar, id) => {
     attrVal: `/images/avatars/${avatar}(custom).png`,
     attr: "style",
     messageTitleStyle: `${(maxuser == 2) || (document.querySelector('#messages').lastElementChild.dataset.uid == sender_id) ? 'display: none;' : 'display: block;'} transform: translateY(0px)`,
+    radius: `${(document.querySelector('#messages').lastElementChild.dataset.uid == sender_id) ? "border-radius: 5px 15px 15px 15px" : "border-radius: 15px"}`,
     image: `<img class='image-message' src='${imagefile}'>`,
     createdAt: moment().format('hh:mm a')
   });
@@ -287,6 +297,11 @@ socket.on('imageGet', (sendername, sender_id, imagefile, avatar, id) => {
   if (document.querySelector('#messages').lastElementChild.dataset.uid == sender_id) {
     let target = document.querySelector('#messages').lastElementChild.classList[0];
     $(`.${target} .avatar`).last().css('visibility', 'hidden');
+  }
+  //$('#messages .object').css('border-bottom-left-radius', '0');
+  let msg = $('#messages ._message:last-child')[0];
+  if (msg != null && (msg.dataset.uid == sender_id)){
+    msg.querySelector('.object').style.borderBottomLeftRadius = '5px';
   }
   $('#messages').append(html);
   $(`#${id}`).find('.image-message').on('load', function () {
@@ -296,75 +311,22 @@ socket.on('imageGet', (sendername, sender_id, imagefile, avatar, id) => {
 
 socket.on('deleteMessage', (messageId, user) => {
   try{
-    $(`#${messageId} .object`).css('background', 'slategrey');
-    setTimeout(() => {
-      let target = document.getElementById(messageId);
-      let next = target.nextElementSibling || {dataset: {uid: '0'}};
-      let prev = target.previousElementSibling || {dataset: {uid: '0'}};
+    let target = $(`#${messageId} .object`);
+    target.html('Deleted Message');
 
-      if (prev.dataset.uid == target.dataset.uid) {
-        if (next.dataset.uid != target.dataset.uid && target.dataset.uid != myid) {
-          prev.firstElementChild.style.visibility = 'visible';
-        }
-        if (next.dataset.uid == target.dataset.uid && next.dataset.reply == 'true') {
-          prev.firstElementChild.style.visibility = 'visible';
-        }
-      }
-
-      if (next.dataset.uid == target.dataset.uid) {
-        if (prev.dataset.uid != target.dataset.uid && target.dataset.uid != myid) {
-          next.lastElementChild.firstElementChild.style.display = 'block';
-        }
-      }
-
-      target.remove();
-      $(`[data-repid='${messageId}']`).text(`${user === myname ? 'You' : user} deleted this message`);
-      $(`[data-repid='${messageId}']`).css('background', '#000000b5');
-      if (user == myname) {
-        popupMessage(`You deleted a message`);
-      }else{
-        popupMessage(`${user} deleted a message`);
-      }
-      updateScroll();
-    }, 1000);
-  }
-  catch(e){
-    console.log(`Error in deleting message: ${e}`);
-  }
-});
-
-socket.on('deleteImage', (messageId, user) => {
-  try{
-    $(`#${messageId} .object`).css('border', '2px solid slategrey');
-    setTimeout(() => {
-      let target = document.getElementById(messageId);
-      let next = target.nextElementSibling || {dataset: {uid: '0'}};
-      let prev = target.previousElementSibling || {dataset: {uid: '0'}};
-
-      if (prev.dataset.uid == target.dataset.uid) {
-        if (next.dataset.uid != target.dataset.uid && target.dataset.uid != myid) {
-          prev.firstElementChild.style.visibility = 'visible';
-        }
-        if (next.dataset.uid == target.dataset.uid && next.dataset.reply == 'true') {
-          prev.firstElementChild.style.visibility = 'visible';
-        }
-      }
-
-      if (next.dataset.uid == target.dataset.uid) {
-        if (prev.dataset.uid != target.dataset.uid && target.dataset.uid != myid) {
-          next.lastElementChild.firstElementChild.style.display = 'block';
-        }
-      }
-      target.remove();
-      $(`[data-repid='${messageId}']`).text(`${user} deleted this message`);
-      $(`[data-repid='${messageId}']`).css('background', '#000000b5');
-      if (user == myname) {
-        popupMessage(`You deleted an image`);
-      }else{
-        popupMessage(`${user} deleted an image`);
-      }
-      updateScroll();
-    }, 1000);
+    target.css({'background': '#17263582', 'color': '#7c848c', 'padding': '8px 10px', 'margin-bottom': '0', 'border': '2px solid #7c848c'});
+    //add dataset to target
+    target[0].dataset.deleted = 'true';
+    $(`#${messageId} .reactions`).css('display', 'none');
+    //target.remove();
+    $(`[data-repid='${messageId}']`).text(`${user} deleted this message`);
+    $(`[data-repid='${messageId}']`).css('background', '#000000b5');
+    if (user == myname) {
+      popupMessage(`You deleted a message`);
+    }else{
+      popupMessage(`${user} deleted a message`);
+    }
+    updateScroll();
   }catch(e){
     console.log(e);
   }
@@ -428,34 +390,49 @@ function addReact(target, userName, avatar, react){
       }
     }
   }
-  //loadReact(target);
-  // get list count
-  let count = $(`#${target} .reactions`).children().length;
-  //console.log(count);
 
-  if (count >= 3){
-    //delete first li 
-    $(`#${target} .reactions`).children().first().remove();
-  }
-  //$(`#${target} .reactions`).append(`<li class='emo ${userName}'>${emoji}</li>`);
-  
-  //delete if username exists
-  let prev = user;
-  $(`#${target} .reactions li`).each((index, elem)=>{
-    let now = elem.classList[1];
-    if (now == prev){
-      $(elem).remove();
-    }
-  });
-  $(`#${target} .reactions`).append(`<li class='emo ${user}'>${emoji}</li>`);
+  reactBubble(target);
+
   $(`#${target} .object`).css('margin-bottom', '10px');
   updateScroll();
 }
 
+function arrayToMap(array) {
+  let map = new Map();
+  array.forEach(element => {
+      map.set(element, map.get(element) + 1 || 1);
+  });
+  return map;
+}
+
+function reactBubble(id){
+  let reactSrc = $(`#${id} .reactor ul li`).toArray();
+  let array = [];
+  reactSrc.forEach(element => {
+    array.push(element.lastElementChild.innerText);
+  });
+
+  $(`#${id} .reactions`).empty();
+
+  let r_map = arrayToMap(array);
+
+  let count = 0;
+
+  for (let [key, value] of r_map) {
+    if (count >= 3){
+      $(`#${id} .reactions li:last`).remove();
+    }
+    $(`#${id} .reactions`).append(`<li class='emo'>${key}${value} </li>`);
+    count++;
+  }
+}
 
 function removeReaction(u_name, id){
   $(`#${id} .reactions .${u_name == myname? 'You': u_name}`).remove();
   $(`#${id} .react-or-${u_name == myname? 'You': u_name}`).remove();
+
+  reactBubble(id);
+
   if ($(`#${id} .reactions`).children().length == 0){
     $(`#${id} .object`).css('margin-bottom', '');
   }
@@ -617,7 +594,7 @@ function openImageView(evt)
   try{
   let target = evt.target;
   $('.lightbox__image').html('');
-  $('.lightbox__image').append(`<img src="${target.src}" alt="">`);
+  $('.lightbox__image').append(`<img src="${target.src}" alt="Image">`);
   $('.lightbox').fadeIn(100);
   }
   catch(e){
@@ -682,6 +659,7 @@ function clickOptionHide()
   //$('.view-action').hide();
   $('.store-action').hide();
   $('.copy-action').hide();
+  $('.delete-action').hide();
 }
 
 function unbindClicks(){
@@ -689,16 +667,11 @@ function unbindClicks(){
   $('.reactionContainer').unbind('click');
 }
 
-function deleteMessage(evt, type){
+function deleteMessage(evt){
   try{
-    if (type == 'text'){
-      targetId = targetId = evt.target.closest('._message').id;
-      socket.emit('delete message', targetId, myname);
-    }
-    else if (type == 'image'){
-      targetId = evt.target.closest('._message').id;
-      socket.emit('delete image', targetId, myname);
-    }
+     targetId = evt.target.closest('._message').id;
+      let msgUid = evt.target.closest('._message').dataset.uid;
+      socket.emit('delete message', targetId, msgUid, myname, myid);
   }catch(e){
     console.log(e);
   }
@@ -759,27 +732,31 @@ function clickOptionShow(type, evt1)
 {
   repPop = true;
   unbindClicks();
+  clickOptionHide();
   $('.click-option').show();
   if(type === 'text'){
-
     $('.store-action').hide();
     $('.copy-action').show();
-    $('.delete-action').show();
     $('.reactorContainer').hide();
+    
+    if (evt1.target.closest('._message').dataset.uid == myid) {
+      $('.delete-action').show();
+    }
+
     $('.click-option').on('click', (evt)=>{
-      //console.log(evt.target.classList);
-      if (evt.target.classList.contains('fa-reply')){
+    
+      if (evt.target.className.includes('reply')){
         textReply(evt1);
         clickOptionHide();
         scrolling = false;
         updateScroll();
       }
-      else if (evt.target.classList.contains('fa-clone')){
+      else if (evt.target.className.includes('clone')){
         copyText(evt1.target.innerText);
         clickOptionHide();
       }
-      else if(evt.target.classList.contains('fa-trash')){
-        deleteMessage(evt1, 'text');
+      else if(evt.target.className.includes('trash')){
+        deleteMessage(evt1);
         clickOptionHide();
       }
     });
@@ -792,24 +769,28 @@ function clickOptionShow(type, evt1)
 
     $('.store-action').show();
     $('.copy-action').hide();
-    $('.delete-action').show();
     $('.reactorContainer').hide();
+
+    if (evt1.target.closest('._message').dataset.uid == myid) {
+      $('.delete-action').show();
+    }
+
     $('.click-option').on('click', (evt)=>{
       //console.log(evt.target.classList);
-      if (evt.target.classList.contains('fa-reply')){
+      if (evt.target.className.includes('reply')){
         imageReply(evt1);
         clickOptionHide();
         scrolling = false;
         updateScroll();
       }
-      else if (evt.target.classList.contains('fa-download')){
+      else if (evt.target.className.includes('download')){
         $('.lightbox__image').html('');
-        $('.lightbox__image').append(`<img src="${evt1.target.src}" alt="">`);
+        $('.lightbox__image').append(`<img src="${evt1.target.src}" alt="Image">`);
         saveImage();
         clickOptionHide();
       }
-      else if(evt.target.classList.contains('fa-trash')){
-        deleteMessage(evt1, 'image');
+      else if(evt.target.className.includes('trash')){
+        deleteMessage(evt1);
         clickOptionHide();
       }
     });
@@ -966,7 +947,8 @@ $('#message-form').on('submit', function (e) {
       createdAt: formattedTime,
       attr: "style",
       replyMessageStyle: `display: block; transform: translateY(20px);`,
-      messageTitleStyle: `display: block; transform: translateY(20px)`,
+      messageTitleStyle: `display: block; transform: translateY(20px);`,
+      radius: "border-radius: 15px"
     });
   } else {
     html = Mustache.render(myMessageTemplate, {
@@ -977,10 +959,16 @@ $('#message-form').on('submit', function (e) {
       isReply: false,
       attr: "style",
       replyMessageStyle: `display: none; transform: translateY(0px);`,
-      messageTitleStyle: `display: none; transform: translateY(0px)`,
+      messageTitleStyle: `display: none; transform: translateY(0px);`,
+      radius: `${(document.querySelector('#messages').lastElementChild.dataset.uid == myid) ? "border-radius: 15px 5px 15px 15px" : "border-radius: 15px"}`,
       createdAt: formattedTime,
     });
+    let msg = $('#messages ._message:last-child')[0];
+    if (msg != null && (msg.dataset.uid == myid)){
+      msg.querySelector('.object').style.borderBottomRightRadius = '5px';
+    }
   }
+  //$('#messages .object').css('border-bottom-right-radius', '0');
   html = html.replace(/¶/g, '<br>');
   $('#messages').append(html);
   if (emo_test(text)) {
@@ -1064,9 +1052,15 @@ $('.users').on('click', function (evt) {
   let target = evt.target;
   if (target.className === 'user') {
     let targetId = target.id;
-    socket.emit('vibrate', myname, targetId);
-    if (targetId !== myid) {
-      $('.popup-message').text(`You just vibrated ${target.innerText}'s Device`);
+    if (target.innerText.trim() != 'You') {
+      socket.emit('vibrate', myname, targetId);
+      $('.popup-message').text(`You just vibrated ${target.innerText}'s device`);
+      $('.popup-message').fadeIn(500);
+      setTimeout(function () {
+        $('.popup-message').fadeOut(500);
+      }, 1000);
+    }else if(target.innerText.trim() == 'You'){
+      $('.popup-message').text(`You just vibrated your device`);
       $('.popup-message').fadeIn(500);
       setTimeout(function () {
         $('.popup-message').fadeOut(500);
@@ -1129,8 +1123,15 @@ $('.sendimage').on('click', () => {
         uid: myid,
         id: tempId,
         image: `<img class='image-message' src='${resized}'>`,
+        attr: "style",
+        radius: `${(document.querySelector('#messages').lastElementChild.dataset.uid == myid) ? "border-radius: 15px 5px 15px 15px" : "border-radius: 15px"}`,
         createdAt: moment(moment().valueOf()).format('hh:mm a')
       });
+      //$('#messages .object').css('border-bottom-left-radius', '0');
+      let msg = $('#messages ._message:last-child')[0];
+      if (msg != null && (msg.dataset.uid == myid)){
+        msg.querySelector('.object').style.borderBottomRightRadius = '5px';
+      }
       $('#messages').append(html).ready(()=>{
         scrolling = false;
         updateScroll();
@@ -1216,13 +1217,17 @@ ClickAndHold.applyTo(Messages, 200, function (evt) {
   lightboxClose();
   let target = evt.target;
   if (target.className.includes('textMessage')) {
-    clickOptionShow('text', evt);
-    reactOptionShow(evt);
-    navigator.vibrate(100);
+    if (target.dataset.deleted !== 'true'){
+      clickOptionShow('text', evt);
+      reactOptionShow(evt);
+      navigator.vibrate(100);
+    }
   } else if(target.className.includes('image-message')){
-    clickOptionShow('image', evt);
-    reactOptionShow(evt);
-    navigator.vibrate(100);
+    if (target.dataset.deleted !== 'true'){
+      clickOptionShow('image', evt);
+      reactOptionShow(evt);
+      navigator.vibrate(100);
+    }
   }
 });
 

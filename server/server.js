@@ -146,8 +146,8 @@ io.on('connection', (socket) => {
     users.removeUser(socket.id);
     users.addUser(socket.id, params.name, params.key, params.avatar, params.maxuser || users.getMaxUser(params.key));
     io.to(params.key).emit('updateUserList', users.getUserList(params.key), users.getUserId(params.key), params.key, users.getAvatarList(params.key));
-    socket.emit('server_message', generateMessage('', `You joined the chat.🔥`), params.name, socket.id);
-    socket.broadcast.to(params.key).emit('server_message', generateMessage(params.name, `${params.name} joined the chat.🔥`));
+    socket.emit('server_message', generateMessage('', `You joined the chat.🔥`));
+    socket.broadcast.to(params.key).emit('server_message', generateMessage('', `${params.name} joined the chat.🔥`));
     console.log(`New user ${params.name} connected on key ${params.key} with avatar ${params.avatar} and maxuser ${params.maxuser || users.getMaxUser(params.key)}`);
     //console.log(users.getMaxUser(params.key));
   });
@@ -265,19 +265,15 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('delete message', (messageId, userD) => {
+  socket.on('delete message', (messageId, msgUid, userName, userId) => {
     let user = users.getUser(socket.id);
     if (user) {
-      io.to(user.key).emit('deleteMessage', messageId, userD);
+      if (msgUid == userId){
+        io.to(user.key).emit('deleteMessage', messageId, userName);
+      }
     }
   });
 
-  socket.on('delete image', (messageId, userD) => {
-    let user = users.getUser(socket.id);
-    if (user) {
-      io.to(user.key).emit('deleteImage', messageId, userD);
-    }
-  });
 });
 
 server.listen(port, () => {
