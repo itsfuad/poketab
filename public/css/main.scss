@@ -51,6 +51,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  border-bottom: 2px solid var(--focus);
   h2{
     font-size: 1.5rem;
     text-align: center;
@@ -184,12 +185,12 @@ button:disabled {
   align-items: center;
   justify-content: center;
   width: 100%;
-  button{
+  .container{
     border-radius: 5px;
-    background: orangered;
+    color: orangered;
     padding: 5px 10px;
     &:hover{
-      background: red;
+      cursor: pointer;
     }
   }
 }
@@ -673,11 +674,8 @@ scrollbar-width: none;  /* Firefox */
         cursor: pointer;
       }
     }
-    .replyMessage, .title{
+    .replyMessage{
       transform: translateY(20px);
-      &.active{
-        transform: translateY(20px);
-      }
     }
     .my-reply-message{
       border-radius: 15px 15px 5px 15px;
@@ -685,7 +683,8 @@ scrollbar-width: none;  /* Firefox */
       //right: 18px;
     }
     .my__message{
-      flex-direction: row-reverse;
+      justify-content: flex-end;
+      gap: 0;
       .time{
         right: 100%;
         padding-right: 25px;
@@ -727,7 +726,6 @@ scrollbar-width: none;  /* Firefox */
       width: 100%;
       text-align: right;
       position: relative;
-      right: 15px;
     }
     .textMessage, .replyMessage{
       max-width: 50vw;

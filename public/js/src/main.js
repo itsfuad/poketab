@@ -1,13 +1,13 @@
 "use strict";
 //Variables
 
-
+/*
 import {v4} from 'uuid';
 import {io} from 'socket.io-client';
 import $ from 'jquery';
 import moment from 'moment';
 import Mustache from 'mustache';
-
+*/
 
 
 const socket = io();
@@ -307,6 +307,16 @@ socket.on('imageGet', (sendername, sender_id, imagefile, avatar, id) => {
 socket.on('deleteMessage', (messageId, user) => {
   try{
     let target = $(`#${messageId} .object`);
+
+    $(`#${messageId} .title h3`).text(user);
+    $(`#${messageId} .title`).css({'transform': ''});
+
+    if (maxuser == 2 || ($(`#${messageId}`).data('uid') == myid)) {
+      $(`#${messageId} .title`).css('visibility', 'hidden');
+    }
+
+    console.dir( $(`#${messageId} .replyMessage`));
+    $(`#${messageId} .replyMessage`).remove();
     target.html('Deleted Message');
 
     target.css({'background': '#00000000', 'color': '#7d858c', 'padding': '8px 10px', 'margin-bottom': '0', 'border': '2px solid'});
@@ -925,7 +935,7 @@ $('#message-form').on('submit', function (e) {
   text = censorBadWords(text);
   text = text.replace(/\n/g, '¶');
 
-  let replaceId = v4();
+  let replaceId = "TEMP";
   let formattedTime = moment().format('hh:mm a');
   let html;
   if (isReply) {
@@ -1089,7 +1099,7 @@ $('.sendimage').on('click', () => {
     image.src = blobURL;
     image.onload = function() {
       let resized = resizeImage(image, file.mimetype);
-      let tempId = v4();
+      let tempId = "TEMP";
       let html = Mustache.render(myImageMessageTemplate, {
         from: myname,
         uid: myid,
@@ -1196,7 +1206,13 @@ ClickAndHold.applyTo(Messages, 200, function (evt) {
   let target = evt.target;
 
   if (target.className.includes('textMessage')) {
+    console.dir(target);
+    console.log(`${target.dataset.uid} ${myid}`);
     if (target.dataset.sent == 'true' && target.dataset.deleted != 'true'){
+      clickOptionShow('text', evt);
+      reactOptionShow(evt);
+      navigator.vibrate(100);
+    }else if(target.dataset.uid != myid && target.dataset.deleted != 'true'){
       clickOptionShow('text', evt);
       reactOptionShow(evt);
       navigator.vibrate(100);

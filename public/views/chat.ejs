@@ -22,7 +22,7 @@
       <div class="chat__sidebar">
         <h3>#<span class="keyname1 key"></span> <i class="fa-regular fa-clone"></i></h3>
         <div class="users"></div>
-        <div class="leave back"><button>Leave</button></div>
+        <div class="leave back"><div class="container">Leave <i class="fa-solid fa-arrow-right-from-bracket"></i></div></div>
       </div>
     </div>
     <div class="chat">
@@ -122,9 +122,9 @@
               <p class="textMessage object" {{attr}}="{{radius}}">{{{text}}}</p>
               <div class="reactor" style="display: none;"><ul></ul></div>
               <ul class="reactions"></ul>
-              <i class="fa-regular fa-paper-plane sent"></i>
             </div>
           </div>
+          <i class="fa-regular fa-paper-plane sent"></i>
           
         </li>
       </template>

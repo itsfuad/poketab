@@ -65,6 +65,7 @@ body {
       -ms-flex-align: center;
           align-items: center;
   min-height: 100vh;
+  border-bottom: 2px solid var(--focus);
 }
 
 .intro h2 {
@@ -227,14 +228,14 @@ button:disabled {
   width: 100%;
 }
 
-.leave button {
+.leave .container {
   border-radius: 5px;
-  background: orangered;
+  color: orangered;
   padding: 5px 10px;
 }
 
-.leave button:hover {
-  background: red;
+.leave .container:hover {
+  cursor: pointer;
 }
 
 .users {
@@ -902,12 +903,7 @@ input[type=file] {
   cursor: pointer;
 }
 
-#messages .replyMessage, #messages .title {
-  -webkit-transform: translateY(20px);
-          transform: translateY(20px);
-}
-
-#messages .replyMessage.active, #messages .title.active {
+#messages .replyMessage {
   -webkit-transform: translateY(20px);
           transform: translateY(20px);
 }
@@ -918,10 +914,10 @@ input[type=file] {
 }
 
 #messages .my__message {
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: reverse;
-      -ms-flex-direction: row-reverse;
-          flex-direction: row-reverse;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  gap: 0;
 }
 
 #messages .my__message .time {
@@ -980,7 +976,6 @@ input[type=file] {
   width: 100%;
   text-align: right;
   position: relative;
-  right: 15px;
 }
 
 #messages .textMessage, #messages .replyMessage {
