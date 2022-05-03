@@ -1,13 +1,13 @@
 "use strict";
 //Variables
 
-
+/*
 import {v4} from 'uuid';
 import {io} from 'socket.io-client';
 import $ from 'jquery';
 import moment from 'moment';
 import Mustache from 'mustache';
-
+*/
 
 
 const socket = io();
@@ -138,7 +138,11 @@ socket.on('disconnect', function () {
 socket.on('updateUserList', function (users, ids, key, avatars) {
   let ol = $('<ul></ul>');
   for (let i = 0; i < users.length; i++) {
-    ol.append($(`<li class='user' id='${ids[i]}'></li>`).html(`<img height='30px' width='30px' src='/images/avatars/${avatars[i]}(custom).png'> ${users[i] == myname ? 'You' : users[i]}`));
+    if (users[i] == myname) {
+      ol.prepend($(`<li class='user' id='${ids[i]}'></li>`).html(`<img height='30px' width='30px' src='/images/avatars/${avatars[i]}(custom).png'> ${users[i]} (You)`));
+    }else{
+      ol.append($(`<li class='user' id='${ids[i]}'></li>`).html(`<img height='30px' width='30px' src='/images/avatars/${avatars[i]}(custom).png'> ${users[i]}`));
+    }
   }
   $('.currently_active').html(`<i class="fa-solid fa-user"></i> Active: ${users.length}/${maxuser}`);
   $('.keyname1').text(`${key}`);
@@ -215,6 +219,8 @@ socket.on('messageSent', function (replaceId, id) {
   outgoingmessage.play();
   try{
     $(`#${replaceId}`).attr('id', id);
+    $(`#${id}`).attr('data-sent', 'true');
+    $(`#${id} .object`).attr('data-sent', 'true');
     $(`#${id} .sent`).remove();
   }
   catch(e){
@@ -229,7 +235,7 @@ socket.on('server_message', function (message) {
     from: message.from
   });
   if (message.text.includes('joined')) {
-    html = html.replace(/<p>/g, `<p style='color: limegreen;'>`);
+    html = html.replace(/<p>/g, `<p style='color: #e0eeff;'>`);
     joinsound.play();
   }
   if (message.text.includes('left')) {
@@ -268,17 +274,6 @@ socket.on('stoptyping', (id) => {
   }
 });
 
-socket.on('vibrateResponse', (sender_name, id) => {
-  if (navigator.vibrate) {
-    if (id == myid) {
-      navigator.vibrate(1000);
-      popupMessage(`${sender_name == myname ? 'You' : sender_name} just vibrated your Device`);
-    }
-  }
-  else{
-    popupMessage('Device does not support web Vibration');
-  }
-});
 
 socket.on('imageGet', (sendername, sender_id, imagefile, avatar, id) => {
   let html = Mustache.render(imageMessageTemplate, {
@@ -314,17 +309,18 @@ socket.on('deleteMessage', (messageId, user) => {
     let target = $(`#${messageId} .object`);
     target.html('Deleted Message');
 
-    target.css({'background': '#17263582', 'color': '#7c848c', 'padding': '8px 10px', 'margin-bottom': '0', 'border': '2px solid #7c848c'});
+    target.css({'background': '#00000000', 'color': '#7d858c', 'padding': '8px 10px', 'margin-bottom': '0', 'border': '2px solid'});
     //add dataset to target
     target[0].dataset.deleted = 'true';
     $(`#${messageId} .reactions`).css('display', 'none');
     //target.remove();
-    $(`[data-repid='${messageId}']`).text(`${user} deleted this message`);
-    $(`[data-repid='${messageId}']`).css('background', '#000000b5');
+    $(`[data-repid='${messageId}']`).css({'background': '#000000c4', 'color': '#7d858c'});
     if (user == myname) {
       popupMessage(`You deleted a message`);
+      $(`[data-repid='${messageId}']`).text(`You deleted this message`);
     }else{
       popupMessage(`${user} deleted a message`);
+      $(`[data-repid='${messageId}']`).text(`${user} deleted this message`);
     }
     updateScroll();
   }catch(e){
@@ -651,7 +647,7 @@ function textReply(evt)
 
 function clickOptionHide()
 {
-  repPop = false;
+  replyOptionsShowed = false;
   unbindClicks();
   $('.click-option').hide();
   $('.reactionContainer').hide();
@@ -730,9 +726,9 @@ function reactInit(evt1, evt){
 
 function clickOptionShow(type, evt1)
 {
-  repPop = true;
   unbindClicks();
   clickOptionHide();
+  replyOptionsShowed = true;
   $('.click-option').show();
   if(type === 'text'){
     $('.store-action').hide();
@@ -766,7 +762,6 @@ function clickOptionShow(type, evt1)
     });
   }
   else if (type === 'image'){
-
     $('.store-action').show();
     $('.copy-action').hide();
     $('.reactorContainer').hide();
@@ -817,12 +812,11 @@ function reactOptionShow(evt){
   let reactionName = $(`#${target} .react-or-You .emoticon`).data('name');
   $(`.reactionContainer > div`).css('background', '');
   if (reactionName){
-    $(`.reactionContainer .${reactionName}`).css('background', '#7f7f7fc2');
+    $(`.reactionContainer .${reactionName}`).css('background', '#0a1118');
   }
   //console.log(reactionName);
   $('.reactionContainer').show();
 }
-
 //Check online status
 if (navigator.onLine) {
   console.log('online');
@@ -931,7 +925,7 @@ $('#message-form').on('submit', function (e) {
   text = censorBadWords(text);
   text = text.replace(/\n/g, '¶');
 
-  let replaceId = v4();
+  let replaceId = "TEMP";
   let formattedTime = moment().format('hh:mm a');
   let html;
   if (isReply) {
@@ -1046,28 +1040,6 @@ $('.key').on('click', () => {
   copyText(text);
 });
 
-$('.users').on('click', function (evt) {
-  evt.preventDefault();
-  //console.log('clicked on users');
-  let target = evt.target;
-  if (target.className === 'user') {
-    let targetId = target.id;
-    if (target.innerText.trim() != 'You') {
-      socket.emit('vibrate', myname, targetId);
-      $('.popup-message').text(`You just vibrated ${target.innerText}'s device`);
-      $('.popup-message').fadeIn(500);
-      setTimeout(function () {
-        $('.popup-message').fadeOut(500);
-      }, 1000);
-    }else if(target.innerText.trim() == 'You'){
-      $('.popup-message').text(`You just vibrated your device`);
-      $('.popup-message').fadeIn(500);
-      setTimeout(function () {
-        $('.popup-message').fadeOut(500);
-      }, 1000);
-    }
-  }
-});
 
 $('.chat').on('click', function (evt) {
     $('.menuwrapper').removeClass('active');
@@ -1117,7 +1089,7 @@ $('.sendimage').on('click', () => {
     image.src = blobURL;
     image.onload = function() {
       let resized = resizeImage(image, file.mimetype);
-      let tempId = v4();
+      let tempId = "TEMP";
       let html = Mustache.render(myImageMessageTemplate, {
         from: myname,
         uid: myid,
@@ -1157,12 +1129,12 @@ $('.back').on('click', ()=>{
 });
 
 const Messages = document.querySelector('#messages'); 
-let repPop = false;
+let replyOptionsShowed = false;
 //click on image event
 Messages.addEventListener('click', (e)=>{
-  //console.log(e.target);
+  //console.log('Click' + replyOptionsShowed + e.target);
   if(e.target.className.includes('image-message')){
-    if (!repPop) {
+    if (!replyOptionsShowed) {
       openImageView(e);
     }
   }
@@ -1178,22 +1150,27 @@ Messages.addEventListener('click', (e)=>{
     const msgId = e.target.dataset.repid;
     const element = document.getElementById(msgId);
     if (element){
-      try{
-        setTimeout(()=>{
-        element.scrollIntoView({
-          block: "center"
-        });
-        }, 100);
-        $('#messages .my__message').css('filter', 'brightness(0.5)');
-        $('#messages .message').css('filter', 'brightness(0.5)');
-        $(`#${msgId}`).css('filter', 'initial');
-        setTimeout(function () {
-          $('#messages .my__message').css('filter', '');
-          $('#messages .message').css('filter', '');
-          $(`#${msgId}`).css('filter', '');
-        }, 1000);
+      if (element.querySelector('.object').dataset.deleted != 'true') {
+        try{
+          setTimeout(()=>{
+          element.scrollIntoView({
+            block: "center"
+          });
+          }, 100);
+          $('#messages .my__message').css('filter', 'brightness(0.5)');
+          $('#messages .message').css('filter', 'brightness(0.5)');
+          $(`#${msgId}`).css('filter', 'initial');
+          setTimeout(function () {
+            $('#messages .my__message').css('filter', '');
+            $('#messages .message').css('filter', '');
+            $(`#${msgId}`).css('filter', '');
+          }, 1000);
+        }
+        catch(err){
+          popupMessage('Deleted message');
+        }
       }
-      catch(err){
+      else{
         popupMessage('Deleted message');
       }
     }
@@ -1214,21 +1191,24 @@ window.addEventListener('click', ({target}) => {
 });
 
 ClickAndHold.applyTo(Messages, 200, function (evt) {
+  //console.log('Click & hold' + evt.target);
   lightboxClose();
   let target = evt.target;
+
   if (target.className.includes('textMessage')) {
-    if (target.dataset.deleted !== 'true'){
+    if (target.dataset.sent == 'true' && target.dataset.deleted != 'true'){
       clickOptionShow('text', evt);
       reactOptionShow(evt);
       navigator.vibrate(100);
     }
   } else if(target.className.includes('image-message')){
-    if (target.dataset.deleted !== 'true'){
+    if (target.parentElement.dataset.sent == 'true'){
       clickOptionShow('image', evt);
       reactOptionShow(evt);
       navigator.vibrate(100);
     }
   }
+
 });
 
 let softKeyIsUp = false;

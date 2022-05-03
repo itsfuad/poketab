@@ -7,7 +7,7 @@
 :root{
   --primary-dark: #111d2a;
   --foreground-dark: #e1eeff;
-  --secondary-dark: #4598ff;
+  --secondary-dark: #2585fd;
   --focus--dark: #192838bd;
   --red: #cd4040;
   --secondary: var(--secondary-dark);
@@ -336,7 +336,8 @@ input[type=file] {
     left: 0;
   }
   .time{
-    left: 110%;
+    left: 100%;
+    padding-left: 25px;
   }
 }
 
@@ -356,7 +357,8 @@ input[type=file] {
     justify-content: flex-start;
     position: relative;
     .time{
-      right: 110%;
+      right: 100%;
+      padding-right: 25px;
     }
   }
 }
@@ -372,7 +374,8 @@ input[type=file] {
     right: 0;
   }
   .time{
-    right: 110%;
+    right: 100%;
+    padding-right: 25px;
   }
 }
 
@@ -664,7 +667,7 @@ scrollbar-width: none;  /* Firefox */
       font-size: 0.8rem;
       background: #3f5266;
       color: #d1d1d1;
-      border-radius: 15px 15px 15px 0px;
+      border-radius: 15px 15px 15px 5px;
       z-index: 1;
       &:hover{
         cursor: pointer;
@@ -677,19 +680,21 @@ scrollbar-width: none;  /* Firefox */
       }
     }
     .my-reply-message{
-      border-radius: 15px 15px 0px 15px;
+      border-radius: 15px 15px 5px 15px;
       position: relative;
       //right: 18px;
     }
     .my__message{
       flex-direction: row-reverse;
       .time{
-        right: 120%;
+        right: 100%;
+        padding-right: 25px;
       }
     }
     .message{
       .time{
-        left: 120%;
+        left: 100%;
+        padding-left: 25px;
       }
       .reactions{
         left: 0;

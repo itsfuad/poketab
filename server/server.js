@@ -240,13 +240,6 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('vibrate', async (sender_name, userId) => {
-    let user = users.getUser(userId);
-    if (user) {
-      io.to(user.key).emit('vibrateResponse', sender_name, userId);
-    }
-  });
-
   socket.on('reaction', (targetId, userName, avatar, reaction) => {
     //console.log('Reaction: ' + reaction);
     //console.log('TargetId: ' + targetId);
