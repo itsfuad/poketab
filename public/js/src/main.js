@@ -1,13 +1,13 @@
 "use strict";
 //Variables
 
-/*
+
 import {v4} from 'uuid';
 import {io} from 'socket.io-client';
 import $ from 'jquery';
 import moment from 'moment';
 import Mustache from 'mustache';
-*/
+
 
 
 const socket = io();
@@ -925,7 +925,7 @@ $('#message-form').on('submit', function (e) {
   text = censorBadWords(text);
   text = text.replace(/\n/g, '¶');
 
-  let replaceId = "TEMP";
+  let replaceId = v4();
   let formattedTime = moment().format('hh:mm a');
   let html;
   if (isReply) {
@@ -1089,7 +1089,7 @@ $('.sendimage').on('click', () => {
     image.src = blobURL;
     image.onload = function() {
       let resized = resizeImage(image, file.mimetype);
-      let tempId = "TEMP";
+      let tempId = v4();
       let html = Mustache.render(myImageMessageTemplate, {
         from: myname,
         uid: myid,
