@@ -16,7 +16,7 @@ Copyright 2015, 2019, 2020, 2021 Google LLC. All Rights Reserved.
 // This variable is intentionally declared and unused.
 // Add a comment for your linter if you want:
 // eslint-disable-next-line no-unused-vars
-const OFFLINE_VERSION = 613;
+const OFFLINE_VERSION = 614;
 const CACHE_NAME = "offline";
 // Customize this with a different URL if needed.
 const OFFLINE_URL = "/offline";
@@ -24,7 +24,7 @@ const OFFLINE_URL = "/offline";
 self.addEventListener("install", (event) => {
   event.waitUntil(
     (async () => {
-      const cache = await caches.open(CACHE_NAME);
+      const cache = await caches.open(CACHE_NAME+"-"+OFFLINE_VERSION);
       // Setting {cache: 'reload'} in the new request will ensure that the
       // response isn't fulfilled from the HTTP cache; i.e., it will be from
       // the network.
@@ -73,7 +73,7 @@ self.addEventListener("fetch", (event) => {
           // the 4xx or 5xx range, the catch() will NOT be called.
           console.log("Fetch failed; returning offline page instead.", error);
 
-          const cache = await caches.open(CACHE_NAME);
+          const cache = await caches.open(CACHE_NAME+"-"+OFFLINE_VERSION);
           const cachedResponse = await cache.match(OFFLINE_URL);
           return cachedResponse;
         }
