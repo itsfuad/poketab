@@ -16,7 +16,7 @@ Copyright 2015, 2019, 2020, 2021 Google LLC. All Rights Reserved.
 // This variable is intentionally declared and unused.
 // Add a comment for your linter if you want:
 // eslint-disable-next-line no-unused-vars
-const OFFLINE_VERSION = 614;
+const OFFLINE_VERSION = 615;
 const CACHE_NAME = "offline";
 // Customize this with a different URL if needed.
 const OFFLINE_URL = "/offline";
@@ -24,6 +24,16 @@ const OFFLINE_URL = "/offline";
 self.addEventListener("install", (event) => {
   event.waitUntil(
     (async () => {
+      await caches.keys().then(cacheNames => {
+        return Promise.all(
+          cacheNames.map(cache => {
+            if (cache !== CACHE_NAME+"-"+OFFLINE_VERSION) {
+              console.log('Service Worker: Clearing Old cache');
+              return caches.delete(cache);
+            }
+          })
+        );
+      });
       const cache = await caches.open(CACHE_NAME+"-"+OFFLINE_VERSION);
       // Setting {cache: 'reload'} in the new request will ensure that the
       // response isn't fulfilled from the HTTP cache; i.e., it will be from

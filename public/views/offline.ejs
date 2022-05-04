@@ -9,15 +9,21 @@
 <body>
     <div class="container">
         <div class="text">
-            <h1>You're offline :(</h1>
+            <h1>Oops!</h1>
+            <h3>You're offline :(</h3>
         </div>
     </div>
     <a href="/">Retry</a>
     <style>
-	@font-face {
-	    font-family: 'comic';
-	    src: url("../fonts/comic-webfont.woff2");
-	}
+        @font-face {
+            font-family: 'comic';
+            src: url("../fonts/comic-webfont.woff2");
+        }
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body{
             background: #111d2a;
             color: #e1eeff;
@@ -25,10 +31,20 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            gap: 1rem;
             height: 100vh;
             width: 100vw;
             overflow: hidden;
 	        font-family: comic;
+        }
+        .text{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        h1{
+            font-size: 4rem;
         }
         a{
             color: #fff;

@@ -91,7 +91,7 @@ app.get('/chat', (_, res) => {
 
 app.get('/offline', (_, res) => {
   res.render('offline');
-} );
+});
 
 app.get('*', (_, res) => {
   res.render('404');
