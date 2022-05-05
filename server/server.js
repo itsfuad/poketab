@@ -16,7 +16,7 @@ const {Telegraf} = require('telegraf');
 const axios = require("axios");
 
 const apiKey = process.env.TELEGRAM_API_KEY;
-const adminId = adminId;
+const adminId = process.env.TELEGRAM_ADMIN_ID;
 
 const bot = new Telegraf(apiKey);
 
