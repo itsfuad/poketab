@@ -1,6 +1,6 @@
 {
   "name": "Poketab",
-  "version": "6.1.5",
+  "version": "6.2.0",
   "description": "Temporary messaging application",
   "main": "index.js",
   "scripts": {
@@ -17,6 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "async": "^3.2.3",
+    "axios": "^0.27.2",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "ejs": "^3.1.7",
@@ -28,6 +29,7 @@
     "node-sass": "^7.0.1",
     "socket.io": "^4.4.1",
     "socket.io-client": "^4.5.0",
+    "telegraf": "^4.8.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
