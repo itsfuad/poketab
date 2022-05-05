@@ -319,7 +319,7 @@ socket.on('deleteMessage', (messageId, user) => {
     $(`#${messageId} .replyMessage`).remove();
     target.html('Deleted Message');
 
-    target.css({'background': '#00000000', 'color': '#7d858c', 'padding': '8px 10px', 'margin-bottom': '0', 'border': '2px solid'});
+    target.css({'background': '#00000000', 'color': '#7d858c', 'padding': '8px 10px', 'margin-bottom': '0', 'border': '2px solid', 'font-size': '0.8rem'});
     //add dataset to target
     target[0].dataset.deleted = 'true';
     $(`#${messageId} .reactions`).css('display', 'none');
