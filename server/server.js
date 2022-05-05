@@ -12,13 +12,6 @@ const rateLimit = require('express-rate-limit');
 const cors = require('cors');
 const socketIO = require('socket.io');
 const uuid = require("uuid");
-//const {Telegraf} = require('telegraf');
-//const axios = require("axios");
-
-//const apiKey = process.env.TELEGRAM_API_KEY;
-//const adminId = process.env.TELEGRAM_ADMIN_ID;
-
-//const bot = new Telegraf(apiKey);
 
 
 const version = process.env.npm_package_version;
@@ -34,7 +27,18 @@ const {
   Users
 } = require('./utils/users');
 
-let keys = new Array();
+let keys = new Map();
+
+function deleteKeys(){
+  for (let [key, value] of keys){
+    if (value != true){
+      keys.delete(key);
+      console.log(`Key ${key} deleted`);
+    }
+  }
+}
+
+setInterval(deleteKeys, 1000 * 60 * 5);
 
 const apiRequestLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minute
@@ -72,18 +76,15 @@ app.use(express.urlencoded({
 
 app.use(apiRequestLimiter);
 
-app.get('/', (req, res) => {
-  //bot.telegram.sendMessage(adminId, `Request from ip: ${req.ip}`, {});
+app.get('/', (_, res) => {
   res.redirect('/login');
 });
 
-app.get('/login', (req, res) => {
-  //bot.telegram.sendMessage(adminId, `/login Request from ip: ${req.ip}`, {});
+app.get('/login', (_, res) => {
   res.render('login', {title: "Login", key_label: 'Chat Key <i class="fa-solid fa-key"></i>', version: `v.${version}`, key: null});
 });
 
 app.get('/login/:key', (req, res)=>{
-  //bot.telegram.sendMessage(adminId, `/login:KEY Request from ip: ${req.ip}`, {});
   const key_format = /^[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}$/;
   if (key_format.test(req.params.key)){
     res.render('login', {title: "Login", key_label: `Checking <i class="fa-solid fa-circle-notch fa-spin"></i>` , version: `v.${version}`, key: req.params.key});
@@ -93,15 +94,13 @@ app.get('/login/:key', (req, res)=>{
   }
 });
 
-app.get('/create', (req, res) => {
-  //bot.telegram.sendMessage(adminId, `/Create Request from ip: ${req.ip}`, {});
+app.get('/create', (_, res) => {
   const key = makeid(12);
-  keys.push(key);
+  keys.set(key, false);
   res.render('create', {title: "Create", version: `v.${version}`, key: key});
 });
 
-app.get('/chat', (req, res) => {
-  //bot.telegram.sendMessage(adminId, `Cheat Request from ip: ${req.ip}`, {});
+app.get('/chat', (_, res) => {
   res.redirect('/');
 });
 
@@ -109,17 +108,15 @@ app.get('/offline', (_, res) => {
   res.render('offline');
 });
 
-app.get('*', (req, res) => {
-  //bot.telegram.sendMessage(adminId, `Error Request from ip: ${req.ip}`, {});
+app.get('*', (_, res) => {
   res.render('404');
 });
 
 app.post('/chat', (req, res) => {
-  //bot.telegram.sendMessage(adminId, `POST Request from ip: ${req.ip}`, {});
   let username = req.body.name.replace(/(<([^>]+)>)/gi, "");
   //get current users list on key
   let key = req.body.key;
-  if (keys.includes(key)){
+  if (keys.has(key)){
     let user = users.getUserList(key);
     let max_users = users.getMaxUser(key);
     let uid = uuid.v4();
@@ -128,7 +125,7 @@ app.post('/chat', (req, res) => {
       res.status(401).send({
         message: "Unauthorized access"
       });
-      //bot.telegram.sendMessage(adminId, `Unauthorized access from ${req.body.name}`);
+    
     }
     res.render('chat', {myname: username, mykey: key, myid: uid, myavatar: req.body.avatar, maxuser: req.body.maxuser || max_users});
   }else{
@@ -171,6 +168,7 @@ io.on('connection', (socket) => {
       return callback('exists');
     }
     callback();
+    keys.set(params.key, true);
     socket.join(params.key);
     users.removeUser(socket.id);
     users.addUser(socket.id, params.name, params.key, params.avatar, params.maxuser || users.getMaxUser(params.key));
@@ -216,8 +214,7 @@ io.on('connection', (socket) => {
       if (usercount.length === 0) {
         users.removeMaxUser(user.key);
         //delete key from keys
-        keys = keys.filter(key => key !== user.key);
-
+        keys = keys.delete(user.key);
         console.log(`Session ended with key: ${user.key}`);
       }
       console.log(`${usercount.length } users left`);
@@ -238,7 +235,7 @@ io.on('connection', (socket) => {
   });
   socket.on('joinRequest', (key) => {
     const key_format = /^[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}$/;;
-    if (key_format.test(key) && keys.includes(key)){
+    if (key_format.test(key) && keys.has(key)){
       let maxuser = users.getMaxUser(key);
       let userlist = users.getUserList(key);
       let avatarList = users.getAvatarList(key);
@@ -255,7 +252,7 @@ io.on('connection', (socket) => {
     }
     else{
       const key_format = /^[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}$/;;
-      if (key_format.test(key) && keys.includes(key)) {
+      if (key_format.test(key) && keys.has(key)) {
         socket.emit('createResponse', keyExists);
         console.log('Creating new key: ' + key);
         let userlist = users.getUserList(key);
@@ -292,31 +289,6 @@ io.on('connection', (socket) => {
   });
 
 });
-
-console.log(`Telegram bot started`);
-
-bot.command('start', ctx => {
-  console.log(ctx.from)
-  //bot.telegram.sendMessage(ctx.chat.id, 'Hello there! Welcome to the Code Capsules telegram bot.\nI respond to /ethereum. Please try it', {
-  })
-})
-
-bot.command('ethereum', ctx => {
-  var rate;
-  //console.log(ctx.from)
-  axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd`)
-  .then(response => {
-    //console.log(response.data)
-    rate = response.data.ethereum
-    const message = `Hello, today the ethereum price is ${rate.usd}USD`
-    //bot.telegram.sendMessage(ctx.chat.id, message, {
-    })
-  })
-})
-
-
-bot.launch();
-
 
 server.listen(port, () => {
   console.log(`Server is up on ${port}`);
