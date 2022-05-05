@@ -16,6 +16,8 @@ const {Telegraf} = require('telegraf');
 const axios = require("axios");
 
 const apiKey = process.env.TELEGRAM_API_KEY;
+const adminId = adminId;
+
 const bot = new Telegraf(apiKey);
 
 
@@ -71,17 +73,17 @@ app.use(express.urlencoded({
 app.use(apiRequestLimiter);
 
 app.get('/', (req, res) => {
-  bot.telegram.sendMessage(process.env.TELEGRAM_ADMIN_ID, `Request from ip: ${req.ip}`, {});
+  bot.telegram.sendMessage(adminId, `Request from ip: ${req.ip}`, {});
   res.redirect('/login');
 });
 
 app.get('/login', (req, res) => {
-  bot.telegram.sendMessage(process.env.TELEGRAM_ADMIN_ID, `/login Request from ip: ${req.ip}`, {});
+  bot.telegram.sendMessage(adminId, `/login Request from ip: ${req.ip}`, {});
   res.render('login', {title: "Login", key_label: 'Chat Key <i class="fa-solid fa-key"></i>', version: `v.${version}`, key: null});
 });
 
 app.get('/login/:key', (req, res)=>{
-  bot.telegram.sendMessage(process.env.TELEGRAM_ADMIN_ID, `/login:KEY Request from ip: ${req.ip}`, {});
+  bot.telegram.sendMessage(adminId, `/login:KEY Request from ip: ${req.ip}`, {});
   const key_format = /^[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}$/;
   if (key_format.test(req.params.key)){
     res.render('login', {title: "Login", key_label: `Checking <i class="fa-solid fa-circle-notch fa-spin"></i>` , version: `v.${version}`, key: req.params.key});
@@ -92,14 +94,14 @@ app.get('/login/:key', (req, res)=>{
 });
 
 app.get('/create', (req, res) => {
-  bot.telegram.sendMessage(process.env.TELEGRAM_ADMIN_ID, `/Create Request from ip: ${req.ip}`, {});
+  bot.telegram.sendMessage(adminId, `/Create Request from ip: ${req.ip}`, {});
   const key = makeid(12);
   keys.push(key);
   res.render('create', {title: "Create", version: `v.${version}`, key: key});
 });
 
 app.get('/chat', (req, res) => {
-  bot.telegram.sendMessage(process.env.TELEGRAM_ADMIN_ID, `Cheat Request from ip: ${req.ip}`, {});
+  bot.telegram.sendMessage(adminId, `Cheat Request from ip: ${req.ip}`, {});
   res.redirect('/');
 });
 
@@ -108,12 +110,12 @@ app.get('/offline', (_, res) => {
 });
 
 app.get('*', (req, res) => {
-  bot.telegram.sendMessage(process.env.TELEGRAM_ADMIN_ID, `Error Request from ip: ${req.ip}`, {});
+  bot.telegram.sendMessage(adminId, `Error Request from ip: ${req.ip}`, {});
   res.render('404');
 });
 
 app.post('/chat', (req, res) => {
-  bot.telegram.sendMessage(process.env.TELEGRAM_ADMIN_ID, `POST Request from ip: ${req.ip}`, {});
+  bot.telegram.sendMessage(adminId, `POST Request from ip: ${req.ip}`, {});
   let username = req.body.name.replace(/(<([^>]+)>)/gi, "");
   //get current users list on key
   let key = req.body.key;
@@ -126,7 +128,7 @@ app.post('/chat', (req, res) => {
       res.status(401).send({
         message: "Unauthorized access"
       });
-      bot.telegram.sendMessage(process.env.TELEGRAM_ADMIN_ID, `Unauthorized access from ${req.body.name}`);
+      bot.telegram.sendMessage(adminId, `Unauthorized access from ${req.body.name}`);
     }
     res.render('chat', {myname: username, mykey: key, myid: uid, myavatar: req.body.avatar, maxuser: req.body.maxuser || max_users});
   }else{
