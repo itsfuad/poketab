@@ -14,6 +14,7 @@
                 </div>
                 <div class="form-field">
                     <label for="key" id="key-label"><%- key_label %> </label>
+                    <div class="log" id="key-error"></div>
                     <% if (key) { %>
                         <input type="text" name="key" id="key" minlength="15" maxlength="15" value=<%= key %> >
                     <% } else { %>
@@ -33,9 +34,11 @@
             <div class="form-2" style="display: none;">
                 <div class="form-field">
                     <label for="name"  id="name-label">Choose username</label>
-                    <input type="text" name="name" id="name" maxlength="20" placeholder="Username">
+                    <div class="log"id="username-error"></div>
+                    <input type="text" name="name" id="name" placeholder="Username">
                 </div>
                 <div class="form-field">
+                    <div class="log" id="avatar-error"></div>
                     <%- include("layout/avatars") %> 
                 </div>
                 <div class="form-field">

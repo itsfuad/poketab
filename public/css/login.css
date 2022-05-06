@@ -154,10 +154,9 @@ body {
   width: 100%;
 }
 
-.form-field label {
+.form-field > label {
   display: block;
-  margin-bottom: 7px;
-  min-height: 25px;
+  padding: 5px;
 }
 
 .form-field input,
@@ -212,7 +211,7 @@ input[type='number']::-webkit-inner-spin-button {
           flex-direction: row;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
-  height: 150px;
+  height: 135px;
   width: 200px;
   -webkit-box-align: center;
       -ms-flex-align: center;
@@ -292,6 +291,11 @@ input[type="radio"]:checked + label img {
 
 .copy-key:hover {
   cursor: pointer;
+}
+
+.log {
+  font-size: 0.7rem;
+  color: orangered;
 }
 
 input[type='text'] {

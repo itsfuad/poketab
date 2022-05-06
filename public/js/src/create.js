@@ -5,16 +5,6 @@ let socket = io();
 let e_users = [];
 let e_avatars = [];
 
-const error = document.getElementById('error-callback');
-
-const url = window.location.href;
-const error_code = url.substring(url.indexOf('?') + 1);
-
-console.log(error_code);
-
-if (error_code !== url){
-    error.innerText = '*Please fill up all requirements*';
-}
 
 $('#key').on('click', ()=>{
     let text = `${location.origin}/login/${$('#key').val()}`;
@@ -36,35 +26,40 @@ $('#maxuser').on('input', ()=>{
 
 $('#next').on('click',()=>{
     //alert('sadasd');
-    $('#key-label').css('color','white');
-    $('#key-label').html('Checking <i class="fa-solid fa-circle-notch fa-spin"></i>');
     const key_format = /^[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}-[0-9a-zA-Z]{3}$/;
     let key = $('#key').val();
     if (key === '') {
-        $('#key-label').html('Key is required <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
-        $('#key-label').css('color','red');
+        errorLog('key-error', '*Key is required <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>')
         return;
     }
     //check if key is in xxx-xxx-xxx-xxx format
     if (!key_format.test(key)){
-        $('#key-label').html('Invalid key <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
-        $('#key-label').css('color', 'red');
+        errorLog('key-error', 'Invalid key <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>')
         return;
     }
     else{
+        $('#key-label').css('color','white');
+        $('#key-label').html('Checking <i class="fa-solid fa-circle-notch fa-spin"></i>');
         socket.emit('createRequest', key, function(err){
             if (err){
-                $('#key-label').html('Invalid key <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
-                $('#key-label').css('color', 'red');
+                $('#key-label').html('Chat Key <i class="fa-solid fa-key"></i>');
+                errorLog('key-error', 'Expired key <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
+                $('#next').val('Reload');
+
+                //remove event listener
+                $('#next').off('click');
+                $('#next').on('click', ()=>{
+                    location.reload();
+                });
             }
         });
     }
 });
 
 socket.on('createResponse', (keyExists, users, avatars) => {
+    $('#key-label').html('Chat Key <i class="fa-solid fa-key"></i>');
     if (keyExists){
-        $('#key-label').html('Key does already exists <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
-        $('#key-label').css('color','red');
+        errorLog('key-error', 'Key does already exists <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
     }
     else{
         e_users = users;
@@ -80,22 +75,38 @@ socket.on('createResponse', (keyExists, users, avatars) => {
     }
 });
 
+function errorLog(target, msg){
+    $(`#${target}`).html(msg);
+}
+
 function check(){
     //alert("Sen?");
     //check if any radio button is checked
+    errorLog('username-error', '');
+    errorLog('avatar-error', '');
     let allow = false;
-    let name = $('#name').val();
+    let name = $('#name').val().trim();
+    $('#name').val(name);
+    let nameRegex = /^[a-zA-Z]{3,20}$/;
     if (name === '') {
-        $('#name-label').html('Username required <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
-        $('#name-label').css('color','red');
+        errorLog('username-error', '*Name is required');
+        allow = false;
+        return allow;
+    }
+    else if(name.length < 3 || name.length > 20){
+        errorLog('username-error', '*Name must be between 3 and 20 characters');
         allow = false;
         return allow;
     }
     else{
         //if e_users array contains name
         if (e_users.includes(name)){
-            $('#name-label').html('Username exists <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
-            $('#name-label').css('color','red');
+            errorLog('username-error', 'Username exists <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
+            allow = false;
+            return allow;
+        }
+        else if (!nameRegex.test(name)){
+            errorLog('username-error', 'Username can contain only letters <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
             allow = false;
             return allow;
         }
@@ -112,8 +123,7 @@ function check(){
         }
     }
     if (!checked){
-        $('#name-label').html('Select avatar <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
-        $('#name-label').css('color','red');
+        errorLog('avatar-error', 'Select avatar <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>');
     }
     if (allow && checked){
         $('#join').val('Creating...');

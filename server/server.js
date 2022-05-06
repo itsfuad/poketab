@@ -13,21 +13,15 @@ const cors = require('cors');
 const socketIO = require('socket.io');
 const uuid = require("uuid");
 
+const { generateMessage, generateLocationMessage } = require('./utils/message');
+const {isRealString, validateUserName} = require('./utils/validation');
+const { Users } = require('./utils/users');
+
 
 const version = process.env.npm_package_version;
 
-const {
-  generateMessage,
-  generateLocationMessage
-} = require('./utils/message');
-const {
-  isRealString
-} = require('./utils/validation');
-const {
-  Users
-} = require('./utils/users');
 
-let keys = new Map();
+const keys = new Map();
 
 function deleteKeys(){
   for (let [key, value] of keys){
@@ -113,7 +107,13 @@ app.get('*', (_, res) => {
 });
 
 app.post('/chat', (req, res) => {
-  let username = req.body.name.replace(/(<([^>]+)>)/gi, "");
+  let username = req.body.name;
+  //if username has invalid characters
+  if (!validateUserName(username)){
+    res.status(400).send({
+      error: 'Invalid username format. Please use only alphanumeric characters'
+    });
+  }
   //get current users list on key
   let key = req.body.key;
   if (keys.has(key)){
@@ -123,7 +123,7 @@ app.post('/chat', (req, res) => {
     if (user.length >= max_users){
       //send unauthorized access message
       res.status(401).send({
-        message: "Unauthorized access"
+        message: "Unauthorized access",
       });
     
     }
@@ -214,7 +214,7 @@ io.on('connection', (socket) => {
       if (usercount.length === 0) {
         users.removeMaxUser(user.key);
         //delete key from keys
-        keys = keys.delete(user.key);
+        keys.delete(user.key);
         console.log(`Session ended with key: ${user.key}`);
       }
       console.log(`${usercount.length } users left`);

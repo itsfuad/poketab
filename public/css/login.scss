@@ -113,7 +113,6 @@ body {
 
 .form-field label {
   display: block;
-  margin-bottom: 7px;
   min-height: 25px;
 }
 
@@ -164,7 +163,7 @@ input[type='number']::-webkit-inner-spin-button{
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  height: 150px;
+  height: 138px;
   width: 200px;
   align-items: center;
   justify-content: center;
@@ -222,6 +221,11 @@ input[type="radio"] {
   &:hover{
     cursor: pointer;
   }
+}
+
+.log{
+  font-size: 0.7rem;
+  color: orangered;
 }
 
 input[type='text']{
