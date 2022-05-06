@@ -7,7 +7,7 @@ import {io} from 'socket.io-client';
 import $ from 'jquery';
 import moment from 'moment';
 import Mustache from 'mustache';
-
+import { pinchZoom } from './imageZoom';
 
 
 const socket = io();
