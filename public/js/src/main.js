@@ -350,7 +350,6 @@ socket.on('removeReactResponse', (u_name, id)=>{
 
 
 
-
 //functions
 function addReact(target, userName, avatar, react){
   //console.log(target, userName, react);
@@ -600,7 +599,8 @@ function openImageView(evt)
   try{
   let target = evt.target;
   $('.lightbox__image').html('');
-  $('.lightbox__image').append(`<img src="${target.src}" alt="Image">`);
+  $('.lightbox__image').append(`<img src="${target.src}" alt="Image" id="view_target">`);
+  pinchZoom(document.getElementById('view_target'));
   $('.lightbox').fadeIn(100);
   }
   catch(e){
@@ -1208,8 +1208,8 @@ ClickAndHold.applyTo(Messages, 200, function (evt) {
   let target = evt.target;
 
   if (target.className.includes('textMessage')) {
-    console.dir(target);
-    console.log(`${target.dataset.uid} ${myid}`);
+    //console.dir(target);
+    //console.log(`${target.dataset.uid} ${myid}`);
     if (target.dataset.sent == 'true' && target.dataset.deleted != 'true'){
       clickOptionShow('text', evt);
       reactOptionShow(evt);
