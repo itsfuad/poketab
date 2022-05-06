@@ -1072,6 +1072,7 @@ $("textarea").each(function () {
 });
 
 $('#photo').on('change', ()=>{
+  $('.previewimage__image').html('Loading image <i class="fa-solid fa-circle-notch fa-spin"></i>')
   let file = $('#photo')[0].files[0];
   let reader = new FileReader();
   reader.readAsDataURL(file);
@@ -1084,6 +1085,7 @@ $('#photo').on('change', ()=>{
 
 $('.previewimage__close').on('click', () => {
   $('.previewimage').hide(100);
+  $('.previewimage__image').empty();
 });
 
 
