@@ -47,12 +47,11 @@
   <link rel="icon" href="/images/avatars/pikachu.png">
   <script async src="/js/libs/fontawesome.js" crossorigin="anonymous"></script>
 
-  <!--script defer src="/socket.io/socket.io.js"></script>
+  <!--script defer src="/socket.io/socket.io.js"></!--script>
   <script defer src="/js/libs/jquery-3.1.0.min.js"></script>
   <script defer src="/js/libs/moment.min.js"></script>
   <script defer src="/js/libs/mustache.min.js"></script>
-  <script defer src="/js/src/imageZoom.js"></script>
-  <script defer src="/js/src/main.js"></script-->
+  <script-- defer src="/js/src/main.js"></script-->
 
   <script defer src="/js/dist/bundle.js" type="module"></script>
 
@@ -63,16 +62,11 @@
     const maxuser = "<%=maxuser%>";
     const myid = "<%=myid%>";
     
-    window.location.hash = "chat";
-    window.location.hash = "poketab";
-    window.location.hash = "inbox";
-    console.log(window.location.hash);
-    setTimeout(function () {
-        window.location.hash = "again-inbox";
-        console.log(window.location.hash);
-    }, 2000);
-    window.onhashchange = function(){
-        window.location.hash = "inbox";
-        console.log(window.location.hash);
-    }
+    document.addEventListener('click', ()=> {
+      history.pushState({}, '', "#init");
+      history.pushState({}, '', "#inbox");
+      window.onpopstate = ()=>{
+        history.forward();
+      }
+    }, {once: true});
   </script>

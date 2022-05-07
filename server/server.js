@@ -47,7 +47,7 @@ const apiRequestLimiter = rateLimit({
 });
 
 const publicPath = path.join(__dirname, '../public');
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 80;
 let app = express();
 let server = http.createServer(app);
 let io = socketIO(server);
@@ -94,16 +94,12 @@ app.get('/create', (_, res) => {
   res.render('create', {title: "Create", version: `v.${version}`, key: key});
 });
 
-app.get('/chat', (_, res) => {
-  res.redirect('/');
-});
-
 app.get('/offline', (_, res) => {
   res.render('offline');
 });
 
 app.get('*', (_, res) => {
-  res.render('404');
+  res.redirect('/');
 });
 
 app.post('/chat', (req, res) => {

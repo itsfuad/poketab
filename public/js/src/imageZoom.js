@@ -1,5 +1,4 @@
-
-export const pinchZoom = (imageElement) => {
+const pinchZoom = (imageElement) => {
     let imageElementScale = 1;
   
     let start = {};
