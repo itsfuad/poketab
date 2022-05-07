@@ -1,21 +1,21 @@
 node_modules
 .vscode
 
-public/css/login.css
-public/css/login.css.map
-public/css/login.scss
-public/css/main.css
-public/css/main.css.map
-public/css/main.scss
+login.css
+login.css.map
+login.scss
+main.css
+main.css.map
+main.scss
 
-public/js/src/login.js
-public/js/src/create.js
-public/js/src/main.js
-public/js/src/notify.js
+login.js
+create.js
+main.js
+notify.js
 
-public/js/libs/jquery-3.1.0.min.js
-public/js/libs/fontawesome.js
-public/js/libs/moment.js
-public/js/libs/mustache.js
+jquery-3.1.0.min.js
+fontawesome.js
+moment.js
+mustache.js
 
-public/js/dist/bundle.js.LICENSE.txt
+bundle.js.LICENSE.txt
