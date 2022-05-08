@@ -309,7 +309,9 @@ input[type="radio"]:checked + label img {
   position: fixed;
   top: 0;
   left: 0;
-  background: #000000cb;
+  background: #00000080;
+  -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
 }
 
 .log {
