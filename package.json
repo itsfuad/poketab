@@ -1,6 +1,6 @@
 {
   "name": "poketab_messanger",
-  "version": "7.0.2",
+  "version": "7.0.3",
   "description": "Temporary messaging application",
   "main": "index.js",
   "scripts": {
@@ -38,6 +38,7 @@
     "sass-loader": "^12.6.0",
     "style-loader": "^3.3.1",
     "webpack": "^5.72.0",
+    "webpack-bundle-analyzer": "^4.5.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.8.1"
   }

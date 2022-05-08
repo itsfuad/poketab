@@ -1,7 +1,7 @@
 /**
  * @author Fuad Hasan
  * @version 6.1.0
- * @since   2022-03-06
+ * @since 2022-03-06
  */
 
 const path = require('path');

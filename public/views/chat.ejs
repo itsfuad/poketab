@@ -7,10 +7,9 @@
 </head>
 
 <body>
-  <div id="preloader" style="z-index: 100; overflow: hidden; visibility: visible; position: absolute;height: 100vh;width: 100vw;display: flex;position: fixed; flex-direction: column; background: #111d2a;justify-content: center;align-items: center;">
-    <!--create a preloder screen-->
-    <img src="/images/loader.gif" height="100px" width="100px" alt="" srcset="">
-    <h3 style="margin: 0; font-size: 1.3rem;">Creating Pokemon World</h3>
+  <div class="preloader" style="display: flex;  flex-direction: row; gap: 5px; align-items: center;  justify-content: center;  width: 100%;  height: 100%;  position: fixed;  top: 0;  left: 0;  background: #111d2a;  z-index: 100;  color: #2585fd;">
+    <div class="text">Logging in</div>
+    <i class="fa-solid fa-circle-notch fa-spin"></i>
   </div>
   <div id="main-screen" style="visibility: hidden;">
     <div class="offline" style="display: none; background: orange;padding: 2px;width: 100%;text-align: center;position: fixed;top: 0; font-size: 0.7rem"></div>
@@ -179,9 +178,6 @@
         </li>
       </template>
     </div>
-  </div>
-  <div id="wait">
-    <div class="text">Logging out <i class="fa-solid fa-circle-notch fa-spin"></i></div>
   </div>
 </body>
 </html>

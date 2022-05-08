@@ -1,3 +1,5 @@
+const webpack = require('webpack');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 module.exports = {
     entry: './public/js/src/main.js',
     output: {
@@ -16,4 +18,11 @@ module.exports = {
             },
         ],
     },
+    plugins: [
+        new BundleAnalyzerPlugin(),
+        new webpack.IgnorePlugin({
+            resourceRegExp: /^\.\/locale$/,
+            contextRegExp: /moment$/,
+          })
+    ]
 };
