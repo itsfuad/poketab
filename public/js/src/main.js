@@ -341,7 +341,7 @@ socket.on('imageGet', (sendername, sender_id, imagefile, avatar, id) => {
     messageTitleStyle: `${(maxuser == 2) || (document.querySelector('#messages').lastElementChild.dataset.uid == sender_id) ? 'display: none;' : 'display: block;'} transform: translateY(0px)`,
     radius: `${(document.querySelector('#messages').lastElementChild.dataset.uid == sender_id) ? "border-radius: 5px 15px 15px 15px" : "border-radius: 15px"}`,
     image: `<img class='image-message' src='${imagefile}'>`,
-    createdAt: moment().format('hh:mm a')
+    createdAt: moment().format('hh:mm a'),
   });
   incommingmessage.play();
   if (document.querySelector('#messages').lastElementChild.dataset.uid == sender_id) {
@@ -370,7 +370,7 @@ socket.on('deleteMessage', (messageId, user) => {
       $(`#${messageId} .title`).css('visibility', 'hidden');
     }
 
-    console.dir( $(`#${messageId} .replyMessage`));
+    //console.dir( $(`#${messageId} .replyMessage`));
     $(`#${messageId} .replyMessage`).remove();
     target.html('Deleted Message');
 
@@ -1132,7 +1132,7 @@ $("textarea").each(function () {
 });
 
 $('#photo').on('change', ()=>{
-  $('.previewimage__image').html('Loading image <i class="fa-solid fa-circle-notch fa-spin"></i>')
+  $('.previewimage__image').html(`Loading image <i class="fa-solid fa-circle-notch fa-spin"></i>`)
   let file = $('#photo')[0].files[0];
   let reader = new FileReader();
   reader.readAsDataURL(file);
@@ -1269,17 +1269,13 @@ ClickAndHold.applyTo(Messages, 200, function (evt) {
   let target = evt.target;
 
   if (target.className.includes('textMessage')) {
-    //console.dir(target);
-    //console.log(`${target.dataset.uid} ${myid}`);
-    if (target.dataset.sent == 'true' && target.dataset.deleted != 'true'){
-      clickOptionShow('text', evt);
-      reactOptionShow(evt);
-      navigator.vibrate(100);
-    }else if(target.dataset.uid != myid && target.dataset.deleted != 'true'){
+
+    if (target.dataset.sent == 'true' && target.dataset.deleted !== 'true'){
       clickOptionShow('text', evt);
       reactOptionShow(evt);
       navigator.vibrate(100);
     }
+
   } else if(target.className.includes('image-message')){
     if (target.parentElement.dataset.sent == 'true'){
       clickOptionShow('image', evt);
