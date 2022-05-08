@@ -1,5 +1,5 @@
 {
-  "name": "Poketab",
+  "name": "poketab_messanger",
   "version": "7.0.1",
   "description": "Temporary messaging application",
   "main": "index.js",
