@@ -6,7 +6,6 @@ import $ from 'jquery';
 import moment from 'moment';
 import Mustache from 'mustache';
 
-
 const socket = io();
 const incommingmessage = new Audio('/sounds/incommingmessage.wav');
 const outgoingmessage = new Audio('/sounds/outgoingmessage.wav');

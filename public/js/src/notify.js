@@ -5,7 +5,6 @@ function showNotification(title, text, icon){
     });
 }
 
-
 console.log(Notification.permission);
 
 if (Notification.permission === 'granted'){
