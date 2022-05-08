@@ -22,7 +22,7 @@
             <div class="create-chat">
                 <fieldset class="line">
                     <legend class="h1">Or</legend>
-                    <a id="create" href="/login">Join chat</a>
+                    <a id="create" href="/login" onclick="return showWait();">Join chat</a>
                 </fieldset>
             </div>
             </div>
@@ -45,6 +45,9 @@
                 </div>
             </div>
         </form>
+    </div>
+    <div id="wait">
+        <div class="text">Please Wait <i class="fa-solid fa-circle-notch fa-spin"></i></div>
     </div>
     <%- include("layout/footer") %> 
     <script defer src="/js/src/create.min.js"></script>

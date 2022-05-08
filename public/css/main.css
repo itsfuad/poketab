@@ -333,6 +333,28 @@ input[type=file] {
   color: var(--secondary);
 }
 
+#wait {
+  display: none;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #111d2a;
+  z-index: 100;
+  color: var(--secondary);
+}
+
 .sent {
   font-size: 0.6rem !important;
   color: #e1eeff !important;
@@ -765,7 +787,6 @@ input[type=file] {
           justify-content: flex-start;
   gap: 5px;
 }
-
 
 #sendlocation {
   -webkit-filter: invert(1);

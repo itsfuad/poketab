@@ -861,6 +861,11 @@ function clickOptionShow(type, evt1)
   }
 }
 
+function showWait(){
+  document.getElementById('wait').style.display = 'flex';
+  return true;
+}
+
 function closePopup() {
   isReply = false;
   $('.toast-popup').hide();
@@ -1192,6 +1197,7 @@ $('.lightbox__save').on('click', ()=>{
 });
 
 $('.back').on('click', ()=>{
+  showWait();
   window.location.href = '/';
 });
 

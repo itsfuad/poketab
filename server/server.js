@@ -127,7 +127,7 @@ app.post('/chat', (req, res) => {
   }else{
     //send invalid key message
     res.status(401).send({
-      message: "Invalid key"
+      message: "Invalid or Expired key"
     });
   }
 });
