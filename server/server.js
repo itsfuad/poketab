@@ -25,14 +25,15 @@ const keys = new Map();
 
 function deleteKeys(){
   for (let [key, value] of keys){
-    if (value != true){
+    //console.dir(`${key} ${value.using}, ${value.created}, ${Date.now()}`);
+    if (value.using != true && Date.now() - value.created > 60000){
       keys.delete(key);
       console.log(`Key ${key} deleted`);
     }
   }
 }
 
-setInterval(deleteKeys, 1000 * 60 * 5);
+setInterval(deleteKeys, 1000);
 
 const apiRequestLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minute
@@ -90,7 +91,7 @@ app.get('/login/:key', (req, res)=>{
 
 app.get('/create', (_, res) => {
   const key = makeid(12);
-  keys.set(key, false);
+  keys.set(key, {using: false, created: Date.now()});
   res.render('create', {title: "Create", version: `v.${version}`, key: key});
 });
 
@@ -164,7 +165,7 @@ io.on('connection', (socket) => {
       return callback('exists');
     }
     callback();
-    keys.set(params.key, true);
+    keys.set(params.key, {using: true, created: Date.now()});
     socket.join(params.key);
     users.removeUser(socket.id);
     users.addUser(socket.id, params.name, params.key, params.avatar, params.maxuser || users.getMaxUser(params.key));
@@ -211,6 +212,7 @@ io.on('connection', (socket) => {
         users.removeMaxUser(user.key);
         //delete key from keys
         keys.delete(user.key);
+        console.log(keys);
         console.log(`Session ended with key: ${user.key}`);
       }
       console.log(`${usercount.length } users left`);
