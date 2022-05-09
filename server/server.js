@@ -212,7 +212,7 @@ io.on('connection', (socket) => {
         users.removeMaxUser(user.key);
         //delete key from keys
         keys.delete(user.key);
-        console.log(keys);
+        //console.log(keys);
         console.log(`Session ended with key: ${user.key}`);
       }
       console.log(`${usercount.length } users left`);
