@@ -6,7 +6,4 @@ main.css
 main.css.map
 main.scss
 bundle.js.LICENSE.txt
-moment.js
-main.js
-notify.js
-mustache.js
+jqueryClone.js

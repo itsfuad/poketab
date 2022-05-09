@@ -69,8 +69,8 @@ socket.on('createResponse', (keyExists, users, avatars) => {
                 $(`label[for='${avatar}']`).hide();
             });
         }
-        $('.form-1').hide(100);
-        $('.howtouse').hide(100);
-        $('.form-2').show(100);
+        $('.form-1').hide();
+        $('.howtouse').hide();
+        $('.form-2').show();
     }
 });
