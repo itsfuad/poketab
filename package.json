@@ -23,7 +23,7 @@
     "express": "^4.17.3",
     "express-rate-limit": "^6.3.0",
     "jquery": "^3.6.0",
-    "moment": "^2.29.2",
+    "moment": "^2.29.3",
     "mustache": "^4.2.0",
     "node-sass": "^7.0.1",
     "socket.io": "^4.4.1",
