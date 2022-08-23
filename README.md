@@ -1,4 +1,4 @@
-## This repo is no longer maintained. A new repo (Poketab Messnger) is available.
+## This repo is no longer maintained. A new updated repo (Poketab Messnger) is available.
 
 Temporary Realtime chatting application for 2-15 peoples. 
 
